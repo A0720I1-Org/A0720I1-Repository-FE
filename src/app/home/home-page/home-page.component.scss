@@ -1,0 +1,36 @@
+.main-content {
+  display: flex;
+  flex-direction: row;
+  background-color: #62A9BF;
+  background-size: auto;
+  width: 100%;
+  height: 90vh;
+  margin: 0;
+  padding: 0;
+
+}
+.parent-div {
+  height: 100%;
+  position: relative;
+}
+.child-div-left {
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  -webkit-transform: translate(-30%, -30%);
+  transform: translate(-30%, -30%);
+}
+
+.child-div-right {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.text-title {
+  font-size: 35px;
+  font-weight: bold;
+  color: white;
+}

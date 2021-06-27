@@ -1,0 +1,82 @@
+<div class="container mt-3 mb-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="border-shadow">
+        <div class="card-header card-background-color">
+          <p class="card-title card-header-text-bold text-light mt-2">Danh sách Giáo Viên</p>
+        </div>
+        <div class="card-body">
+
+          <nav class="navbar bg-light justify-content-between nav-custom">
+            <a class="btn btn-success" routerLink="/teacher/create">Thêm mới</a>
+            <div class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="Nhập tên" aria-label="Search"
+                     [(ngModel)]="nameSearch" (keydown.enter)="getSearch(0)">
+              <input class="form-control mr-sm-2" type="search" placeholder="Nhập địa chỉ" aria-label="Search"
+                     [(ngModel)]="addressSearch" (keydown.enter)="getSearch(0)">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="getSearch(0)">Tìm Kiếm
+              </button>
+            </div>
+          </nav>
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+              <th>STT</th>
+              <th>Tên</th>
+              <th>Địa Chỉ</th>
+              <th>Số Điện Thoại</th>
+              <th>Ngày Sinh</th>
+              <th class="text-center">Xem</th>
+              <th class="text-center">Sửa</th>
+              </thead>
+              <tbody>
+              <tr *ngFor="let teacher of listTeacher;
+                        let count = index" [attr.data-index]="count">
+                <td>{{count + 1}}</td>
+                <td>{{teacher.name}}</td>
+                <td>{{teacher.address}}</td>
+                <td>{{teacher.phone}}</td>
+                <td>{{teacher.birthday}}</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-info btn-sm" (click)="viewDetailTeacher(teacher.id)">Xem</button>
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-warning btn-sm" [routerLink]="['/teacher/update', teacher.id]">
+                    Sửa
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="text-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination d-flex justify-content-md-end justify-content-center">
+                <li class="page-item"><a class="btn btn-primary" (click)="firstPage()">Đầu</a></li>
+                <li class="page-item"><a class="btn btn-primary" (click)="previousPage()">Trang trước</a></li>
+                <li class="page-item col-md-1 col-2  px-0">
+                  <div class="input-group">
+                    <input type="number" min="1" [max]="totalPagination"
+                           class="form-control text-right"
+                           placeholder="2" aria-label="Username"
+                           aria-describedby="basic-addon1" [value]="indexPagination"
+                           (change)="indexPaginationChange($event.target.value)">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">{{totalPagination}}</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="page-item">
+                  <button class="btn btn-primary" (click)="findPagination()">Đi</button>
+                </li>
+                <li class="page-item"><a class="btn btn-primary" (click)="nextPage()">Trang kế</a></li>
+                <li class="page-item"><a class="btn btn-primary" (click)="lastPage()">Cuối</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
