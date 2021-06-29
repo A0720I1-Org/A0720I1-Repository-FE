@@ -14,6 +14,7 @@ import {environment} from '../environments/environment';
 import {AngularFireStorageModule} from "@angular/fire/storage";
 import {AngularFireDatabaseModule} from "@angular/fire/database";
 import {SecurityModule} from './security/security.module';
+import {JwtModule} from "@auth0/angular-jwt";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import {SecurityModule} from './security/security.module';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
