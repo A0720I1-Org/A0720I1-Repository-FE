@@ -1,3 +1,4 @@
+<div class="container mt-5 mb-5">
 <!-- Start table information-->
 <div class="row">
   <div class="col-md-3">
@@ -5,16 +6,13 @@
       <div class="card-body">
         <div class="author">
           <div class="mx-auto">
-            <img class="col-md-12" src="assets/img/faces/card-image.jpg" alt="card image">
+            <img class="col-md-12" [src]="formUpdate.value.imageUrl" alt="card image">
           </div>
           <hr>
           <div class="text-center">
             <p class="description font-weight-bold">
             </p>
             <p class="description">
-            </p>
-            <p class="description">
-              Lớp: {{studentClass}}
             </p>
           </div>
         </div>
@@ -37,14 +35,9 @@
             <div class="col-md-12 pr-1">
               <div class="form-group">
                 <label for="name">Họ và tên</label>
-                <input type="text" class="form-control" id="name" placeholder="Họ và tên"
-                       formControlName="name" disabled>
-                <ng-container *ngFor="let validation of validationMessages.name">
-                  <p class="text-danger"
-                     *ngIf="formUpdate.get('name').hasError(validation.type) && (formUpdate.get('name').dirty || formUpdate.get('name').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
+                <div class="form-control">
+                  <p>{{formUpdate.value.name}}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -52,18 +45,36 @@
             <div class="col-md-6 pr-1">
               <div class="form-group">
                 <label for="gender">Giới tính</label>
-                <select class="form-control" id="gender" formControlName="gender" disabled>
-                  <option [value]="'Nam'">Nam</option>
-                  <option [value]="'Nữ'">Nữ</option>
-                  <option [value]="'Khác'">Khác</option>
-                </select>
+                <div class="form-control">
+                  <p>{{formUpdate.value.gender}}</p>
+                </div>
               </div>
+
             </div>
             <div class="col-md-6 pr-1">
               <div class="form-group">
                 <label for="birthday">Ngày Sinh</label>
-                <input type="date" class="form-control" placeholder="Ngày sinh" id="birthday"
-                       formControlName="birthday" disabled>
+                <div class="form-control">
+                  <p>{{formUpdate.value.birthday}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 pr-1">
+              <div class="form-group">
+                <label for="level" disabled>Trình Độ</label>
+                <div class="form-control">
+                  <p>{{formUpdate.value.level}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 pr-1">
+              <div class="form-group">
+                <label disabled>Chức Vụ</label>
+                <div class="form-control">
+                  <p>{{formUpdate.value.position}}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -118,30 +129,19 @@
                 </ng-container>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 pr-1">
+            <div class="col-md-12 pr-1">
               <div class="form-group">
-                <label for="level" disabled>Trình Độ</label>
-                <select class="form-control" id="level" formControlName="level">
-                  <option [value]="'Cao Đẳng'">Cao Đẳng</option>
-                  <option [value]="'Đại Học'">Đại Học</option>
-                  <option [value]="'Thạc Sĩ'">Thạc Sĩ</option>
-                  <option [value]="'Tiến Sĩ'">Tiến Sĩ</option>
-                  <option [value]="'Khác'">Khác</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label disabled>Chức Vụ</label>
-                <input type="text" class="form-control" placeholder="Chức vụ" formControlName="position">
-                <ng-container *ngFor="let validation of validationMessages.position">
-                  <p class="text-danger"
-                     *ngIf="formUpdate.get('position').hasError(validation.type) && (formUpdate.get('position').dirty || formUpdate.get('position').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
+                <div class="form-group">
+                  <label for="imageUrl">Hình ảnh</label>
+                  <input type="file" class="form-control" id="imageUrl" placeholder="Image" accept=".jpg,.jpeg,.png"
+                         (change)="selectImage($event)">
+                  <!-- <ng-container *ngFor="let validation of validationMessages.imageUrl">
+                    <small class="form-text text-danger"
+                           *ngIf="formUpdate.get('imageUrl').hasError(validation.type)&& formUpdate.get('imageUrl').touched">
+                      {{validation.message}}
+                    </small>
+                  </ng-container> -->
+                </div>
               </div>
             </div>
           </div>
@@ -156,5 +156,6 @@
     </div>
   </div>
 </div>
-
+<p>{{formUpdate.value | json}}</p>
 <!--End table edit teacher-->
+</div>

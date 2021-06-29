@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-10 mx-auto table-responsive">
+      <table class="table">
+        <tr>
+          <th class=" text-primary">Họ và tên</th>
+          <td class="text-center">{{data.students[0].name}}</td>
+
+        </tr>
+        <tr>
+          <th class=" text-primary">Điểm cột 1</th>
+          <td class="text-center">
+          <li *ngFor="let mark of markMultiplier1" class="ml-3">
+                {{mark}}
+          </li>
+          </td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Điểm cột 2</th>
+          <td class="text-center">
+          <li *ngFor="let mark of markMultiplier2" class="ml-3">
+                {{mark}}
+          </li>
+          </td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Điểm cột 3</th>
+          <td class="text-center">
+          <li *ngFor="let mark of markMultiplier3" class="ml-3">
+                {{mark}}
+          </li>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <button (click)="onCancel()" class="btn btn-primary">Trở lại</button>
+  </div>
+</div>

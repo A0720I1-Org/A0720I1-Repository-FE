@@ -24,6 +24,7 @@ export class UpdateTeacherComponent implements OnInit {
     name: string;
     phone: string;
     position: string;
+    imageUrl : string ;
   };
   studentClass: string;
   validationMessages = {
