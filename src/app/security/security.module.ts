@@ -5,10 +5,10 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { UpdateInfoComponent } from './update-info/update-info.component';
 import { RouterModule } from '@angular/router';
 import {ToastrModule} from "ngx-toastr";
-import { LoadingComponent } from './loading/loading.component';
+
 
 @NgModule({
-  declarations: [ChangePasswordComponent, UpdateInfoComponent, LoadingComponent],
+  declarations: [ChangePasswordComponent, UpdateInfoComponent],
   imports: [
     CommonModule,
     RouterModule,

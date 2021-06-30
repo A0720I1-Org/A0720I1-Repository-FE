@@ -88,11 +88,21 @@ export class StudentResultComponent implements OnInit {
               }) ;
               this.studentResults.push(fg);
             });
+            if(multiplierId == 3) {
+              this.studentResults.controls.forEach((e) => {
+                e.get("markCol2").disable();
+                e.get("markCol3").disable();
+              })
+            }
             this.studentResults.patchValue(this.studentResultList);
           }
         )
       }else {
-        alert("Vui lòng chọn các lựa chọn")
+        this.toastrService.warning(
+          "Cảnh báo",
+          "Vui lòng nhập các lựa chọn",
+          {timeOut: 3000, extendedTimeOut: 1500}
+        )
       }
     }
 

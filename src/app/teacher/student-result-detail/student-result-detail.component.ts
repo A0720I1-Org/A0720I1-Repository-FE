@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -11,6 +12,8 @@ export class StudentResultDetailComponent implements OnInit {
   markMultiplier1:number[] = [] ;
   markMultiplier2:number[] = [] ;
   markMultiplier3:number[] = [];
+  count : number = 0 ;
+  sum : number = 0 ;
   constructor(public dialogRef: MatDialogRef<StudentResultDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
@@ -22,7 +25,6 @@ export class StudentResultDetailComponent implements OnInit {
         this.markMultiplier1.push(element.markCol3);
        }
        else if(element.multiplier == 2) {
-         console.log(element.markCol3)
         this.markMultiplier2.push(element.markCol1);
         this.markMultiplier2.push(element.markCol2);
         this.markMultiplier2.push(element.markCol3);
@@ -31,11 +33,26 @@ export class StudentResultDetailComponent implements OnInit {
         this.markMultiplier3.push(element.markCol1);
        }
     });
+    this.calculateAverage();
   }
   calculateAverage() : any {
-    this.data.students.array.forEach(element => {
-       if(element.markCol1 === '' || element.markCol1) {}
+    this.data.students.forEach(element => {
+      if(element.markCol1 != ''  &&   element.markCol1) {
+        this.count+=element.multiplier;
+        this.sum += parseFloat(element.markCol1) * element.multiplier ;
+      }
+      if (element.markCol2 != '' && element.markCol2) {
+        this.count+=element.multiplier;
+        this.sum += parseFloat(element.markCol2) * element.multiplier ;
+      }
+      if(element.markCol3 != '' && element.markCol3) {
+        this.count+=element.multiplier;
+        this.sum += parseFloat(element.markCol3) * element.multiplier ;
+      }
     });
+    console.log(this.sum);
+    if(this.count == 0 ) return ;
+    else this.averageMark = this.sum/this.count ;
   }
   onCancel(): void {
     this.dialogRef.close();

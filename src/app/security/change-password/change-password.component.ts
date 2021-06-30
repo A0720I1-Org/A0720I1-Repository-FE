@@ -8,7 +8,6 @@ import { IPasswordDTO } from 'src/app/dto/IPasswordDTO';
 import { AccountService } from 'src/app/service/account.service';
 import { TokenStorageService } from 'src/app/service/token-storage.service';
 import { ConfirmPasswordValidator, OldNewPassword } from './validation/confirm-password';
-import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-change-password',
@@ -20,12 +19,12 @@ export class ChangePasswordComponent implements OnInit {
   account :string ;
   passwordDTO : IPasswordDTO ;
   errorMessage : string ;
-  otpOne
-  otpTwo
-  otpThree
-  otpFour
-  otpFive
-  otpSix 
+  otpOne ;
+  otpTwo ;
+  otpThree ;
+  otpFour ;
+  otpFive ;
+  otpSix ;
   code : any ;
 
   @ViewChild('otp', { static: true }) otpDialog: TemplateRef<any>;
@@ -94,20 +93,15 @@ export class ChangePasswordComponent implements OnInit {
       //   }
       // )
     }
-    openLoading() {
-      this.dialog.open(LoadingComponent, {
-        width: '500px',
-        height: '200px',
-        disableClose: true
-      });
-    }
+
     onConfirm() {
       const otp = this.otpOne + this.otpTwo + this.otpThree + this.otpFour + this.otpFive + this.otpSix;
       console.log(this.code);
       console.log(otp);
-      if ('123456' === otp) {
+      if (this.code === otp) {
         this.dialog.open(this.formForgotPw, {
-          width : '500px',
+          width : '1000px',
+          height : 'auto'
         });
       }
     }

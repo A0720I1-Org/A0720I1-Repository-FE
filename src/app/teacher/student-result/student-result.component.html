@@ -57,6 +57,7 @@
                 <th>Điểm cột 1</th>
                 <th>Điểm cột 2</th>
                 <th>Điểm cột 3</th>
+                <th>Điểm trung bình</th>
                 </thead>
                 <tbody formArrayName="studentResults">
                 <tr *ngFor="let str of studentResults.controls; let i = index" [formGroupName]="i">
@@ -106,7 +107,7 @@
 </div>
 </div>
 <ng-template #noData>
-  <p class="mt-3 ml-3">Không có dữ liệu</p>
+  <p class="mt-3 ml-3 text-center">Không có dữ liệu</p>
 </ng-template>
 
 

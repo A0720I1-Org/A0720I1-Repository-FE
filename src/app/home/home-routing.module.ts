@@ -6,12 +6,26 @@ import {LoginComponent} from "./login/login.component";
 import {HomePageComponent} from "./home-page/home-page.component";
 import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { AuthGuard } from '../security/auth-guard';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: '', component: HomePageComponent},
-  {path: 'update-info/:username',component : UpdateInfoComponent},
-  {path: 'change-password/:username',component : ChangePasswordComponent},
+  {
+    path: 'update-info/:username',component : UpdateInfoComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN','ROLE_TEACHER']
+    }
+  },
+  {
+    path: 'change-password/:username',component : ChangePasswordComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN','ROLE_TEACHER','ROLE_STUDENT']
+    }
+
+  },
   {path: '**',component : HomePageComponent}
 ];
 
