@@ -85,7 +85,8 @@ export class UpdateInfoComponent implements OnInit {
     this.inputImage = event.target.files[0];
   }
   onUpdate() {
-    const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
+    if(this.inputImage != null) {
+   const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
     const fileRef = this.storage.ref(imageName);
     this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
       finalize(() => {
@@ -95,15 +96,15 @@ export class UpdateInfoComponent implements OnInit {
                 () => {
                   this.router.navigateByUrl("/").then(
                     r => this.toastrService.success(
-                      "Update thành công",
+                      "Cập nhật thành công",
                       "Thông báo",
                       {timeOut: 3000, extendedTimeOut: 1500})
                   )
                 },
                 (error: HttpErrorResponse) => {
                   this.router.navigateByUrl("/").then(
-                    r => this.toastrService.success(
-                      "Update thất bại",
+                    r => this.toastrService.error(
+                      "Cập nhật thất bại",
                       "Thông báo",
                       {timeOut: 3000, extendedTimeOut: 1500})
                   )
@@ -111,5 +112,24 @@ export class UpdateInfoComponent implements OnInit {
           })
         })
     ).subscribe()
+    }else {
+      this.accountService.updateInfoAccount(this.formUpdate.value).subscribe(
+        () => {
+          this.router.navigateByUrl("/").then(
+            r => this.toastrService.success(
+              "Update thành công",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+          )
+        },
+        (error: HttpErrorResponse) => {
+          this.router.navigateByUrl("/").then(
+            r => this.toastrService.error(
+              "Update thất bại",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+          )
+        });
+    }
   }
 }

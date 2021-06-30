@@ -1,5 +1,6 @@
+import { MatDialog } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -7,6 +8,7 @@ import { IPasswordDTO } from 'src/app/dto/IPasswordDTO';
 import { AccountService } from 'src/app/service/account.service';
 import { TokenStorageService } from 'src/app/service/token-storage.service';
 import { ConfirmPasswordValidator, OldNewPassword } from './validation/confirm-password';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-change-password',
@@ -18,10 +20,21 @@ export class ChangePasswordComponent implements OnInit {
   account :string ;
   passwordDTO : IPasswordDTO ;
   errorMessage : string ;
+  otpOne
+  otpTwo
+  otpThree
+  otpFour
+  otpFive
+  otpSix 
+  code : any ;
+
+  @ViewChild('otp', { static: true }) otpDialog: TemplateRef<any>;
+  @ViewChild('formForgotPw', { static: true }) formForgotPw: TemplateRef<any>;
   constructor(private tokenStorage: TokenStorageService,
      private toastr: ToastrService,
     private router: Router,
-    private accountService : AccountService) { }
+    private accountService : AccountService,
+    private dialog : MatDialog ) { }
 
   ngOnInit(): void {
   }
@@ -34,6 +47,15 @@ export class ChangePasswordComponent implements OnInit {
       validators: [ConfirmPasswordValidator,OldNewPassword]
     },
   );
+  formForgotPassword = new FormGroup(
+    {
+      newPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24)]),
+      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24)])
+    }, {
+      validators: [ConfirmPasswordValidator]
+    },
+  );
+
     changePassword() {
       if(this.formChangePassword.valid) {
         console.log(this.formChangePassword.value);
@@ -56,6 +78,37 @@ export class ChangePasswordComponent implements OnInit {
             )
           }
         );
+      }
+    }
+    onSendEmail() {
+      this.code = Math.floor(((Math.random() * 899999) + 100000));
+      this.dialog.open(this.otpDialog, {
+        width : '500px',
+      });
+      // this.accountService.forgotPassword(this.code).subscribe(
+      //   () => {
+      //     this.dialog.open(this.otpDialog);
+      //   },
+      //   (err : HttpErrorResponse) => {
+      //     console.log(err.error)
+      //   }
+      // )
+    }
+    openLoading() {
+      this.dialog.open(LoadingComponent, {
+        width: '500px',
+        height: '200px',
+        disableClose: true
+      });
+    }
+    onConfirm() {
+      const otp = this.otpOne + this.otpTwo + this.otpThree + this.otpFour + this.otpFive + this.otpSix;
+      console.log(this.code);
+      console.log(otp);
+      if ('123456' === otp) {
+        this.dialog.open(this.formForgotPw, {
+          width : '500px',
+        });
       }
     }
     validationMessage = {
