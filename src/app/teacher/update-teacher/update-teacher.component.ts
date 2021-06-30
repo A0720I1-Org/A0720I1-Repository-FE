@@ -1,9 +1,13 @@
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {TeacherService} from '../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TeacherUpdateDTO} from '../../dto/teacher/TeacherUpdateDTO';
 import {HttpErrorResponse} from '@angular/common/http';
+import {AngularFireStorage} from "@angular/fire/storage";
+import {formatDate} from "@angular/common";
+import {finalize} from "rxjs/operators";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-update-teacher',
@@ -24,8 +28,11 @@ export class UpdateTeacherComponent implements OnInit {
     name: string;
     phone: string;
     position: string;
+    imageUrl: string;
   };
   studentClass: string;
+  imageUrl: string;
+  inputImage: any = null;
   validationMessages = {
     'name': [
       {type: 'required', message: 'Tên chỉ không được để trống.'},
@@ -54,7 +61,9 @@ export class UpdateTeacherComponent implements OnInit {
     private teacherService: TeacherService,
     private router: Router,
     private fb: FormBuilder,
-    private  activatedRoute: ActivatedRoute
+    private  activatedRoute: ActivatedRoute,
+    private toastrService: ToastrService,
+    @Inject(AngularFireStorage) private storage: AngularFireStorage
   ) {
   }
 
@@ -65,6 +74,12 @@ export class UpdateTeacherComponent implements OnInit {
       this.teacher = data;
       // @ts-ignore
       this.studentClass = data.studentClass;
+      this.imageUrl = data.imageUrl;
+      if (data.imageUrl === '') {
+        this.imageUrl = 'assets/img/faces/card-image.jpg'
+      } else {
+        this.imageUrl = data.imageUrl;
+      }
       this.formTeacher.patchValue(data);
     });
   }
@@ -84,7 +99,7 @@ export class UpdateTeacherComponent implements OnInit {
       ],
       phone: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/(84|0[3|5|7|8|9])+([0-9]{8})/)])
+        Validators.pattern(/(84|0[3|5|7|8|9])+([0-9]{8})\b/)])
       ],
       level: ['', Validators.compose([
         Validators.required])
@@ -101,16 +116,52 @@ export class UpdateTeacherComponent implements OnInit {
       birthday: ['', Validators.compose([
         Validators.required])
       ],
+      imageUrl: ['']
     });
   }
 
-  updateTeacher() {
-    this.teacherService.updateTeacher(this.formTeacher.value).subscribe(
-      () => {
-        this.router.navigateByUrl('/teacher');
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.message);
-      });
+  selectImage(event: any) {
+    this.inputImage = event.target.files[0];
   }
+
+  updateTeacher() {
+    if (this.inputImage != null) {
+      const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
+      const fileRef = this.storage.ref(imageName);
+      this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.formTeacher.patchValue({...this.teacher, imageUrl: url});
+            this.teacherService.updateTeacher(this.formTeacher.value).subscribe(
+              () => {
+                this.router.navigateByUrl('/teacher').then(
+                  r => this.toastrService.success(
+                    "Cập nhật thông tin thành công",
+                    "Thông báo",
+                    {timeOut: 3000, extendedTimeOut: 1500})
+                )
+              },
+              (error: HttpErrorResponse) => {
+                console.log(error.message);
+              });
+          })
+        })
+      ).subscribe()
+    } else {
+      this.teacherService.updateTeacher(this.formTeacher.value).subscribe(
+        () => {
+          this.router.navigateByUrl('/teacher').then(
+            r => this.toastrService.success(
+              "Cập nhật thông tin thành công",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+          )
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.message);
+        });
+    }
+  }
+
+
 }

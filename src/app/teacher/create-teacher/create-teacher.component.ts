@@ -119,7 +119,6 @@ export class CreateTeacherComponent implements OnInit {
     this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
       finalize(() => {
           fileRef.getDownloadURL().subscribe((url) => {
-              console.log(url)
               this.teacherForm.patchValue({imageUrl: url});
               this.teacherService.createTeacher(this.teacherForm.value).subscribe(
                 () => {

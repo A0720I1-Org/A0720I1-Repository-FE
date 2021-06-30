@@ -5,6 +5,8 @@ import {TeacherService} from '../../service/teacher.service';
 import {ITeacherViewDTO} from '../../dto/teacher/TeacherViewDTO';
 import {MatDialog} from '@angular/material/dialog';
 import {ViewTeacherComponent} from '../view-teacher/view-teacher.component';
+import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -18,12 +20,14 @@ export class ListTeacherComponent implements OnInit {
   listTeacher: ITeacherListDTO[];
   listTeacherNoPagination: ITeacherListDTO[];
   teacher: ITeacherViewDTO;
-  nameSearch: string;
-  addressSearch: string;
+  nameSearch: string = '';
+  addressSearch: string = '';
 
   constructor(
     private teacherService: TeacherService,
     public dialog: MatDialog,
+    private router: Router,
+    private toastrService: ToastrService,
   ) {
   }
 
@@ -110,13 +114,34 @@ export class ListTeacherComponent implements OnInit {
   }
 
   getSearch(index: number) {
-    this.teacherService.getSearch(index, this.nameSearch, this.addressSearch).subscribe(
-      (data: ITeacherListDTO[]) => {
-        console.log(data);
-        this.listTeacher = data;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.message);
-      });
+    if (this.nameSearch === '' && this.addressSearch === '') {
+      this.teacherService.getPageAllTeacher(0).subscribe(
+        (data) => {
+          this.listTeacher = data;
+          this.router.navigateByUrl('/teacher').then(
+            r => this.toastrService.warning(
+              "Vui lòng nhập để tìm kiếm",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+          )
+        });
+    } else {
+      this.teacherService.getSearch(index, this.nameSearch, this.addressSearch).subscribe(
+        (data: ITeacherListDTO[]) => {
+          if (data == null) {
+            this.router.navigateByUrl('/teacher').then(
+              r => this.toastrService.warning(
+                "Không tìm thấy dữ liệu",
+                "Thông báo",
+                {timeOut: 3000, extendedTimeOut: 1500})
+            )
+          } else {
+            this.listTeacher = data;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.message);
+        });
+    }
   }
 }
