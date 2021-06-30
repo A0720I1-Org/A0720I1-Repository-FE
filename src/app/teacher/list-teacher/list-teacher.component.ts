@@ -47,6 +47,8 @@ export class ListTeacherComponent implements OnInit {
       this.listTeacherNoPagination = data;
       if ((this.listTeacherNoPagination.length % 5) != 0) {
         this.totalPagination = (Math.round(this.listTeacherNoPagination.length / 5)) + 1;
+      } else {
+        this.totalPagination = this.listTeacherNoPagination.length / 5;
       }
     });
   }
