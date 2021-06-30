@@ -19,16 +19,7 @@ export class ChangePasswordComponent implements OnInit {
   account :string ;
   passwordDTO : IPasswordDTO ;
   errorMessage : string ;
-  otpOne ;
-  otpTwo ;
-  otpThree ;
-  otpFour ;
-  otpFive ;
-  otpSix ;
-  code : any ;
 
-  @ViewChild('otp', { static: true }) otpDialog: TemplateRef<any>;
-  @ViewChild('formForgotPw', { static: true }) formForgotPw: TemplateRef<any>;
   constructor(private tokenStorage: TokenStorageService,
      private toastr: ToastrService,
     private router: Router,
@@ -79,32 +70,7 @@ export class ChangePasswordComponent implements OnInit {
         );
       }
     }
-    onSendEmail() {
-      this.code = Math.floor(((Math.random() * 899999) + 100000));
-      this.dialog.open(this.otpDialog, {
-        width : '500px',
-      });
-      // this.accountService.forgotPassword(this.code).subscribe(
-      //   () => {
-      //     this.dialog.open(this.otpDialog);
-      //   },
-      //   (err : HttpErrorResponse) => {
-      //     console.log(err.error)
-      //   }
-      // )
-    }
 
-    onConfirm() {
-      const otp = this.otpOne + this.otpTwo + this.otpThree + this.otpFour + this.otpFive + this.otpSix;
-      console.log(this.code);
-      console.log(otp);
-      if (this.code === otp) {
-        this.dialog.open(this.formForgotPw, {
-          width : '1000px',
-          height : 'auto'
-        });
-      }
-    }
     validationMessage = {
       'oldPassword': [
         {type: 'required', message: 'Trường này không được để trống!'},
