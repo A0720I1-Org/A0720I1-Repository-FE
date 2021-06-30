@@ -6,6 +6,7 @@ import {ITeacherListDTO} from '../dto/teacher/TeacherListDTO';
 import {ITeacherViewDTO} from '../dto/teacher/TeacherViewDTO';
 import {TeacherUpdateDTO} from '../dto/teacher/TeacherUpdateDTO';
 import {TeacherCreateDTO} from '../dto/teacher/TeacherCreateDTO';
+import {HomeroomClassDTO} from "../dto/teacher/HomeroomClassDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,22 @@ export class TeacherService {
   }
 
   getSearch(index: number, name: string, address: string): Observable<ITeacherListDTO[]> {
-    return this.httpClient.get<ITeacherListDTO[]>(this.API_URL + '/api/teacher/search?index=' + index + '&name=' + name + '&address=' + address);
+    return this.httpClient.get<ITeacherListDTO[]>(this.API_URL + '/api/teacher/search&index=' + index + '&name=' + name + '&address=' + address);
+  }
+
+  getStudentByClassId(username: string): Observable<HomeroomClassDTO[]>{
+    return this.httpClient.get<HomeroomClassDTO[]>(this.API_URL + '/api/teacher/homeroom-class/list/' + username);
+  }
+
+  getPageStudentByClassId(index: number, username: string): Observable<any> {
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/homeroom-class/'+ username +'?index=' + index);
+  }
+
+  getSearchStudent(index: number, name: string): Observable<any> {
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/homeroom-class/search?index=' +index + '&name=' + name);
+  }
+
+  viewDetailStudent(id: number){
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/homeroom-class/details/'+id)
   }
 }

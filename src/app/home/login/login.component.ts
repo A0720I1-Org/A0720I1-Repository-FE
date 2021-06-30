@@ -73,10 +73,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe(
       data => {
         if (this.loginForm.value.remember){
-          this.tokenStorageService.saveTokenLocal(data.accessToken);
+          this.tokenStorageService.saveTokenLocal(data.Token);
           this.tokenStorageService.saveUserLocal(data)
         } else {
-          this.tokenStorageService.saveTokenSession(data.accessToken);
+          this.tokenStorageService.saveTokenSession(data.Token);
           this.tokenStorageService.saveUserLocal(data)
         }
         this.authService.isLoggedIn = true;
