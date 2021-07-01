@@ -7,6 +7,7 @@ import {ListTeacherComponent} from './list-teacher/list-teacher.component';
 import {AuthGuard} from '../security/auth-guard';
 import {StudentResultComponent} from "./student-result/student-result.component";
 import {ListHomeroomClassComponent} from "./list-homeroom-class/list-homeroom-class.component";
+import {TeacherScheduleComponent} from "./teacher-schedule/teacher-schedule.component";
 
 
 const routes: Routes = [
@@ -29,7 +30,8 @@ const routes: Routes = [
   {path: 'update/:id', component: UpdateTeacherComponent},
   {path: '', component: ListTeacherComponent},
   {path: 'student-result', component: StudentResultComponent},
-  {path: 'homeroom-class', component: ListHomeroomClassComponent}
+  {path: 'homeroom-class', component: ListHomeroomClassComponent},
+  {path: 'teacher-schedule', component: TeacherScheduleComponent}
 ];
 
 @NgModule({

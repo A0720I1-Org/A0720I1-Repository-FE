@@ -14,6 +14,7 @@ import {ToastrModule} from "ngx-toastr";
 import {StudentResultComponent} from './student-result/student-result.component';
 import { ListHomeroomClassComponent } from './list-homeroom-class/list-homeroom-class.component';
 import { ViewDetailStudentComponent } from './view-detail-student/view-detail-student.component';
+import { TeacherScheduleComponent } from './teacher-schedule/teacher-schedule.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ViewDetailStudentComponent } from './view-detail-student/view-detail-st
     ViewTeacherComponent,
     StudentResultComponent,
     ListHomeroomClassComponent,
-    ViewDetailStudentComponent
+    ViewDetailStudentComponent,
+    TeacherScheduleComponent
   ],
   exports: [
     CreateTeacherComponent,

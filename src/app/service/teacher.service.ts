@@ -62,4 +62,8 @@ export class TeacherService {
   viewDetailStudent(id: number){
     return this.httpClient.get<any>(this.API_URL + '/api/teacher/homeroom-class/details/'+id)
   }
+
+  getTeacherSchedule(username: string): Observable<any>{
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/teacher-schedule/'+username)
+  }
 }

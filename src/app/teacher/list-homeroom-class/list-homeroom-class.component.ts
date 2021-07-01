@@ -39,7 +39,6 @@ export class ListHomeroomClassComponent implements OnInit {
   getStudentByClassId() {
     this.teacherService.getPageStudentByClassId(0, this.username).subscribe(
       (data: HomeroomClassDTO[]) => {
-        console.log(data)
         this.listStudentClass = data;
       },
       (error: HttpErrorResponse) => {
@@ -47,7 +46,6 @@ export class ListHomeroomClassComponent implements OnInit {
       });
     this.teacherService.getStudentByClassId(this.username).subscribe((data: HomeroomClassDTO[]) => {
       this.listStudentClassNoPagination = data;
-      console.log(data)
       if ((this.listStudentClassNoPagination.length % 5) != 0) {
         this.totalPagination = (Math.round(this.listStudentClassNoPagination.length / 5)) + 1;
       } else {

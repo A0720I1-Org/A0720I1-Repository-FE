@@ -1,0 +1,45 @@
+<div class="container mt-5 mb-5">
+  <div>
+    <div class="text-center card-body-text-bold">
+      <label><h2>Xin chào giáo viên:</h2></label>
+      <label class="col-sm-5 pt-2 text-center card-body-text-bold"><h3>Mai Xuân Duy</h3></label>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="border-shadow">
+        <div class="card-header card-background-color">
+          <h4 class="card-title card-header-text-bold">Lịch dạy</h4>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered" style="font-size: 120%">
+            <thead class=" text-primary">
+            <tr class="text-center">
+              <th>Tiết</th>
+              <th> Thứ hai</th>
+              <th> Thứ ba</th>
+              <th> Thứ tư</th>
+              <th> Thứ năm</th>
+              <th> Thứ sáu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="text-center" *ngFor= "let lessonNumber of lessonNumbers">
+              <td>{{lessonNumber}}</td>
+              <td *ngFor = "let lessonDate of lessonDates">
+                <ng-container *ngFor = "let lesson of teacherSchedule">
+                  <ng-container *ngIf = "lesson.lessonDate == lessonDate && lesson.lessonNumber == lessonNumber">{{lesson.subjectName}}</ng-container>
+                </ng-container>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
