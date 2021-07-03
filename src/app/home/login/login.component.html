@@ -1,5 +1,5 @@
-<div class="container mt-3 mb-3">
-  <div class="col-lg-4 col-sm-8 mx-auto">
+<!--<div class="container mt-3 mb-3">-->
+<!--  <div class="col-lg-4 col-sm-8 mx-auto">-->
     <div class="card-register bg-login border-shadow margin-login">
       <p class="title text-dark mt-1 mb-1 text-login">Đăng nhập</p>
       <form class="card-body-text-bold" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -37,7 +37,7 @@
         <div class="row">
           <div class="update ml-auto mr-auto">
             <button type="submit" class="btn btn-success mr-3">Đăng nhập</button>
-            <a routerLink="/" class="btn btn-primary">Trở về</a>
+            <a class="btn btn-primary" (click)="closeDialog()">Trở về</a>
           </div>
         </div>
       </form>
@@ -45,5 +45,5 @@
         <a href="#" class="btn btn-link btn-danger">Quên mật khẩu?</a>
       </div>
     </div>
-  </div>
-</div>
+<!--  </div>-->
+<!--</div>-->

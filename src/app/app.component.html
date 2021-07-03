@@ -1,6 +1,9 @@
 <app-nav-bar></app-nav-bar>
 
-<router-outlet></router-outlet>
-
+<router-outlet>
+<!--  <span class="loader" *ngIf="loading"></span>-->
+</router-outlet>
+<mat-spinner *ngIf="showLoadingIndicator"></mat-spinner>
+<!--<div *ngIf="showLoadingIndicator" class="spinner"></div>-->
 <app-footer></app-footer>
 

@@ -17,44 +17,44 @@ export class CreateTeacherComponent implements OnInit {
   teacherForm: FormGroup;
   validationMessage = {
     'username': [
-      {type: 'required', message: 'Không được để trống!'},
-      {type: 'minlength', message: 'Tối thiểu 4 ký tự'},
-      {type: 'maxlength', message: 'Tối đa 32 ký tự'},
-      {type: 'pattern', message: 'Không chứa dấu ký tự đặc biệt hoặc khoảng trắng'},
+      {type: 'required', message: 'Tên đăng nhập không được để trống!'},
+      {type: 'minlength', message: 'Tên đăng nhập tối thiểu 4 ký tự'},
+      {type: 'maxlength', message: 'Tên đăng nhập tối đa 32 ký tự'},
+      {type: 'pattern', message: 'Tên đăng nhập không chứa dấu ký tự đặc biệt hoặc khoảng trắng'},
 
     ],
     'password': [
-      {type: 'required', message: 'Không được để trống!'},
-      {type: 'minlength', message: 'Tối thiểu 4 ký tự'},
-      {type: 'maxlength', message: 'Tối đa 32 ký tự'}
+      {type: 'required', message: 'Mật khẩu không được để trống!'},
+      {type: 'minlength', message: 'Mật khẩu tối thiểu 4 ký tự'},
+      {type: 'maxlength', message: 'Mật khẩu tối đa 32 ký tự'}
     ],
     'confirmPassword': [
-      {type: 'required', message: 'Không được để trống!'},
-      {type: 'match', message: 'Mật khẩu không trùng khớp'}
+      {type: 'required', message: 'Xác nhận mật khẩu không được để trống!'},
+      {type: 'match', message: 'Xác nhận mật khẩu không trùng khớp'}
     ],
     'name': [
-      {type: 'required', message: 'Không được để trống!'},
-      {type: 'maxlength', message: 'Tối đa 300 ký tự'},
-      {type: 'pattern', message: 'Không chứa ký tự đặc biệt'}
+      {type: 'required', message: 'Họ và tên không được để trống!'},
+      {type: 'maxlength', message: 'Họ và tên dài tối đa 300 ký tự'},
+      {type: 'pattern', message: 'Họ và tên không chứa ký tự số hoặc ký tự đặc biệt'}
     ],
     'birthday': [
-      {type: 'required', message: 'Không được để trống!'}
+      {type: 'required', message: 'Ngày sinh không được để trống!'},
+      {type: 'past', message: 'Ngày sinh phải là ngày trong quá khứ'}
     ],
     'gender': [
-      {type: 'required', message: 'Không được để trống!'}
+      {type: 'required', message: 'Giới tính không được để trống!'}
     ],
     'email': [
-      {type: 'required', message: 'Không được để trống!'},
-      {type: 'email', message: 'Không đúng định dạng'}
+      {type: 'required', message: 'Email không được để trống!'},
+      {type: 'email', message: 'Email không đúng định dạng'}
     ],
     'imageUrl': [
-      {type: 'required', message: 'Không được để trống!'},
       {type: 'pattern', message: 'Chỉ chấp nhận file jpg, png, jpeg'}
     ]
   };
   inputImage: any = null;
-  teacher: TeacherCreateDTO
-  errorMessage: string;
+  teacher: TeacherCreateDTO;
+  uploading: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -67,6 +67,7 @@ export class CreateTeacherComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm()
+    this.uploading = false;
   }
 
   initForm() {
@@ -90,10 +91,11 @@ export class CreateTeacherComponent implements OnInit {
       name: this.formBuilder.control('', [
         Validators.required,
         Validators.maxLength(300),
-        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:|0-9]*$/)
       ]),
       birthday: this.formBuilder.control('', [
         Validators.required,
+        past
       ]),
       gender: this.formBuilder.control('', [
         Validators.required,
@@ -103,7 +105,6 @@ export class CreateTeacherComponent implements OnInit {
         Validators.email
       ]),
       imageUrl: this.formBuilder.control('', [
-          Validators.required,
           Validators.pattern(/[.jpg|.jpeg|.png]$/)
         ]
       )
@@ -116,39 +117,73 @@ export class CreateTeacherComponent implements OnInit {
 
 
   onSubmit() {
-    const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
-    const fileRef = this.storage.ref(imageName);
-    this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
-      finalize(() => {
-        fileRef.getDownloadURL().subscribe((url) => {
-          this.teacher = new TeacherCreateDTO(this.teacherForm.get('username').value, this.teacherForm.get('pwGroup').get('password').value,
-            this.teacherForm.get('name').value, this.teacherForm.get('birthday').value, this.teacherForm.get('gender').value,this.teacherForm.get('email').value, url)
-          this.teacherService.createTeacher(this.teacher).subscribe(
-            (data) => {
-              this.router.navigateByUrl("/teacher").then(
-                r => this.toastrService.success(
-                  "Thêm mới thành công giáo viên",
-                  "Thông báo",
-                  {timeOut: 3000, extendedTimeOut: 1500})
-              )
-            },
-            err => {
-              this.toastrService.error(
-                err.error.errors[0],
-                "Có lỗi xảy ra",
-                {timeOut: 3000, extendedTimeOut: 1500}
-              )
-            }
-          )
+    if (this.inputImage != null) {
+      this.uploading = true;
+      const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
+      const fileRef = this.storage.ref(imageName);
+      this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.teacher = new TeacherCreateDTO(this.teacherForm.get('username').value, this.teacherForm.get('pwGroup').get('password').value,
+              this.teacherForm.get('name').value, this.teacherForm.get('birthday').value, this.teacherForm.get('gender').value,this.teacherForm.get('email').value, url)
+            this.teacherService.createTeacher(this.teacher).subscribe(
+              (data) => {
+                this.router.navigateByUrl("/teacher").then(
+                  r => this.toastrService.success(
+                    "Thêm mới thành công giáo viên",
+                    "Thông báo",
+                    {timeOut: 3000, extendedTimeOut: 1500})
+                )
+              },
+              err => {
+                this.toastrService.error(
+                  err.error.errors[0],
+                  "Có lỗi xảy ra",
+                  {timeOut: 3000, extendedTimeOut: 1500}
+                )
+              }
+            )
+            this.uploading = false;
+          })
         })
-      })
-    ).subscribe()
+      ).subscribe()
+    } else {
+      this.teacher = new TeacherCreateDTO(this.teacherForm.get('username').value, this.teacherForm.get('pwGroup').get('password').value,
+        this.teacherForm.get('name').value, this.teacherForm.get('birthday').value, this.teacherForm.get('gender').value,this.teacherForm.get('email').value, null)
+      this.teacherService.createTeacher(this.teacher).subscribe(
+        (data) => {
+          this.teacherForm.reset();
+          this.toastrService.success(
+              "Thêm mới thành công giáo viên",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+        },
+        err => {
+          this.toastrService.error(
+            err.error.errors[0],
+            "Có lỗi xảy ra",
+            {timeOut: 3000, extendedTimeOut: 1500}
+          )
+        }
+      )
+    }
+
   }
 }
 function passwordMatched(formControl: AbstractControl) {
   const pw = formControl.value;
   if (pw.password !== pw.confirmPassword) {
     return {match: true};
+  }
+  return null;
+}
+
+function past(formControl: AbstractControl) {
+  const formValue = formControl.value;
+  const birthday = new Date(formValue)
+  const today = new Date();
+  if (today.getTime() < birthday.getTime()) {
+    return {past: true};
   }
   return null;
 }
