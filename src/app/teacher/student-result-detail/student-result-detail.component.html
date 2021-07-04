@@ -1,11 +1,19 @@
 <div class="container-fluid">
+  <h1 class="text-primary text-center">Điểm trung bình của học sinh</h1>
   <div class="row">
     <div class="col-10 mx-auto table-responsive">
       <table class="table">
         <tr>
-          <th class=" text-primary">Họ và tên</th>
+          <th class="text-primary">Họ và tên</th>
           <td class="text-center">{{data.students[0].name}}</td>
-
+        </tr>
+        <tr>
+          <th class="text-primary">Học kì</th>
+          <td class="text-center">{{data.semesterId}}</td>
+        </tr>
+        <tr>
+          <th class="text-primary">Môn học</th>
+          <td class="text-center" *ngIf="subject">{{subject.name}}</td>
         </tr>
         <tr>
           <th class=" text-primary">Điểm hệ số 1</th>
@@ -40,6 +48,6 @@
   </div>
 
   <div class="col-md-4">
-    <button (click)="onCancel()" class="btn btn-primary">Trở lại</button>
+    <button (click)="onCancel()" class="btn btn-primary">Quay lại</button>
   </div>
 </div>

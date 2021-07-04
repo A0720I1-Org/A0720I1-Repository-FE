@@ -1,6 +1,9 @@
+import { ISubject } from './../../models/ISubject';
+import { Subject } from 'rxjs';
 import { element } from 'protractor';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SubjectResultService } from 'src/app/service/subject-result.service';
 
 @Component({
   selector: 'app-student-result-detail',
@@ -14,8 +17,11 @@ export class StudentResultDetailComponent implements OnInit {
   markMultiplier3:number[] = [];
   count : number = 0 ;
   sum : number = 0 ;
+  subjectName : string ;
+  subject : ISubject = null;
   constructor(public dialogRef: MatDialogRef<StudentResultDetailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private subjectResultService: SubjectResultService) { }
 
   ngOnInit(): void {
     this.data.students.forEach(element => {
@@ -34,6 +40,12 @@ export class StudentResultDetailComponent implements OnInit {
        }
     });
     this.calculateAverage();
+    this.subjectResultService.getSubject().subscribe(
+      (next) => {
+        this.subject = next.find(e => e.id == this.data.subjectId);
+        console.log(this.subject);
+      }
+    )
   }
   calculateAverage() : any {
     this.data.students.forEach(element => {

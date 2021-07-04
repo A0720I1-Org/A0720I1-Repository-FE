@@ -2,13 +2,14 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { element } from 'protractor';
 import { IStudentResultDTO } from './../../dto/subject-result/IStudentResultDTO';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { IClassListDTO } from 'src/app/dto/subject-result/ClassListDTO';
 import { ISubject } from 'src/app/models/ISubject';
 import { SubjectResultService } from 'src/app/service/subject-result.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentResultDetailComponent } from '../student-result-detail/student-result-detail.component';
+
 
 
 @Component({
@@ -35,24 +36,21 @@ export class StudentResultComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastrService : ToastrService,
     private matDialog : MatDialog) {
-       this.subjectResultService.getSubject().subscribe(
+      this.subjectResultService.getSubject().subscribe(
         (data) => {
-          console.log(data)
           this.subjects = data ;
         },(error) => {
-          console.log(error)
+          console.log(error) ;
         }
       )
       this.subjectResultService.getClassStudent().subscribe(
         (data) => {
-          console.log(data)
           this.classStudent = data ;
         },(error) => {
           console.log(error)
         }
       )
     }
-
   ngOnInit(): void {
     this.resultForm = this.formBuilder.group({
 			studentResults: this.formBuilder.array([
@@ -62,9 +60,6 @@ export class StudentResultComponent implements OnInit {
   get studentResults(): FormArray {
     return this.resultForm.get('studentResults') as FormArray;
  }
-  ngOnChanges(): void {
-    console.log(this.subjectId)
-  }
   getResult(subjectId : number ,classId : number ,semesterId : number,multiplierId : number) {
       if(subjectId && classId && semesterId && multiplierId) {
         this.isSelected = true ;
@@ -81,8 +76,8 @@ export class StudentResultComponent implements OnInit {
                 studentId : [''],
                 name : [''] ,
                 markCol1 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
-                markCol2 : ['',[Validators.min(0),Validators.max(10)]],
-                markCol3 : ['',[Validators.min(0),Validators.max(10)]],
+                markCol2 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+                markCol3 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
                 multiplier : [''],
                 birthday : [''],
               }) ;
@@ -99,8 +94,8 @@ export class StudentResultComponent implements OnInit {
         )
       }else {
         this.toastrService.warning(
-          "Cảnh báo",
           "Vui lòng nhập các lựa chọn",
+          "Cảnh báo",
           {timeOut: 3000, extendedTimeOut: 1500}
         )
       }
@@ -137,14 +132,18 @@ export class StudentResultComponent implements OnInit {
         studentResultList = data.filter(e => e.studentId === id);
         const dialogRef = this.dialog.open(StudentResultDetailComponent, {
           width : '500px' ,
-          data: { students : studentResultList}
+          data: {
+            students : studentResultList,
+            semesterId : this.semesterId ,
+            subjectId : this.subjectId ,
+          }
         });
       })
   };
   validationMessage = {
     'mark': [
-      {type: 'min', message: 'Điểm  tối thiểu phải bằng 0'},
-      {type: 'max', message: 'Điểm  tối đa chỉ bằng 10'},
+      {type: 'min', message: 'Điểm phải từ 0 đến 10'},
+      {type: 'max', message: 'Điểm phải từ 0 đến 10'},
       {type: 'pattern', message: 'Chỉ được nhập sô'},
     ],
   };

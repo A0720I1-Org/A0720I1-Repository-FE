@@ -21,19 +21,20 @@ export class UpdateInfoComponent implements OnInit {
   studentClass : string ;
   username : string ;
   inputImage: any = null;
+  filePath : string ;
   validationMessages = {
     'address': [
-      {type: 'required', message: 'Địa chỉ không được để trống.'},
+      {type: 'required', message: 'Địa chỉ được yêu cầu bắt buộc.'},
     ],
     'hometown': [
-      {type: 'required', message: 'Quê quán không được để trống.'},
+      {type: 'required', message: 'Quê quán được yêu cầu bắt buộc.'},
     ],
     'phone': [
-      {type: 'required', message: 'Phone không được để trống.'},
-      {type: 'pattern', message: 'Phone không đúng định dạng.'}
+      {type: 'required', message: 'Số điện thoại được yêu cầu bắt buộc.'},
+      {type: 'pattern', message: 'Số điện thoại không đúng định dạng.'}
     ],
     'email': [
-      {type: 'required', message: 'Email không được để trống.'},
+      {type: 'required', message: 'Email được yêu cầu bắt buộc.'},
       {type: 'email', message: 'Email không đúng định dạng.'}
     ],
   };
@@ -62,7 +63,8 @@ export class UpdateInfoComponent implements OnInit {
     this.formUpdate = this.fb.group({
       id: [''],
       name: [''],
-      address: [''],
+      address: ['',Validators.compose([
+        Validators.required])],
       email: ['', Validators.compose([
         Validators.required,
         Validators.email])
@@ -83,6 +85,12 @@ export class UpdateInfoComponent implements OnInit {
   }
   selectImage(event) {
     this.inputImage = event.target.files[0];
+    this.formUpdate.get('imageUrl').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.filePath = reader.result as string;
+    }
+    reader.readAsDataURL(this.inputImage)
   }
   onUpdate() {
     if(this.inputImage != null) {

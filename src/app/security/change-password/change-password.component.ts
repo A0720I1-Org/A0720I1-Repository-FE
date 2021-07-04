@@ -30,9 +30,9 @@ export class ChangePasswordComponent implements OnInit {
   }
   formChangePassword = new FormGroup(
     {
-      oldPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24)]),
-      newPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24)]),
-      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24)])
+      oldPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24), Validators.pattern(/^[A-Za-z0-9]*$/)]),
+      newPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24),Validators.pattern(/^[A-Za-z0-9]*$/)]),
+      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(24),Validators.pattern(/^[A-Za-z0-9]*$/)])
     }, {
       validators: [ConfirmPasswordValidator,OldNewPassword]
     },
@@ -73,21 +73,24 @@ export class ChangePasswordComponent implements OnInit {
 
     validationMessage = {
       'oldPassword': [
-        {type: 'required', message: 'Trường này không được để trống!'},
-        {type: 'minlength', message: 'Mật khẩu cần nhiều hơn 6 ký tự'},
-        {type: 'maxlength', message: 'Mật khẩu chỉ được ít hơn 30 ký tự'},
+        {type: 'required', message: 'Mật khẩu không được để trống!'},
+        {type: 'minlength', message: 'Mật khẩu chỉ chứa từ 6 đến 24 kí tự'},
+        {type: 'maxlength', message: 'Mật khẩu chỉ chứa từ 6 đến 24 kí tự'},
+        {type: 'pattern', message: 'Mật khẩu không được chứa kí tự đặc biệt'}
       ],
       'newPassword': [
-        {type: 'required', message: 'Trường này không được để trống!'},
-        {type: 'minlength', message: 'Mật khẩu cần nhiều hơn 6 ký tự'},
-        {type: 'maxlength', message: 'Mật khẩu chỉ được ít hơn 30 ký tự'},
+        {type: 'required', message: 'Mật khẩu không được để trống!'},
+        {type: 'minlength', message: 'Mật khẩu chỉ chứa từ 6 đến 24 kí tự'},
+        {type: 'maxlength', message: 'Mật khẩu chỉ chứa từ 6 đến 24 kí tự'},
         {type: 'failPassword', message: 'Mật khẩu mới không được trùng mật khẩu cũ'},
+        {type: 'pattern', message: 'Mật khẩu không được chứa kí tự đặc biệt'}
       ],
       'confirmPassword': [
-        {type: 'required', message: 'Trường này không được để trống!'},
-        {type: 'minlength', message: 'Mật khẩu cần nhiều hơn 6 ký tự'},
-        {type: 'maxlength', message: 'Mật khẩu chỉ được ít hơn 30 ký tự'},
-        {type: 'notMatchPassword',message: 'Nhập lại mật khẩu phải giống mật khẩu mới'}
+        {type: 'required', message: 'Mật khẩu không được để trống!'},
+        {type: 'minlength', message: 'Mật khẩu chỉ chứa từ 6 đến 24 kí tự'},
+        {type: 'maxlength', message: 'Mật khẩu chỉ chứa từ 6 đến 24 kí tự'},
+        {type: 'notMatchPassword',message: 'Nhập lại mật khẩu phải giống mật khẩu mới'},
+        {type: 'pattern', message: 'Mật khẩu không được chứa kí tự đặc biệt'}
       ]
     };
 

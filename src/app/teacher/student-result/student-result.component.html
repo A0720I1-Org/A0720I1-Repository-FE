@@ -76,7 +76,7 @@
                   <td><input type="text" size="2" formControlName="markCol2">
                     <ng-container *ngFor="let validation of validationMessage.mark">
                       <small class="form-text text-danger"
-                             *ngIf="str.get('markCol2').hasError(validation.type)&& str.get('markCol3').touched">
+                             *ngIf="str.get('markCol2').hasError(validation.type)&& str.get('markCol2').touched">
                         {{validation.message}}
                       </small>
                     </ng-container>
@@ -97,7 +97,7 @@
               <br><br>
                 <div class="d-flex justify-content-center">
                   <button type="submit" class="btn btn-warning mr-3">Xác Nhận</button>
-                  <button type="button" class="btn btn-primary">Quay Lại</button>
+                  <a type="button" class="btn btn-primary" routerLink="/teacher">Quay Lại</a>
             </div>
           </div>
       </div>
