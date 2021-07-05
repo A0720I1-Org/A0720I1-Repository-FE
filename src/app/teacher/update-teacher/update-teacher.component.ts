@@ -30,9 +30,10 @@ export class UpdateTeacherComponent implements OnInit {
     position: string;
     imageUrl: string;
   };
-  studentClass: string;
+  studentClass: string = '';
   imageUrl: string;
   inputImage: any = null;
+  private filePath: string;
   validationMessages = {
     'name': [
       {type: 'required', message: 'Tên chỉ không được để trống.'},
@@ -40,9 +41,11 @@ export class UpdateTeacherComponent implements OnInit {
     ],
     'address': [
       {type: 'required', message: 'Địa chỉ không được để trống.'},
+      {type: 'pattern', message: 'Địa chỉ không đúng định dạng.'}
     ],
     'hometown': [
       {type: 'required', message: 'Quê quán không được để trống.'},
+      {type: 'pattern', message: 'Quê quán không đúng định dạng.'}
     ],
     'phone': [
       {type: 'required', message: 'Phone không được để trống.'},
@@ -50,12 +53,15 @@ export class UpdateTeacherComponent implements OnInit {
     ],
     'email': [
       {type: 'required', message: 'Email không được để trống.'},
+      // {type: 'pattern', message: 'Email không đúng định dạng.'}
       {type: 'email', message: 'Email không đúng định dạng.'}
     ],
     'position': [
       {type: 'required', message: 'Chức vụ không được để trống.'},
+      {type: 'pattern', message: 'Chức vụ không đúng định dạng.'}
     ]
   };
+
 
   constructor(
     private teacherService: TeacherService,
@@ -72,8 +78,11 @@ export class UpdateTeacherComponent implements OnInit {
     this.initFormUpdate();
     this.teacherService.getTeacherById(this.idTeacher).subscribe(data => {
       this.teacher = data;
-      // @ts-ignore
-      this.studentClass = data.studentClass;
+      if (data.studentClass === null) {
+        this.studentClass = 'Chưa có lớp chủ nhiệm'
+      } else {
+        this.studentClass = data.studentClass;
+      }
       this.imageUrl = data.imageUrl;
       if (data.imageUrl === '') {
         this.imageUrl = 'assets/img/faces/card-image.jpg'
@@ -88,27 +97,33 @@ export class UpdateTeacherComponent implements OnInit {
     this.formTeacher = this.fb.group({
       id: [''],
       name: ['', Validators.compose([
-        Validators.required])
+        Validators.required,
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
       ],
       address: ['', Validators.compose([
-        Validators.required])
+        Validators.required,
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
       ],
       email: ['', Validators.compose([
         Validators.required,
-        Validators.email])
+        // Validators.pattern(/\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/)
+        Validators.email
+      ])
       ],
       phone: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/(84|0[3|5|7|8|9])+([0-9]{8})\b/)])
+        Validators.pattern(/^(09|01[2|6|8|9])+([0-9]{8})\b$/)])
       ],
       level: ['', Validators.compose([
         Validators.required])
       ],
       position: ['', Validators.compose([
-        Validators.required])
+        Validators.required,
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
       ],
       hometown: ['', Validators.compose([
-        Validators.required])
+        Validators.required,
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
       ],
       gender: ['', Validators.compose([
         Validators.required])
@@ -122,6 +137,12 @@ export class UpdateTeacherComponent implements OnInit {
 
   selectImage(event: any) {
     this.inputImage = event.target.files[0];
+    this.formTeacher.get('imageUrl').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.filePath = reader.result as string;
+    };
+    reader.readAsDataURL(this.inputImage);
   }
 
   updateTeacher() {

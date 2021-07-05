@@ -28,12 +28,12 @@
               <th>Số Điện Thoại</th>
               <th>Ngày Sinh</th>
               <th class="text-center">Xem</th>
-              <th class="text-center">Sửa</th>
+              <th *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1" class="text-center">Sửa</th>
               </thead>
               <tbody>
               <tr *ngFor="let teacher of listTeacher;
                         let count = index" [attr.data-index]="count">
-                <td>{{count + 1}}</td>
+                <td>{{(indexPagination - 1) * 5 + count + 1}}</td>
                 <td>{{teacher.name}}</td>
                 <td>{{teacher.address}}</td>
                 <td>{{teacher.phone}}</td>
@@ -42,7 +42,9 @@
                   <button type="button" class="btn btn-info btn-sm" (click)="viewDetailTeacher(teacher.id)">Xem</button>
                 </td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-warning btn-sm" [routerLink]="['/teacher/update', teacher.id]">
+                  <button type="button" class="btn btn-warning btn-sm"
+                          *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1"
+                          [routerLink]="['/teacher/update', teacher.id]">
                     Sửa
                   </button>
                 </td>
