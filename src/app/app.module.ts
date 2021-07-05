@@ -34,6 +34,7 @@ import {SecurityModule} from './security/security.module';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     ReactiveFormsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,8 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {ShowScheduleComponent} from "./show-schedule/show-schedule.component";
+import {UpdateScheduleComponent} from "./update-schedule/update-schedule.component";
+import {AuthGuard} from "../security/auth-guard";
 
-
-const routes: Routes = [];
+const routes: Routes = [
+  {path:'', component: ShowScheduleComponent},
+  {
+    path:'update', component: UpdateScheduleComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN']
+    }
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

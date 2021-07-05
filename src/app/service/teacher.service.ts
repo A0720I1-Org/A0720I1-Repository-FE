@@ -6,6 +6,8 @@ import {ITeacherListDTO} from '../dto/teacher/TeacherListDTO';
 import {ITeacherViewDTO} from '../dto/teacher/TeacherViewDTO';
 import {TeacherUpdateDTO} from '../dto/teacher/TeacherUpdateDTO';
 import {TeacherCreateDTO} from '../dto/teacher/TeacherCreateDTO';
+import {TeacherDTO} from "../dto/schedule/TeacherDTO";
+import {StudentClassDTO} from "../dto/schedule/StudentClassDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +46,8 @@ export class TeacherService {
 
   getSearch(index: number, name: string, address: string): Observable<ITeacherListDTO[]> {
     return this.httpClient.get<ITeacherListDTO[]>(this.API_URL + '/api/teacher/search?index=' + index + '&name=' + name + '&address=' + address);
+  }
+  getTeacherForSubject(studentClassId: number): Observable<TeacherDTO[]> {
+    return this.httpClient.get<TeacherDTO[]>(this.API_URL + '/api/public/student-class/get-teacher-for-subject?studentClassId=' + studentClassId);
   }
 }
