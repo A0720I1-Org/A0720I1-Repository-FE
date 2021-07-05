@@ -24,7 +24,7 @@ export class ShowScheduleComponent implements OnInit {
   listSchoolYear: ISchoolYear[];
   listGrade: IGrade[];
   schedule: LessonDTO[];
-  teacher: TeacherDTO[];
+  listTeacher: TeacherDTO[];
   lessonDates = [2, 3, 4, 5, 6];
   lessonNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
   constructor(
@@ -93,19 +93,22 @@ export class ShowScheduleComponent implements OnInit {
         console.log(error.message);
       }
 
-    )
+    );
+    console.log(this.id);
   }
+
   getTeacherForSubject() {
     this.teacherService.getTeacherForSubject(this.id).subscribe(
       (data) => {
-        this.teacher = data;
-        console.log(data);
+        this.listTeacher = data;
+        // console.log(data);
       },
 
       (error: HttpErrorResponse) => {
         console.log(error.message);
       }
-    )
+    );
+    console.log(this.id)
   }
 
 }

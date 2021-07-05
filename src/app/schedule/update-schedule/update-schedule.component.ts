@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {StudentClassDTO} from "../../dto/schedule/StudentClassDTO";
+import {ClassStudentService} from "../../service/class-student.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-update-schedule',
@@ -6,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./update-schedule.component.scss']
 })
 export class UpdateScheduleComponent implements OnInit {
-
-  constructor() { }
+  constructor(
+              ) { }
 
   ngOnInit(): void {
   }
