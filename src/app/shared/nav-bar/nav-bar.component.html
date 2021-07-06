@@ -1,14 +1,14 @@
 <div class="container-fluid bg-dark bg-navbar">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark bg-navbar">
-      <a class="navbar-brand" href="#">TRƯỜNG TIỂU HỌC NGHĨA TÂN</a>
+      <a class="navbar-brand" routerLink="/">TRƯỜNG TIỂU HỌC NGHĨA TÂN</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav justify-content-end">
-          <li class="nav-item dropdown" *ngIf="['ADMIN'].indexOf(role) !== -1">
+          <li class="nav-item dropdown" *ngIf="['ROLE_ADMIN'].indexOf(role) !== -1">
             <a class="nav-link dropdown-toggle mb-0 mt-0 pb-0 pt-0" href="#" id="navbarDropdown" role="button"
                data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
@@ -21,20 +21,20 @@
               <a class="dropdown-item" routerLink="/schedule">Quản lý thời khóa biểu</a>
             </div>
           </li>
-          <li class="nav-item dropdown" *ngIf="['ADMIN', 'TEACHER'].indexOf(role) !== -1">
+          <li class="nav-item dropdown" *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1">
             <a class="nav-link dropdown-toggle mb-0 mt-0 pb-0 pt-0" href="#" id="navbarDropdown" role="button"
                data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
               Giáo viên
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" routerLink="">Lớp chủ nhiệm</a>
+              <a class="dropdown-item" routerLink="/teacher/homeroom-class">Lớp chủ nhiệm</a>
               <a class="dropdown-item" routerLink="/teacher/subject-result">Quản lý điểm học sinh</a>
               <a class="dropdown-item" routerLink="schedule">Thời khóa biểu</a>
-              <a class="dropdown-item" routerLink="teacher/personal-schedule">Lịch giảng dạy</a>
+              <a class="dropdown-item" routerLink="teacher/teacher-schedule">Lịch giảng dạy</a>
             </div>
           </li>
-          <li class="nav-item dropdown" *ngIf="['ADMIN', 'TEACHER', 'STUDENT'].indexOf(role) !== -1">
+          <li class="nav-item dropdown" *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT'].indexOf(role) !== -1">
             <a class="nav-link dropdown-toggle mb-0 mt-0 pb-0 pt-0" href="#" id="navbarDropdown" role="button"
                data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
@@ -46,7 +46,8 @@
             </div>
           </li>
           <li class="nav-item" *ngIf="!isLoggedIn">
-            <a class="nav-link mb-0 mt-0 pb-0 pt-0" routerLink="/login">Đăng nhập</a>
+            <!--            <a class="nav-link mb-0 mt-0 pb-0 pt-0" routerLink="/login">Đăng nhập</a>-->
+            <a class="nav-link mb-0 mt-0 pb-0 pt-0" (click)="logIn()">Đăng nhập</a>
           </li>
           <li class="nav-item dropdown" *ngIf="isLoggedIn">
             <a class="nav-link dropdown-toggle mb-0 mt-0 pb-0 pt-0" href="#" id="navbarDropdown" role="button"
@@ -55,8 +56,11 @@
               {{username}}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#" [routerLink]="['/update-info',username]"
-                 routerLinkActive="router-link-active">Thông tin cá nhân</a>
+              <a class="dropdown-item" [routerLink]="['/update-info']"
+                 routerLinkActive="router-link-active" *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1">Thông
+                tin cá nhân</a>
+              <a class="dropdown-item" [routerLink]="['/change-password']"
+                 routerLinkActive="router-link-active" *ngIf="['ROLE_STUDENT'].indexOf(role) !== -1">Đổi mật khẩu</a>
               <a class="dropdown-item" (click)="logOut()">Đăng xuất</a>
             </div>
           </li>

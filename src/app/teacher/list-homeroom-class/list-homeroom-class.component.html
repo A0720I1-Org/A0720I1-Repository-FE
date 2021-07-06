@@ -1,0 +1,79 @@
+<div class="container mt-5 mb-5">
+  <div>
+    <div class="text-center card-body-text-bold">
+      <h4>Danh sách lớp chủ nhiệm</h4>
+    </div>
+    <div style="display: flex">
+      <div class="col-md-3 row">
+        <label class="col-sm-5 pt-2 text-center card-body-text-bold">Lớp: </label>
+        <label class="col-sm-5 pt-2 text-center card-body-text-bold" *ngIf = "listStudentClass != null">{{listStudentClass[0].className}} </label>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="border-shadow">
+        <div class="card-header card-background-color " style="display: flex">
+          <h1 class="card-title card-header-text-bold text-light"> Danh Sách Học Sinh</h1>
+          <form class="form-inline" style="position:absolute;right: 2%">
+            <input class="form-control mr-sm-2" type="search" placeholder="Nhập tên" aria-label="Search" [(ngModel)]="nameSearch" [ngModelOptions]="{standalone: true}" (keydown.enter)="getSearch(0)">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="getSearch(0)">Tìm Kiếm</button>
+          </form>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+              <th>STT</th>
+              <th>Tên Học Sinh</th>
+              <th>Lớp Đang Học</th>
+              <th>Quê Quán</th>
+              <th>Khác</th>
+              </thead>
+              <tbody>
+              <tr *ngFor="let student of listStudentClass">
+                <td>{{student.id}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.className}}</td>
+                <td>{{student.hometown}}</td>
+                <td>
+                  <button type="button" class="btn btn-info btn-sm" (click)="viewDetailStudent(student.id)">Chi tiết</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination d-flex justify-content-md-end justify-content-center">
+                <li class="page-item"><a class="btn btn-primary" (click)="firstPage()">Đầu</a></li>
+                <li class="page-item"><a class="btn btn-primary" (click)="previousPage()">Trang trước</a></li>
+                <li class="page-item col-md-1 col-2  px-0">
+                  <div class="input-group">
+                    <input type="number" min="1" [max]="totalPagination"
+                           class="form-control text-right"
+                           placeholder="2" aria-label="Username"
+                           aria-describedby="basic-addon1" [value]="indexPagination"
+                           (change)="indexPaginationChange($event.target.value)">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">{{totalPagination}}</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="page-item">
+                  <button class="btn btn-primary" (click)="findPagination()">Đi</button>
+                </li>
+                <li class="page-item"><a class="btn btn-primary" (click)="nextPage()">Trang kế</a></li>
+                <li class="page-item"><a class="btn btn-primary" (click)="lastPage()">Cuối</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
