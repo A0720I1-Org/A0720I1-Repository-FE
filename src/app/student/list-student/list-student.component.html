@@ -1,1 +1,125 @@
-<p>list-student works!</p>
+<div class="container mt-3 mb-3">
+  <div>
+    <div style="display: flex">
+      <div class="col-md-4 row">
+        <label for="exampleFormControlSelect1" class="col-sm-6 pt-2 text-right card-body-text-bold">Năm học: </label>
+        <select class="form-control col-sm-6" id="exampleFormControlSelect1"  (focusout)="getClassList()" (change)="getYearId($event.target)" (click)="getClassList()">
+          <option disabled selected>-- Lựa chọn --</option>
+          <ng-container *ngIf="yearList != null">
+            <ng-container *ngFor="let year of yearList">
+              <option  value="{{year.id}}">{{year.beginYear}} - {{year.endYear}}</option>
+            </ng-container>
+          </ng-container>
+        </select>
+      </div>
+
+      <!--Chọn khối lớp--------------->
+      <div class="col-md-3 row">
+        <label for="exampleFormControlSelect2" class="col-sm-5 pt-2 text-right card-body-text-bold">Khối: </label>
+        <select class="form-control col-sm-7" id="exampleFormControlSelect2" (focusout)="getClassList()" (change)="getGradeId($event.target)">
+          <option selected disabled>-- Lựa chọn --</option>
+          <ng-container *ngIf="gradeList != null">
+            <ng-container *ngFor="let grade of gradeList">
+              <option value="{{grade.id}}">Khối {{grade.name}}</option>
+            </ng-container>
+          </ng-container>
+        </select>
+      </div>
+
+      <!--chọn lớp-------------->
+
+      <div class="col-md-3 row">
+        <label for="exampleFormControlSelect2" class="col-sm-5 pt-2 text-right card-body-text-bold">Lớp: </label>
+        <select class="form-control col-sm-7" id="exampleFormControlSelect3" (click)="getClassId($event.target)" >
+          <option disabled selected>-- Lựa chọn --</option>
+          <ng-container *ngIf="classList != null">
+            <ng-container *ngFor="let studentClass of classList">
+              <option  value="{{studentClass.id}}">Lớp {{studentClass.name}}</option>
+            </ng-container>
+          </ng-container>
+        </select>
+      </div>
+      <div class="col-md-2 row">
+        <button class="btn btn-success ml-3" (click)="showLists()">Hiển thị</button>
+      </div>
+    </div>
+  </div>
+<div class="container mt-3 mb-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="border-shadow">
+        <div class="card-header card-background-color">
+          <p class="card-title card-header-text-bold text-light">Danh sách học sinh</p>
+        </div>
+        <div class="card-body">
+          <nav class="navbar bg-light justify-content-between nav-custom">
+            <a class="btn btn-success" routerLink="/">Thêm mới</a>
+            <div class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="Nhập tên" aria-label="Search"
+                     [(ngModel)] ="nameSearch" (keydown.enter)="getSearch(0)">
+              <input class="form-control mr-sm-2" type="search" placeholder="Nhập Quê quán" aria-label="Search"
+                     [(ngModel)] ="hometownSearch" (keydown.enter)="getSearch(0)">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="getSearch(0)">Tìm Kiếm</button>
+            </div>
+          </nav>
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+              <th>STT</th>
+              <th>Tên Học Sinh</th>
+              <th>Hình Ảnh</th>
+              <th>Ngày Sinh</th>
+              <th>Quê Quán</th>
+              <th class="text-center">Khác</th>
+              </thead>
+              <tbody>
+              <tr *ngFor="let student of listStudent;
+              let count = index" [attr.data-index]="count">
+                <td>{{(indexPagination-1)*5+count +1}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.imageUrl}}</td>
+                <td>{{student.birthday}}</td>
+                <td>{{student.hometown}}</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-info btn-sm" (click)="getViewStudent(student.id)">Xem</button>
+                  <button type="button" class="btn btn-warning btn-sm" *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1" [routerLink]="['/student/update', student.id]">Sửa</button>
+                  <button type="button" class="btn btn-danger btn-sm" *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1" data-toggle="modal" data-target="#delete-modal" (click)="selectStudent(student.id)">Xóa</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+                  <div class="text-center">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination d-flex justify-content-md-end justify-content-center">
+                        <li class="page-item"><a class="btn btn-primary btn-sm" (click)="firstPage()">Đầu</a></li>
+                        <li class="page-item"><a class="btn btn-primary btn-sm" (click)="previousPage()">Trang trước</a></li>
+                        <li class="page-item col-md-1 col-2  px-0">
+                          <div class="input-group">
+                            <input style="height: 33px" type="number" min="1" [max]="totalPagination"
+                                   class="form-control text-right "
+                                   placeholder="2" aria-label="Username"
+                                   aria-describedby="basic-addon1" [value]="indexPagination"
+                                   (change)="indexPaginationChange($event.target.value)">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text mr-1" id="basic-addon1" style="height: 33px" >{{totalPagination}}</span>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="page-item">
+                          <button class="btn btn-primary btn-sm" (click)="findPagination()">Đi</button>
+                        </li>
+                        <li class="page-item"><a class="btn btn-primary btn-sm" (click)="nextPage()">Trang kế</a></li>
+                        <li class="page-item"><a class="btn btn-primary btn-sm" (click)="lastPage()">Cuối</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>

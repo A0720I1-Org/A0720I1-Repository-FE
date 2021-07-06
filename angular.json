@@ -135,5 +135,8 @@
       }
     }
   },
-  "defaultProject": "project-fe"
+  "defaultProject": "project-fe",
+  "cli": {
+    "analytics": "b4017a5a-9502-49ec-ba82-5f1830136d20"
+  }
 }

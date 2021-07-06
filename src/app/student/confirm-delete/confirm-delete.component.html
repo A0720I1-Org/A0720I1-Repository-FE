@@ -1,0 +1,27 @@
+<h2 mat-dialog-title style="color: red">Bạn có chắc muốn xóa học sinh !!!</h2>
+<div mat-dialog-content>
+  <table class="table table-responsive">
+    <tbody>
+    <tr>
+      <td scope="row">ID</td>
+      <td>{{data.student.id}}</td>
+    </tr>
+    <tr>
+      <td scope="row">Tên học sinh</td>
+      <td>{{data.student.name}}</td>
+    </tr>
+    <tr>
+      <td scope="row">Ngày sinh</td>
+      <td>{{data.student.birthday}}</td>
+    </tr>
+    <tr>
+      <td scope="row">Quê Quán</td>
+      <td>{{data.student.hometown}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]='true' cdkFocusInitial class="btn btn-outline-danger">Xác nhận</button>
+  <button mat-raised-button (click)="onCancel()" class="btn btn-outline-success">Trở lại</button>
+</div>
