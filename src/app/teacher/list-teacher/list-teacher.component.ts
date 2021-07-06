@@ -23,7 +23,7 @@ export class ListTeacherComponent implements OnInit {
   teacher: ITeacherViewDTO;
   nameSearch: string = '';
   addressSearch: string = '';
-  role: string;
+  role: string = '';
 
   constructor(
     private teacherService: TeacherService,
@@ -36,7 +36,9 @@ export class ListTeacherComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllTeacher();
-    this.role = this.tokenStorageService.getUser().roles[0];
+    if (this.tokenStorageService.getUser() !== null) {
+      this.role = this.tokenStorageService.getUser().roles[0];
+    }
   }
 
   getAllTeacher() {

@@ -10,7 +10,7 @@
             <div class="col-md-12 pr-1">
               <div class="form-group">
                 <label for="username" class="required">Tên đăng nhập</label>
-                <input id= "username" type="text" class="form-control" formControlName="username">
+                <input id="username" type="text" class="form-control" formControlName="username">
                 <ng-container *ngFor="let validation of validationMessage.username">
                   <small class="form-text text-danger"
                          *ngIf="teacherForm.get('username').hasError(validation.type)&& teacherForm.get('username').touched">

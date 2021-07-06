@@ -28,7 +28,7 @@ export class TeacherService {
   }
 
   getPageAllTeacher(index: number): Observable<any> {
-    return this.httpClient.get<any>(this.API_URL + '/api/public?index=' + index, this.httpOptions);
+    return this.httpClient.get<any>(this.API_URL + '/api/public/teacher?index=' + index, this.httpOptions);
   }
 
   getListTeacher(): Observable<any> {
