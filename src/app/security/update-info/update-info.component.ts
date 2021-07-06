@@ -21,7 +21,7 @@ export class UpdateInfoComponent implements OnInit {
   studentClass : string ;
   username : string ;
   inputImage: any = null;
-  filePath : string ;
+  filePath : string = "https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df";
   validationMessages = {
     'address': [
       {type: 'required', message: 'Địa chỉ không được để trống.'},
@@ -94,7 +94,7 @@ export class UpdateInfoComponent implements OnInit {
   }
   onUpdate() {
     if(this.inputImage != null) {
-   const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
+    const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
     const fileRef = this.storage.ref(imageName);
     this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
       finalize(() => {
@@ -116,8 +116,7 @@ export class UpdateInfoComponent implements OnInit {
                       "Thông báo",
                       {timeOut: 3000, extendedTimeOut: 1500})
                   )
-                }
-              );
+              });
           })
         })
     ).subscribe()

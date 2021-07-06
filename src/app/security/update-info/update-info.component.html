@@ -6,7 +6,7 @@
       <div class="card-body">
         <div class="author">
           <div class="mx-auto">
-            <img class="col-md-12" [src]="filePath || formUpdate.value.imageUrl" alt="card image">
+            <img class="col-md-12" [src]="formUpdate.value.imageUrl || filePath " alt="card image">
           </div>
           <hr>
           <div class="text-center">
@@ -156,6 +156,6 @@
     </div>
   </div>
 </div>
-<p>{{formUpdate.value | json}}</p>
-<!--End table edit teacher-->
 </div>
+
+
