@@ -27,11 +27,27 @@ const routes: Routes = [
       roles: ['ADMIN']
     }
   },
-  {path: 'update/:id', component: UpdateTeacherComponent},
-  {path: '', component: ListTeacherComponent},
-  {path: 'student-result', component: StudentResultComponent},
-  {path: 'homeroom-class', component: ListHomeroomClassComponent},
-  {path: 'teacher-schedule', component: TeacherScheduleComponent}
+  {path: 'update/:id', component: UpdateTeacherComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN']
+    }},
+  {path: '', component: ListTeacherComponent}, //Cai list teacher ai cung xem duoc nen khong can
+  {path: 'student-result', component: StudentResultComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER', "ROLE_STUDENT"]
+    }},
+  {path: 'homeroom-class', component: ListHomeroomClassComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER']
+    }},
+  {path: 'teacher-schedule', component: TeacherScheduleComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
+    }}
 ];
 
 @NgModule({

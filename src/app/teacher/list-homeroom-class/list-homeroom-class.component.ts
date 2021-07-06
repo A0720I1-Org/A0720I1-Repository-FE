@@ -56,7 +56,7 @@ export class ListHomeroomClassComponent implements OnInit {
 
   viewDetailStudent(id: number){
     this.teacherService.viewDetailStudent(id).subscribe(
-      (data: HomeroomClassDTO) => {
+      (data) => {
         this.student = data;
         const dialogRef = this.dialog.open(ViewDetailStudentComponent, {
           width: '500px',

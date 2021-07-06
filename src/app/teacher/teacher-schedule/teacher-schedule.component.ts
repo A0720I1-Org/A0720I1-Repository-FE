@@ -29,6 +29,7 @@ export class TeacherScheduleComponent implements OnInit {
     this.teacherService.getTeacherSchedule(this.username).subscribe(
       (data: TeacherScheduleDTO[]) => {
         this.teacherSchedule = data;
+
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);

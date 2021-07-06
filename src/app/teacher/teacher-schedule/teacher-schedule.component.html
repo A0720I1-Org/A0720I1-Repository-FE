@@ -2,7 +2,7 @@
   <div>
     <div class="text-center card-body-text-bold">
       <label><h2>Xin chào giáo viên:</h2></label>
-      <label class="col-sm-5 pt-2 text-center card-body-text-bold"><h3>Mai Xuân Duy</h3></label>
+      <label class="col-sm-5 pt-2 text-center card-body-text-bold" *ngIf = "teacherSchedule != null"><h2>{{teacherSchedule[0].teacherName}} </h2></label>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
     <div class="col-md-12">
       <div class="border-shadow">
         <div class="card-header card-background-color">
-          <h4 class="card-title card-header-text-bold">Lịch dạy</h4>
+          <p class="card-title card-header-text-bold text-light">Lịch dạy</p>
         </div>
         <div class="card-body">
           <table class="table table-bordered" style="font-size: 120%">
@@ -28,8 +28,8 @@
             </thead>
             <tbody>
             <tr class="text-center" *ngFor= "let lessonNumber of lessonNumbers">
-              <td>{{lessonNumber}}</td>
-              <td *ngFor = "let lessonDate of lessonDates">
+              <td class="col-1">{{lessonNumber}}</td>
+              <td class="col-2" *ngFor = "let lessonDate of lessonDates">
                 <ng-container *ngFor = "let lesson of teacherSchedule">
                   <ng-container *ngIf = "lesson.lessonDate == lessonDate && lesson.lessonNumber == lessonNumber">{{lesson.subjectName}}</ng-container>
                 </ng-container>
