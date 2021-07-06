@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {ITeacherListDTO} from '../dto/teacher/TeacherListDTO';
-import {ITeacherViewDTO} from '../dto/teacher/TeacherViewDTO';
 import {TeacherUpdateDTO} from '../dto/teacher/TeacherUpdateDTO';
 import {TeacherCreateDTO} from '../dto/teacher/TeacherCreateDTO';
 import {TokenStorageService} from "./token-storage.service";
@@ -13,7 +11,6 @@ import {TokenStorageService} from "./token-storage.service";
 })
 export class TeacherService {
   private API_URL = environment.apiBaseUrl;
-
   httpOptions: any;
 
   constructor(
@@ -24,8 +21,8 @@ export class TeacherService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ` + this.tokenStorage.getToken()
-      })
-      , 'Access-Control-Allow-Origin': 'http://localhost:4200',
+      }),
+      'Access-Control-Allow-Origin': 'http://localhost:4200',
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     };
   }
@@ -47,7 +44,7 @@ export class TeacherService {
   }
 
   createTeacher(teacher: TeacherCreateDTO): Observable<any> {
-    return this.httpClient.post<any>(this.API_URL + '/api/admin/teacher/create', JSON.stringify(teacher), this.httpOptions);
+    return this.httpClient.post<TeacherCreateDTO>(this.API_URL + '/api/admin/teacher/create', JSON.stringify(teacher), this.httpOptions);
   }
 
   getSearch(index: number, name: string, address: string): Observable<any> {

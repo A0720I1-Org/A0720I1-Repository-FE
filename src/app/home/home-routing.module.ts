@@ -8,7 +8,7 @@ import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent},
+  // {path: 'login', component: LoginComponent},
   {path: '', component: HomePageComponent},
   {path: 'update-info/:username',component : UpdateInfoComponent},
   {path: 'change-password/:username',component : ChangePasswordComponent},
