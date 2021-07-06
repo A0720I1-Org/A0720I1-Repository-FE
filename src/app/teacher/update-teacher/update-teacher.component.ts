@@ -28,7 +28,7 @@ export class UpdateTeacherComponent implements OnInit {
     name: string;
     phone: string;
     position: string;
-    imageUrl: string;
+    imageUrl : string ;
   };
   studentClass: string = '';
   imageUrl: string;

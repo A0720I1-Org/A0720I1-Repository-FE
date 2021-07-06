@@ -37,7 +37,7 @@ const routes: Routes = [
   {path: 'student-result', component: StudentResultComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: ['ROLE_ADMIN', 'ROLE_TEACHER', "ROLE_STUDENT"]
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER']
     }},
 
   {path: 'homeroom-class', component: ListHomeroomClassComponent,
