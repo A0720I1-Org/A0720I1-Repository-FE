@@ -14,18 +14,19 @@ const routes: Routes = [
     path: 'create', component: CreateStudentComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: ['ADMIN']
+      roles: ['ROLE_ADMIN']
     }
   },
   {
-    path: 'update', component: UpdateStudentComponent,
+    path: 'update/:id', component: UpdateStudentComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: ['ADMIN']
+      roles: ['ROLE_ADMIN','ROLE_TEACHER']
     }
   },
-  {path: 'update/:id', component: UpdateStudentComponent},
-  {path: '', component: ListStudentComponent}
+
+  {path: '', component: ListStudentComponent},
+  {path: 'update', component: ListStudentComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

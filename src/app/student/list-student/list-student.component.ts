@@ -19,6 +19,7 @@ import {IStudent} from "../../models/IStudent";
 import {IStudentDeleteDTO} from "../../dto/student/StudentDeleteDTO";
 import {ConfirmDeleteComponent} from "../confirm-delete/confirm-delete.component";
 import {ITeacherListDTO} from "../../dto/teacher/TeacherListDTO";
+import {TokenStorageService} from "../../service/token-storage.service";
 
 @Component({
   selector: 'app-list-student',
@@ -45,23 +46,30 @@ export class ListStudentComponent implements OnInit {
     ethnicity: ''
   };
 
-indexPagination : number =1;
-totalPagination : number =0;
-listStudentNoPagination: IStudentListDTO[];
+  indexPagination: number = 1;
+  totalPagination: number = 0;
+  listStudentNoPagination: IStudentListDTO[];
+  nameSearch: string;
+  hometownSearch: string;
+  studentClassId: number = 0;
+  role: string;
   constructor(
     private studentService: StudentService,
     public dialog: MatDialog,
     private scheduleService: ScheduleService,
     private schoolYearService: SchoolYearService,
     private gradeService: GradeService,
-    private classStudentService: ClassStudentService
+    private classStudentService: ClassStudentService,
+    private router: Router,
+    private toastrService: ToastrService,
+    private tokenStorageService: TokenStorageService,
   ) {
   }
 
   ngOnInit(): void {
     this.getYearList();
     this.getGradeList();
-    this.getAllStudent();
+    this.role = this.tokenStorageService.getUser().roles[0];
   }
 
   getYearList() {
@@ -93,30 +101,40 @@ listStudentNoPagination: IStudentListDTO[];
     this.classStudentService.getClassesByYearAndGrade(this.classSearchData).subscribe(
       (data) => {
         this.classList = data;
+
       }
     )
   }
 
-
-  getAllStudent() {
-    this.studentService.getPageAllStudent(0).subscribe(
-      (data: IStudentListDTO[]) => {
-        console.log(data);
-        this.listStudent = data;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.message);
-      });
-    this.studentService.getListStudent().subscribe((data:IStudentListDTO[]) =>{
-      this.listStudentNoPagination = data;
-      if((this.listStudentNoPagination.length % 5) !=0){
-        this.totalPagination =(Math.round(this.listStudentNoPagination.length /5)) +1;
-      }else {
-        this.totalPagination= this.listStudentNoPagination.length /5
-      }
-    });
+  getClassId(selectClassId) {
+    this.studentClassId = selectClassId.value;
   }
 
+  getTotalPage(){
+
+  }
+
+  showLists() {
+    this.indexPagination = 1;
+    this.studentService.getAllStudentByClassId(this.studentClassId, 0).subscribe((data: IStudentListDTO[]) => {
+        console.log('class id' + this.studentClassId);
+        this.listStudent = data;
+        this.studentService.getListStudent(this.studentClassId).subscribe((data: IStudentListDTO[]) => {
+          this.listStudentNoPagination = data;
+          // if ((this.listStudentNoPagination.length % 5) != 0) {
+          //   this.totalPagination = (Math.c(this.listStudentNoPagination.length / 5));
+          // } else {
+          //   this.totalPagination = this.listStudentNoPagination.length / 5
+          // }
+          this.totalPagination = (Math.ceil(this.listStudentNoPagination.length / 5));
+          console.log('total page' + this.totalPagination)
+          console.log(data)
+        });
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.message)
+      });
+  }
 
   getViewStudent(id: number) {
     this.studentService.getStudentById(id).subscribe(
@@ -136,7 +154,6 @@ listStudentNoPagination: IStudentListDTO[];
   }
 
 
-
   selectStudent(id: number) {
     this.studentService.getStudentFullById(id).subscribe(data => {
       this.selectedStudent = data;
@@ -147,10 +164,17 @@ listStudentNoPagination: IStudentListDTO[];
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.studentService.deleteStudent(id).subscribe(() => {
-              this.ngOnInit();
-            });
+            this.router.navigateByUrl('/student').then(
+              r => this.toastrService.success(
+                "Đã xóa dữ liệu học sinh",
+                "Thông báo",
+                {timeOut: 3000, extendedTimeOut: 1500})
+            )
+            this.showLists()
+          });
         }
       });
+
     });
   }
 
@@ -158,12 +182,13 @@ listStudentNoPagination: IStudentListDTO[];
     this.indexPagination = 1;
     this.ngOnInit();
   }
+
   previousPage() {
     this.indexPagination = this.indexPagination - 1;
     if (this.indexPagination == 0) {
       this.indexPagination = 1;
     } else {
-      this.studentService.getPageAllStudent((this.indexPagination * 5) - 5).subscribe((data: IStudentListDTO[]) => {
+      this.studentService.getAllStudentByClassId(this.studentClassId, (this.indexPagination * 5) - 5).subscribe((data: IStudentListDTO[]) => {
         this.listStudent = data;
       });
     }
@@ -174,7 +199,7 @@ listStudentNoPagination: IStudentListDTO[];
   }
 
   findPagination() {
-    this.studentService.getPageAllStudent((this.indexPagination * 5) - 5).subscribe((data: IStudentListDTO[]) => {
+    this.studentService.getAllStudentByClassId(this.studentClassId, (this.indexPagination * 5) - 5).subscribe((data: IStudentListDTO[]) => {
       this.listStudent = data;
     });
   }
@@ -184,18 +209,52 @@ listStudentNoPagination: IStudentListDTO[];
     if (this.indexPagination > this.totalPagination) {
       this.indexPagination = this.indexPagination - 1;
     }
-    this.studentService.getPageAllStudent((this.indexPagination * 5) - 5).subscribe(
+    this.studentService.getAllStudentByClassId(this.studentClassId, (this.indexPagination * 5) - 5).subscribe(
       (data: IStudentListDTO[]) => {
         this.listStudent = data;
       });
   }
 
   lastPage() {
-    this.indexPagination = this.listStudentNoPagination.length / 5;
-    this.studentService.getPageAllStudent((this.indexPagination * 5) - 5).subscribe(
+    this.indexPagination = Math.round(this.listStudentNoPagination.length / 5) + 1;
+    this.studentService.getAllStudentByClassId(this.studentClassId, (this.indexPagination * 5) - 5).subscribe(
       (data: IStudentListDTO[]) => {
         this.listStudent = data;
       });
   }
+
+  getSearch(index: number) {
+    if (this.nameSearch === '' && this.hometownSearch === '') {
+      this.studentService.getAllStudentByClassId(this.studentClassId, 0).subscribe(
+        (data: IStudentListDTO[]) => {
+          console.log(data);
+          this.listStudent = data;
+          this.router.navigateByUrl('/student').then(
+            r => this.toastrService.warning(
+              "Vui lòng nhập để tìm kiếm",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+          )
+        });
+    } else {
+      this.studentService.searchStudentByNameAndHometown(index, this.nameSearch, this.hometownSearch).subscribe(
+        (data: IStudentListDTO[]) => {
+          if (data == null) {
+            this.router.navigateByUrl('/student').then(
+              r => this.toastrService.warning(
+                "Không tìm thấy dữ liệu",
+                "Thông báo",
+                {timeOut: 3000, extendedTimeOut: 1500})
+            )
+          } else {
+            this.listStudent = data;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.message);
+        });
+    }
+  }
+
 
 }

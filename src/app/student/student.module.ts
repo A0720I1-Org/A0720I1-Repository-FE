@@ -7,7 +7,7 @@ import { UpdateStudentComponent } from './update-student/update-student.componen
 import { CreateStudentComponent } from './create-student/create-student.component';
 import { ViewStudentComponent } from './view-student/view-student.component';
 import {HttpClientModule} from "@angular/common/http";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
@@ -15,13 +15,14 @@ import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [ListStudentComponent, UpdateStudentComponent, CreateStudentComponent, ViewStudentComponent, ConfirmDeleteComponent],
-  imports: [
-    CommonModule,
-    StudentRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatButtonModule
-  ]
+    imports: [
+        CommonModule,
+        StudentRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        MatButtonModule,
+        FormsModule
+    ]
 })
 export class StudentModule { }

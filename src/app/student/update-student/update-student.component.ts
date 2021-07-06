@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {IStudentUpdateDTO} from "../../dto/student/StudentUpdateDTO";
 import {StudentService} from "../../service/student.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-update-student',
@@ -54,7 +55,8 @@ export class UpdateStudentComponent implements OnInit {
     private studentService: StudentService,
     private router: Router,
     private fb: FormBuilder,
-    private  activatedRoute: ActivatedRoute
+    private  activatedRoute: ActivatedRoute,
+    private toastrService: ToastrService
   ) {
   }
 
@@ -104,7 +106,12 @@ export class UpdateStudentComponent implements OnInit {
   updateStudent() {
     this.studentService.updateStudent(this.formStudent.value).subscribe(
       () => {
-        this.router.navigateByUrl('/student');
+        this.router.navigateByUrl('/student').then(
+          r => this.toastrService.success(
+            "Đã cập nhập thành công",
+            "Thông báo",
+            {timeOut: 3000, extendedTimeOut: 1500})
+        )
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);
