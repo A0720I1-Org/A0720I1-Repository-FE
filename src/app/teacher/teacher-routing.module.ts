@@ -1,6 +1,5 @@
-
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {CreateTeacherComponent} from './create-teacher/create-teacher.component';
 import {UpdateTeacherComponent} from './update-teacher/update-teacher.component';
 import {ListTeacherComponent} from './list-teacher/list-teacher.component';
@@ -22,10 +21,16 @@ const routes: Routes = [
     path: 'update', component: UpdateTeacherComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: ['ADMIN']
+      roles: ['ROLE_ADMIN']
     }
   },
-  {path: 'update/:id', component: UpdateTeacherComponent},
+  {
+    path: 'update/:id', component: UpdateTeacherComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN']
+    }
+  },
   {path: '', component: ListTeacherComponent},
   {path: 'student-result', component: StudentResultComponent}
 ];

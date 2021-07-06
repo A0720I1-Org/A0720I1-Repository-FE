@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {ITeacherListDTO} from '../dto/teacher/TeacherListDTO';
-import {ITeacherViewDTO} from '../dto/teacher/TeacherViewDTO';
 import {TeacherUpdateDTO} from '../dto/teacher/TeacherUpdateDTO';
 import {TeacherCreateDTO} from '../dto/teacher/TeacherCreateDTO';
 import {TokenStorageService} from "./token-storage.service";
@@ -13,10 +11,12 @@ import {TokenStorageService} from "./token-storage.service";
 })
 export class TeacherService {
   private API_URL = environment.apiBaseUrl;
+  httpOptions: any;
 
-  httpOptions : any
-
-  constructor(private httpClient: HttpClient, private tokenStorage: TokenStorageService) {
+  constructor(
+    private httpClient: HttpClient,
+    private tokenStorage: TokenStorageService
+  ) {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -27,27 +27,27 @@ export class TeacherService {
     };
   }
 
-  getPageAllTeacher(index: number): Observable<ITeacherListDTO[]> {
-    return this.httpClient.get<ITeacherListDTO[]>(this.API_URL + '/api/teacher?index=' + index);
+  getPageAllTeacher(index: number): Observable<any> {
+    return this.httpClient.get<any>(this.API_URL + '/api/public?index=' + index, this.httpOptions);
   }
 
-  getListTeacher(): Observable<ITeacherListDTO[]> {
-    return this.httpClient.get<ITeacherListDTO[]>(this.API_URL + '/api/teacher/lists');
+  getListTeacher(): Observable<any> {
+    return this.httpClient.get<any[]>(this.API_URL + '/api/public/teacher/lists', this.httpOptions);
   }
 
-  getTeacherById(id: number): Observable<ITeacherViewDTO> {
-    return this.httpClient.get<ITeacherViewDTO>(this.API_URL + '/api/teacher/find/' + id);
+  getTeacherById(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.API_URL + '/api/public/teacher/find/' + id, this.httpOptions);
   }
 
-  updateTeacher(teacherUpdateDTO: TeacherUpdateDTO): Observable<TeacherUpdateDTO> {
-    return this.httpClient.put<TeacherUpdateDTO>(this.API_URL + '/api/teacher/update', teacherUpdateDTO);
+  updateTeacher(teacherUpdateDTO: TeacherUpdateDTO): Observable<any> {
+    return this.httpClient.put<any>(this.API_URL + '/api/admin/teacher/update', teacherUpdateDTO, this.httpOptions);
   }
 
   createTeacher(teacher: TeacherCreateDTO): Observable<any> {
     return this.httpClient.post<TeacherCreateDTO>(this.API_URL + '/api/admin/teacher/create', JSON.stringify(teacher), this.httpOptions);
   }
 
-  getSearch(index: number, name: string, address: string): Observable<ITeacherListDTO[]> {
-    return this.httpClient.get<ITeacherListDTO[]>(this.API_URL + '/api/teacher/search?index=' + index + '&name=' + name + '&address=' + address);
+  getSearch(index: number, name: string, address: string): Observable<any> {
+    return this.httpClient.get<any>(this.API_URL + '/api/public/search?index=' + index + '&name=' + name + '&address=' + address, this.httpOptions);
   }
 }
