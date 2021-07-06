@@ -10,6 +10,8 @@ import {
 import {TokenStorageService} from "../service/token-storage.service";
 import {Observable} from "rxjs";
 import {ToastrService} from "ngx-toastr";
+import {MatDialog} from "@angular/material/dialog";
+import {LoginComponent} from "../home/login/login.component";
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +21,14 @@ export class AuthGuard implements CanActivate {
   private constructor(
     private router: Router,
     private tokenStorageService: TokenStorageService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialog: MatDialog
   ) {
   }
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    let url = state.url;
+    const currentUrl = this.router.url;
     const loggedInUser = this.tokenStorageService.getUser();
     if (loggedInUser !== null) {
       let role = loggedInUser.roles[0];
@@ -34,7 +37,9 @@ export class AuthGuard implements CanActivate {
         console.log(route.data.roles.indexOf(role))
         return true;
       } else {
-        this.router.navigate(['/'])
+        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          this.router.navigate([currentUrl]);
+        });
         this.toastrService.warning(
           "Bạn không có quyền truy cập trang này",
           "Cảnh báo",
@@ -43,7 +48,9 @@ export class AuthGuard implements CanActivate {
         return false
       }
     } else {
-      this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}})
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+      });
       this.toastrService.warning(
         "Bạn không có quyền truy cập trang này",
         "Cảnh báo",

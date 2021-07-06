@@ -16,7 +16,6 @@ export class AccountService {
     private tokenStorageService : TokenStorageService) { }
   getInfoAccount(): Observable<ITeacherViewDTO> {
     this.username = this.tokenStorageService.getUser().account.username;
-    console.log(this.username);
     return this.httpClient.get<ITeacherViewDTO>(this.API_URL + '/api/public/info/' + this.username);
   }
   updateInfoAccount(teacherUpdateDTO: TeacherUpdateDTO) : Observable<any> {

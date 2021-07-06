@@ -27,6 +27,7 @@ import { TeacherScheduleComponent } from './teacher-schedule/teacher-schedule.co
     ViewDetailStudentComponent,
     TeacherScheduleComponent
   ],
+
   exports: [
     CreateTeacherComponent,
     UpdateTeacherComponent,

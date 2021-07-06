@@ -2,6 +2,8 @@ import {Component, DoCheck, OnInit} from '@angular/core';
 import {TokenStorageService} from "../../service/token-storage.service";
 import {ShareService} from "../../service/share.service";
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {LoginComponent} from "../../home/login/login.component";
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,7 +18,8 @@ export class NavBarComponent implements OnInit {
   constructor(
     private tokenStorageService: TokenStorageService,
     private shareService: ShareService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.shareService.getClickEvent().subscribe(() => {
       this.load()
@@ -27,7 +30,6 @@ export class NavBarComponent implements OnInit {
     if (this.tokenStorageService.getToken()) {
       this.username = this.tokenStorageService.getUser().account.username;
       this.role = this.tokenStorageService.getUser().roles[0];
-      console.log(this.role);
     }
     this.isLoggedIn =  this.username != null;
   }
@@ -42,5 +44,10 @@ export class NavBarComponent implements OnInit {
     this.username = null;
     this.ngOnInit();
     this.router.navigateByUrl("/")
+  }
+
+
+  logIn() {
+    const dialogRef = this.dialog.open(LoginComponent, {width: '400px'})
   }
 }
