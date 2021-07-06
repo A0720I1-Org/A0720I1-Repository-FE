@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ScheduleSubject} from "../../dto/schedule/ScheduleSubject";
 import {ScheduleService} from "../../service/schedule.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ClassStudentService} from "../../service/class-student.service";
 import {ScheduleClass} from "../../dto/schedule/ScheduleClass";
 import {Lesson} from "../../dto/schedule/Lesson";
@@ -36,7 +36,8 @@ export class UpdateScheduleComponent implements OnInit {
     private scheduleService: ScheduleService,
     private classStudentService: ClassStudentService,
     private activatedRoute: ActivatedRoute,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private router: Router
   ) {
   }
 
@@ -133,13 +134,17 @@ export class UpdateScheduleComponent implements OnInit {
     this.selectTeacher();
     this.scheduleService.saveSchedule(this.classId, this.schedule).subscribe(
       (data) => {
-        this.toastrService.success(
-          "Cập nhật thành công thời khóa biểu",
-          "Thông báo",
-          {timeOut: 3000, extendedTimeOut: 1500})
+        this.router.navigateByUrl("/schedule/" + this.classId).then(
+          r => this.toastrService.success(
+            "Cập nhật thành công thời khóa biểu",
+            "Thông báo",
+            {timeOut: 3000, extendedTimeOut: 1500})
+        )
       },
       err => {
-        this.assignedTeacherErrorList = err.error;
+        if (err.error instanceof Array){
+          this.assignedTeacherErrorList = err.error;
+        }
         this.toastrService.error(
           "Không thể cập nhật thời khóa biểu",
           "Có lỗi xảy ra",
