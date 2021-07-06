@@ -55,8 +55,10 @@
               {{username}}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#" [routerLink]="['/update-info',username]"
-                 routerLinkActive="router-link-active">Thông tin cá nhân</a>
+              <a class="dropdown-item" [routerLink]="['/update-info']"
+                 routerLinkActive="router-link-active" *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1">Thông tin cá nhân</a>
+                <a class="dropdown-item" href="#" [routerLink]="['/change-password']"
+                 routerLinkActive="router-link-active" *ngIf="['ROLE_STUDENT'].indexOf(role) !== -1">Đổi mật khẩu</a>
               <a class="dropdown-item" (click)="logOut()">Đăng xuất</a>
             </div>
           </li>

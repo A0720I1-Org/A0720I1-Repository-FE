@@ -26,7 +26,7 @@
       <div class="card-header card-background-color d-flex justify-content-between">
         <p class="card-title card-header-text-bold text-light mt-2">Thông tin giáo viên</p>
         <div>
-          <a class="btn btn-primary text-light" [routerLink]="['/change-password/',username]" >Đổi mật khẩu</a>
+          <a class="btn btn-primary text-light" [routerLink]="['/change-password/']" >Đổi mật khẩu</a>
         </div>
       </div>
       <div class="card-body card-body-text-bold">
@@ -84,10 +84,10 @@
                 <label class="required">Địa Chỉ</label>
                 <input type="text" class="form-control" placeholder="Địa chỉ" formControlName="address">
                 <ng-container *ngFor="let validation of validationMessages.address">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formUpdate.get('address').hasError(validation.type) && (formUpdate.get('address').dirty || formUpdate.get('address').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>
@@ -96,10 +96,10 @@
                 <label class="required">Quê Quán</label>
                 <input type="text" class="form-control" placeholder="Quê quán" formControlName="hometown">
                 <ng-container *ngFor="let validation of validationMessages.hometown">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formUpdate.get('hometown').hasError(validation.type) && (formUpdate.get('hometown').dirty || formUpdate.get('hometown').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>
@@ -110,10 +110,10 @@
                 <label class="required">Số Điện Thoại</label>
                 <input type="text" class="form-control" placeholder="Số điện thoại" formControlName="phone">
                 <ng-container *ngFor="let validation of validationMessages.phone">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formUpdate.get('phone').hasError(validation.type) && (formUpdate.get('phone').dirty || formUpdate.get('phone').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>
@@ -122,10 +122,10 @@
                 <label for="email"  class="required">Email</label>
                 <input type="text" class="form-control" placeholder="Email"  id="email" formControlName="email">
                 <ng-container *ngFor="let validation of validationMessages.email">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formUpdate.get('email').hasError(validation.type) && (formUpdate.get('email').dirty || formUpdate.get('email').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>

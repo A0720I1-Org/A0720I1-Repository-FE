@@ -12,14 +12,14 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: '', component: HomePageComponent},
   {
-    path: 'update-info/:username',component : UpdateInfoComponent,
+    path: 'update-info',component : UpdateInfoComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ['ROLE_ADMIN','ROLE_TEACHER']
     }
   },
   {
-    path: 'change-password/:username',component : ChangePasswordComponent,
+    path: 'change-password',component : ChangePasswordComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ['ROLE_ADMIN','ROLE_TEACHER','ROLE_STUDENT']

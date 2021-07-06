@@ -24,17 +24,17 @@ export class UpdateInfoComponent implements OnInit {
   filePath : string ;
   validationMessages = {
     'address': [
-      {type: 'required', message: 'Địa chỉ được yêu cầu bắt buộc.'},
+      {type: 'required', message: 'Địa chỉ không được để trống.'},
     ],
     'hometown': [
-      {type: 'required', message: 'Quê quán được yêu cầu bắt buộc.'},
+      {type: 'required', message: 'Quê quán không được để trống.'},
     ],
     'phone': [
-      {type: 'required', message: 'Số điện thoại được yêu cầu bắt buộc.'},
+      {type: 'required', message: 'Số điện thoại không được để trống.'},
       {type: 'pattern', message: 'Số điện thoại không đúng định dạng.'}
     ],
     'email': [
-      {type: 'required', message: 'Email được yêu cầu bắt buộc.'},
+      {type: 'required', message: 'Email không được để trống.'},
       {type: 'email', message: 'Email không đúng định dạng.'}
     ],
   };
@@ -71,7 +71,7 @@ export class UpdateInfoComponent implements OnInit {
       ],
       phone: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/)])
+        Validators.pattern(/^(09|01[2|6|8|9])+([0-9]{8})\b$/)])
       ],
       level: [''],
       position: [''],
@@ -116,7 +116,8 @@ export class UpdateInfoComponent implements OnInit {
                       "Thông báo",
                       {timeOut: 3000, extendedTimeOut: 1500})
                   )
-                });
+                }
+              );
           })
         })
     ).subscribe()

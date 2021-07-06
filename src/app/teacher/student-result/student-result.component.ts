@@ -75,9 +75,9 @@ export class StudentResultComponent implements OnInit {
              let fg = this.formBuilder.group({
                 studentId : [''],
                 name : [''] ,
-                markCol1 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
-                markCol2 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
-                markCol3 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+                markCol1 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^\d*\.?\d*$/)]],
+                markCol2 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^\d*\.?\d*$/)]],
+                markCol3 : ['',[Validators.min(0),Validators.max(10),Validators.pattern(/^\d*\.?\d*$/)]],
                 multiplier : [''],
                 birthday : [''],
               }) ;

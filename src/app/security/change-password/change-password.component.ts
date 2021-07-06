@@ -21,7 +21,7 @@ export class ChangePasswordComponent implements OnInit {
   errorMessage : string ;
 
   constructor(private tokenStorage: TokenStorageService,
-     private toastr: ToastrService,
+     private toastrService: ToastrService,
     private router: Router,
     private accountService : AccountService,
     private dialog : MatDialog ) { }
@@ -51,21 +51,19 @@ export class ChangePasswordComponent implements OnInit {
         console.log(this.formChangePassword.value);
         this.passwordDTO = this.formChangePassword.value;
         this.accountService.changePassword(this.passwordDTO).subscribe(
-          (data) => {
-            this.toastr.success(
-              "Thay đổi mật khẩu thành công",
-              "Thành công",
-              {timeOut: 3000, extendedTimeOut: 1500}
+          () => {
+            this.router.navigateByUrl("/").then(
+              r => this.toastrService.success(
+                "Đổi mật khẩu thành công",
+                "Thông báo",
+                {timeOut: 3000, extendedTimeOut: 1500})
             )
-
           },
           (error: HttpErrorResponse) => {
-            this.errorMessage = error.error ;
-            this.toastr.error(
-              this.errorMessage,
-              "Thay đổi mật khẩu thất bại. ",
-              {timeOut: 3000, extendedTimeOut: 1500}
-            )
+              this.toastrService.error(
+                error.error,
+                "Thông báo",
+                {timeOut: 3000, extendedTimeOut: 1500})
           }
         );
       }
