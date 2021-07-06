@@ -1,15 +1,13 @@
-import { ChangePasswordComponent } from './../security/change-password/change-password.component';
-import { UpdateInfoComponent } from './../security/update-info/update-info.component';
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import {LoginComponent} from "./login/login.component";
+import {ChangePasswordComponent} from './../security/change-password/change-password.component';
+import {UpdateInfoComponent} from './../security/update-info/update-info.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {HomePageComponent} from "./home-page/home-page.component";
 import {ToastrModule} from "ngx-toastr";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { AuthGuard } from '../security/auth-guard';
 
+
 const routes: Routes = [
-  {path: 'login', component: LoginComponent},
   {path: '', component: HomePageComponent},
   {
     path: 'update-info',component : UpdateInfoComponent,
@@ -36,4 +34,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {
+}

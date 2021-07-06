@@ -9,5 +9,5 @@ export interface TeacherUpdateDTO {
   hometown: string;
   level: string;
   position: string;
-  imageUrl : string;
+  imageUrl: string;
 }

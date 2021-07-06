@@ -9,5 +9,5 @@ export interface ITeacherViewDTO {
   hometown: string;
   level: string;
   position: string;
-  imageUrl : string ;
+  imageUrl: string;
 }
