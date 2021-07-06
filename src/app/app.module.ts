@@ -14,7 +14,6 @@ import {environment} from '../environments/environment';
 import {AngularFireStorageModule} from "@angular/fire/storage";
 import {AngularFireDatabaseModule} from "@angular/fire/database";
 import {SecurityModule} from './security/security.module';
-import {JwtModule} from "@auth0/angular-jwt";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({

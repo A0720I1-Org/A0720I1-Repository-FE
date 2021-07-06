@@ -5,12 +5,14 @@ import {environment} from '../../environments/environment';
 import {TeacherUpdateDTO} from '../dto/teacher/TeacherUpdateDTO';
 import {TeacherCreateDTO} from '../dto/teacher/TeacherCreateDTO';
 import {TokenStorageService} from "./token-storage.service";
+import {HomeroomClassDTO} from "../dto/teacher/HomeroomClassDTO";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherService {
   private API_URL = environment.apiBaseUrl;
+
   httpOptions: any;
 
   constructor(
@@ -49,5 +51,25 @@ export class TeacherService {
 
   getSearch(index: number, name: string, address: string): Observable<any> {
     return this.httpClient.get<any>(this.API_URL + '/api/public/search?index=' + index + '&name=' + name + '&address=' + address, this.httpOptions);
+  }
+
+  getStudentByClassId(username: string): Observable<any>{
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/teacher/homeroom-class/list/' + username, this.httpOptions);
+  }
+
+  getPageStudentByClassId(index: number, username: string): Observable<any> {
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/teacher/homeroom-class/'+ username +'?index=' + index, this.httpOptions);
+  }
+
+  getSearchStudent(index: number, name: string): Observable<any> {
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/teacher/homeroom-class/search?index=' +index + '&name=' + name, this.httpOptions);
+  }
+
+  viewDetailStudent(id: number): Observable<any>{
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/teacher/homeroom-class/details/'+id, this.httpOptions)
+  }
+
+  getTeacherSchedule(username: string): Observable<any>{
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/teacher/teacher-schedule/' + username, this.httpOptions)
   }
 }

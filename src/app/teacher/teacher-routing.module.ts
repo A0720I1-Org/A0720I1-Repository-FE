@@ -5,6 +5,8 @@ import {UpdateTeacherComponent} from './update-teacher/update-teacher.component'
 import {ListTeacherComponent} from './list-teacher/list-teacher.component';
 import {AuthGuard} from '../security/auth-guard';
 import {StudentResultComponent} from "./student-result/student-result.component";
+import {ListHomeroomClassComponent} from "./list-homeroom-class/list-homeroom-class.component";
+import {TeacherScheduleComponent} from "./teacher-schedule/teacher-schedule.component";
 
 
 const routes: Routes = [
@@ -31,8 +33,23 @@ const routes: Routes = [
       roles: ['ROLE_ADMIN']
     }
   },
-  {path: '', component: ListTeacherComponent},
-  {path: 'student-result', component: StudentResultComponent}
+
+  {path: 'student-result', component: StudentResultComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER', "ROLE_STUDENT"]
+    }},
+
+  {path: 'homeroom-class', component: ListHomeroomClassComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER']
+    }},
+  {path: 'teacher-schedule', component: TeacherScheduleComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
+    }}
 ];
 
 @NgModule({

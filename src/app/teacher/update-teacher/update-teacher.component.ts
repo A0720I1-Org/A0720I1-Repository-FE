@@ -85,7 +85,7 @@ export class UpdateTeacherComponent implements OnInit {
       }
       this.imageUrl = data.imageUrl;
       if (data.imageUrl === '') {
-        this.imageUrl = 'assets/img/faces/card-image.jpg'
+        this.imageUrl = 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df'
       } else {
         this.imageUrl = data.imageUrl;
       }
@@ -184,5 +184,14 @@ export class UpdateTeacherComponent implements OnInit {
     }
   }
 
+  getImageUrl(){
+    if(this.filePath != null){
+      return this.filePath;
+    }
+    if(this.formTeacher.value.imageUrl != ""){
+      return this.formTeacher.value.imageUrl;
+    }
+    return 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df';
+  }
 
 }
