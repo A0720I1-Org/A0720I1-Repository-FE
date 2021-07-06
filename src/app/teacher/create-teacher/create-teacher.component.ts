@@ -7,6 +7,7 @@ import {finalize} from "rxjs/operators";
 import {TeacherService} from "../../service/teacher.service";
 import {ToastrService} from "ngx-toastr";
 import {TeacherCreateDTO} from "../../dto/teacher/TeacherCreateDTO";
+import {TeacherCreateError} from "../../dto/teacher/TeacherCreateError";
 
 @Component({
   selector: 'app-create-teacher',
@@ -55,6 +56,7 @@ export class CreateTeacherComponent implements OnInit {
   inputImage: any = null;
   teacher: TeacherCreateDTO;
   uploading: boolean;
+  errorMessage = new TeacherCreateError();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -159,8 +161,11 @@ export class CreateTeacherComponent implements OnInit {
               {timeOut: 3000, extendedTimeOut: 1500})
         },
         err => {
+          this.errorMessage = err.error.errors;
+          console.log(err.error)
+          console.log(this.errorMessage)
           this.toastrService.error(
-            err.error.errors[0],
+            "Không thể tạo giáo viên",
             "Có lỗi xảy ra",
             {timeOut: 3000, extendedTimeOut: 1500}
           )
