@@ -1,6 +1,17 @@
 .bg-login{
-  background-color: rgba(255, 255, 255, 0.91);
+  background-color: white;
 }
-.bg-wrapper-login{
-  background-image: url("src/assets/img/login/school-login.jpg");
+.text-login {
+  font-size: 20px;
+  font-weight: bold;
 }
+.margin-login {
+  margin: 0;
+}
+
+.border-shadow {
+  box-shadow: 1px 1px 5px #fffefe;
+  border-radius: 5px;
+}
+
+

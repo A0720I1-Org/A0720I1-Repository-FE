@@ -14,13 +14,13 @@ import {ToastrModule} from "ngx-toastr";
 import {StudentResultComponent} from './student-result/student-result.component';
 
 @NgModule({
-  declarations: [
-    ListTeacherComponent,
-    UpdateTeacherComponent,
-    CreateTeacherComponent,
-    ViewTeacherComponent,
-    StudentResultComponent
-  ],
+    declarations: [
+        ListTeacherComponent,
+        UpdateTeacherComponent,
+        CreateTeacherComponent,
+        ViewTeacherComponent,
+        StudentResultComponent
+    ],
   exports: [
     CreateTeacherComponent,
     UpdateTeacherComponent,
