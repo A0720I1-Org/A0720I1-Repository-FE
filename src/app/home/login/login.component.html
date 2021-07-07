@@ -1,49 +1,48 @@
-<!--<div class="container mt-3 mb-3">-->
-<!--  <div class="col-lg-4 col-sm-8 mx-auto">-->
-    <div class="card-register bg-login border-shadow margin-login">
-      <p class="title text-dark mt-1 mb-1 text-login">Đăng nhập</p>
-      <form class="card-body-text-bold" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="username">Tên đăng nhập</label>
-          <input type="email" class="form-control" id="username" aria-describedby="username"
-                 placeholder="Username" formControlName="username">
-          <ng-container *ngFor="let validation of validationMessage.username">
-            <small class="form-text text-danger"
-                   *ngIf="loginForm.get('username').hasError(validation.type)&& loginForm.get('username').touched">
-              {{validation.message}}
-            </small>
-          </ng-container>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Mật khẩu</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
-                 formControlName="password">
-          <ng-container *ngFor="let validation of validationMessage.password">
-            <small class="form-text text-danger"
-                   *ngIf="loginForm.get('password').hasError(validation.type)&& loginForm.get('password').touched">
-              {{validation.message}}
-            </small>
-          </ng-container>
-        </div>
-        <div class="form-check">
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" formControlName="remember">
-            Ghi nhớ tài khoản
-            <span class="form-check-sign">
+
+<div class="card-register bg-login border-shadow margin-login">
+  <p class="title text-dark mt-1 mb-1 text-login">Đăng nhập</p>
+  <form class="card-body-text-bold" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="username">Tên đăng nhập</label>
+      <input type="email" class="form-control" id="username" aria-describedby="username"
+             placeholder="Username" formControlName="username">
+      <ng-container *ngFor="let validation of validationMessage.username">
+        <small class="form-text text-danger"
+               *ngIf="loginForm.get('username').hasError(validation.type)&& loginForm.get('username').touched">
+          {{validation.message}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Mật khẩu</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
+             formControlName="password">
+      <ng-container *ngFor="let validation of validationMessage.password">
+        <small class="form-text text-danger"
+               *ngIf="loginForm.get('password').hasError(validation.type)&& loginForm.get('password').touched">
+          {{validation.message}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" formControlName="remember">
+        Ghi nhớ tài khoản
+        <span class="form-check-sign">
                                         <span class="check"></span>
                                         </span>
-          </label>
-        </div>
-        <div class="row">
-          <div class="update ml-auto mr-auto">
-            <button type="submit" class="btn btn-success mr-3">Đăng nhập</button>
-            <a class="btn btn-primary" (click)="closeDialog()">Trở về</a>
-          </div>
-        </div>
-      </form>
-      <div class="forgot mx-0">
-        <a href="#" class="btn btn-link btn-danger">Quên mật khẩu?</a>
+      </label>
+    </div>
+    <div class="row">
+      <div class="update ml-auto mr-auto">
+        <button type="submit" class="btn btn-success mr-3">Đăng nhập</button>
+        <a class="btn btn-primary" (click)="closeDialog()">Trở về</a>
+
       </div>
     </div>
-<!--  </div>-->
-<!--</div>-->
+  </form>
+  <div class="forgot mx-0">
+    <a href="#" class="btn btn-link btn-danger">Quên mật khẩu?</a>
+  </div>
+</div>
+

@@ -7,6 +7,7 @@ import {finalize} from "rxjs/operators";
 import {TeacherService} from "../../service/teacher.service";
 import {ToastrService} from "ngx-toastr";
 import {TeacherCreateDTO} from "../../dto/teacher/TeacherCreateDTO";
+import {TeacherCreateError} from "../../dto/teacher/TeacherCreateError";
 
 @Component({
   selector: 'app-create-teacher',
@@ -55,6 +56,7 @@ export class CreateTeacherComponent implements OnInit {
   inputImage: any = null;
   teacher: TeacherCreateDTO;
   uploading: boolean;
+  errorMessage = new TeacherCreateError();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -115,7 +117,6 @@ export class CreateTeacherComponent implements OnInit {
     this.inputImage = event.target.files[0];
   }
 
-
   onSubmit() {
     if (this.inputImage != null) {
       this.uploading = true;
@@ -124,8 +125,9 @@ export class CreateTeacherComponent implements OnInit {
       this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
         finalize(() => {
           fileRef.getDownloadURL().subscribe((url) => {
+
             this.teacher = new TeacherCreateDTO(this.teacherForm.get('username').value, this.teacherForm.get('pwGroup').get('password').value,
-              this.teacherForm.get('name').value, this.teacherForm.get('birthday').value, this.teacherForm.get('gender').value,this.teacherForm.get('email').value, url)
+              this.teacherForm.get('name').value, this.teacherForm.get('birthday').value, this.teacherForm.get('gender').value, this.teacherForm.get('email').value, url)
             this.teacherService.createTeacher(this.teacher).subscribe(
               (data) => {
                 this.router.navigateByUrl("/teacher").then(
@@ -136,8 +138,9 @@ export class CreateTeacherComponent implements OnInit {
                 )
               },
               err => {
+                this.errorMessage = err.error.errors;
                 this.toastrService.error(
-                  err.error.errors[0],
+                  "Không thể tạo giáo viên",
                   "Có lỗi xảy ra",
                   {timeOut: 3000, extendedTimeOut: 1500}
                 )
@@ -149,27 +152,28 @@ export class CreateTeacherComponent implements OnInit {
       ).subscribe()
     } else {
       this.teacher = new TeacherCreateDTO(this.teacherForm.get('username').value, this.teacherForm.get('pwGroup').get('password').value,
-        this.teacherForm.get('name').value, this.teacherForm.get('birthday').value, this.teacherForm.get('gender').value,this.teacherForm.get('email').value, null)
+        this.teacherForm.get('name').value, this.teacherForm.get('birthday').value, this.teacherForm.get('gender').value, this.teacherForm.get('email').value, null)
       this.teacherService.createTeacher(this.teacher).subscribe(
         (data) => {
           this.teacherForm.reset();
           this.toastrService.success(
-              "Thêm mới thành công giáo viên",
-              "Thông báo",
-              {timeOut: 3000, extendedTimeOut: 1500})
+            "Thêm mới thành công giáo viên",
+            "Thông báo",
+            {timeOut: 3000, extendedTimeOut: 1500})
         },
         err => {
+          this.errorMessage = err.error.errors;
           this.toastrService.error(
-            err.error.errors[0],
+            "Không thể tạo giáo viên",
             "Có lỗi xảy ra",
             {timeOut: 3000, extendedTimeOut: 1500}
           )
         }
       )
     }
-
   }
 }
+
 function passwordMatched(formControl: AbstractControl) {
   const pw = formControl.value;
   if (pw.password !== pw.confirmPassword) {

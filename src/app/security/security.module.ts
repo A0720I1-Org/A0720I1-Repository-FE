@@ -6,6 +6,7 @@ import { UpdateInfoComponent } from './update-info/update-info.component';
 import { RouterModule } from '@angular/router';
 import {ToastrModule} from "ngx-toastr";
 
+
 @NgModule({
   declarations: [ChangePasswordComponent, UpdateInfoComponent],
   imports: [

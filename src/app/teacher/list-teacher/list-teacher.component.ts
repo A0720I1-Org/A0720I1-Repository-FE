@@ -5,6 +5,9 @@ import {TeacherService} from '../../service/teacher.service';
 import {ITeacherViewDTO} from '../../dto/teacher/TeacherViewDTO';
 import {MatDialog} from '@angular/material/dialog';
 import {ViewTeacherComponent} from '../view-teacher/view-teacher.component';
+import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
+import {TokenStorageService} from "../../service/token-storage.service";
 
 
 @Component({
@@ -18,23 +21,39 @@ export class ListTeacherComponent implements OnInit {
   listTeacher: ITeacherListDTO[];
   listTeacherNoPagination: ITeacherListDTO[];
   teacher: ITeacherViewDTO;
-  nameSearch: string;
-  addressSearch: string;
+  nameSearch: string = '';
+  addressSearch: string = '';
+  role: string = '';
 
   constructor(
     private teacherService: TeacherService,
     public dialog: MatDialog,
+    private router: Router,
+    private toastrService: ToastrService,
+    private tokenStorageService: TokenStorageService
   ) {
   }
 
   ngOnInit(): void {
     this.getAllTeacher();
+    if (this.tokenStorageService.getUser() !== null) {
+      this.role = this.tokenStorageService.getUser().roles[0];
+    }
   }
 
   getAllTeacher() {
     this.teacherService.getPageAllTeacher(0).subscribe(
       (data: ITeacherListDTO[]) => {
-        this.listTeacher = data;
+        if (data == null) {
+          this.router.navigateByUrl('/teacher').then(
+            r => this.toastrService.warning(
+              "Không tìm thấy dữ liệu",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+          )
+        } else {
+          this.listTeacher = data;
+        }
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);
@@ -43,6 +62,8 @@ export class ListTeacherComponent implements OnInit {
       this.listTeacherNoPagination = data;
       if ((this.listTeacherNoPagination.length % 5) != 0) {
         this.totalPagination = (Math.round(this.listTeacherNoPagination.length / 5)) + 1;
+      } else {
+        this.totalPagination = this.listTeacherNoPagination.length / 5;
       }
     });
   }
@@ -102,7 +123,7 @@ export class ListTeacherComponent implements OnInit {
   }
 
   lastPage() {
-    this.indexPagination = this.listTeacherNoPagination.length / 5;
+    this.indexPagination = Math.round(this.listTeacherNoPagination.length / 5) + 1;
     this.teacherService.getPageAllTeacher((this.indexPagination * 5) - 5).subscribe(
       (data: ITeacherListDTO[]) => {
         this.listTeacher = data;
@@ -110,13 +131,34 @@ export class ListTeacherComponent implements OnInit {
   }
 
   getSearch(index: number) {
-    this.teacherService.getSearch(index, this.nameSearch, this.addressSearch).subscribe(
-      (data: ITeacherListDTO[]) => {
-        console.log(data);
-        this.listTeacher = data;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.message);
-      });
+    if (this.nameSearch === '' && this.addressSearch === '') {
+      this.teacherService.getPageAllTeacher(0).subscribe(
+        (data) => {
+          this.listTeacher = data;
+          this.router.navigateByUrl('/teacher').then(
+            r => this.toastrService.warning(
+              "Vui lòng nhập để tìm kiếm",
+              "Thông báo",
+              {timeOut: 3000, extendedTimeOut: 1500})
+          )
+        });
+    } else {
+      this.teacherService.getSearch(index, this.nameSearch, this.addressSearch).subscribe(
+        (data: ITeacherListDTO[]) => {
+          if (data == null) {
+            this.router.navigateByUrl('/teacher').then(
+              r => this.toastrService.warning(
+                "Không tìm thấy dữ liệu",
+                "Thông báo",
+                {timeOut: 3000, extendedTimeOut: 1500})
+            )
+          } else {
+            this.listTeacher = data;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.message);
+        });
+    }
   }
 }
