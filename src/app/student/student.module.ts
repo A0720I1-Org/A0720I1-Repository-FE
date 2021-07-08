@@ -7,6 +7,7 @@ import { UpdateStudentComponent } from './update-student/update-student.componen
 import { CreateStudentComponent } from './create-student/create-student.component';
 
 
+
 @NgModule({
   declarations: [ListStudentComponent, UpdateStudentComponent, CreateStudentComponent],
   imports: [

@@ -1,3 +1,4 @@
+
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {CreateTeacherComponent} from './create-teacher/create-teacher.component';
@@ -7,6 +8,7 @@ import {AuthGuard} from '../security/auth-guard';
 import {StudentResultComponent} from "./student-result/student-result.component";
 import {ListHomeroomClassComponent} from "./list-homeroom-class/list-homeroom-class.component";
 import {TeacherScheduleComponent} from "./teacher-schedule/teacher-schedule.component";
+import { ClassResultComponent } from './class-result/class-result.component';
 
 
 const routes: Routes = [
@@ -49,7 +51,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: {
       roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
-    }}
+    }},
+    {path: 'average', component: ClassResultComponent},
 ];
 
 @NgModule({
