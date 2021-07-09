@@ -27,7 +27,7 @@ import {TokenStorageService} from "../../service/token-storage.service";
   styleUrls: ['./list-student.component.scss']
 })
 export class ListStudentComponent implements OnInit {
-  yearList: ISchoolYear[] = null;
+  yearList: ISchoolYear[] =  null;
   gradeList: IGrade[] = null;
   classList: IStudentClass[] = null;
   classSearchData = new ClassSearchData();
@@ -53,6 +53,7 @@ export class ListStudentComponent implements OnInit {
   hometownSearch: string;
   studentClassId: number = 0;
   role: string;
+  selected : boolean = false ;
   constructor(
     private studentService: StudentService,
     public dialog: MatDialog,
@@ -64,6 +65,7 @@ export class ListStudentComponent implements OnInit {
     private toastrService: ToastrService,
     private tokenStorageService: TokenStorageService,
   ) {
+
   }
 
   ngOnInit(): void {
@@ -89,7 +91,7 @@ export class ListStudentComponent implements OnInit {
   }
 
   getYearId(selectedYear) {
-    this.classSearchData.yearId = selectedYear.value;
+    this.classSearchData.yearId =  selectedYear.value;
   }
 
 
@@ -101,7 +103,7 @@ export class ListStudentComponent implements OnInit {
     this.classStudentService.getClassesByYearAndGrade(this.classSearchData).subscribe(
       (data) => {
         this.classList = data;
-
+        console.log("classlist "+data)
       }
     )
   }
@@ -110,31 +112,29 @@ export class ListStudentComponent implements OnInit {
     this.studentClassId = selectClassId.value;
   }
 
-  getTotalPage(){
-
-  }
 
   showLists() {
-    this.indexPagination = 1;
-    this.studentService.getAllStudentByClassId(this.studentClassId, 0).subscribe((data: IStudentListDTO[]) => {
-        console.log('class id' + this.studentClassId);
-        this.listStudent = data;
-        this.studentService.getListStudent(this.studentClassId).subscribe((data: IStudentListDTO[]) => {
-          this.listStudentNoPagination = data;
-          // if ((this.listStudentNoPagination.length % 5) != 0) {
-          //   this.totalPagination = (Math.c(this.listStudentNoPagination.length / 5));
-          // } else {
-          //   this.totalPagination = this.listStudentNoPagination.length / 5
-          // }
-          this.totalPagination = (Math.ceil(this.listStudentNoPagination.length / 5));
-          console.log('total page' + this.totalPagination)
-          console.log(data)
+    if (this.classSearchData.yearId && this.classSearchData.gradeId){
+      this.selected = true ;
+      this.indexPagination = 1;
+      this.studentService.getAllStudentByClassId(this.studentClassId, 0).subscribe((data: IStudentListDTO[]) => {
+          this.listStudent = data;
+          this.studentService.getListStudent(this.studentClassId).subscribe((data: IStudentListDTO[]) => {
+            this.listStudentNoPagination = data;
+            this.totalPagination = (Math.ceil(this.listStudentNoPagination.length / 5));
+          });
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.message)
         });
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.message)
-      });
+    }else {
+        this.toastrService.warning(
+          "Vui lòng nhập các lựa chọn",
+          "Thông báo",
+          {timeOut: 3000, extendedTimeOut: 1500});
+    }
   }
+
 
   getViewStudent(id: number) {
     this.studentService.getStudentById(id).subscribe(
@@ -216,7 +216,7 @@ export class ListStudentComponent implements OnInit {
   }
 
   lastPage() {
-    this.indexPagination = Math.round(this.listStudentNoPagination.length / 5) + 1;
+    this.indexPagination = Math.ceil(this.listStudentNoPagination.length / 5) + 1;
     this.studentService.getAllStudentByClassId(this.studentClassId, (this.indexPagination * 5) - 5).subscribe(
       (data: IStudentListDTO[]) => {
         this.listStudent = data;
@@ -247,7 +247,12 @@ export class ListStudentComponent implements OnInit {
                 {timeOut: 3000, extendedTimeOut: 1500})
             )
           } else {
+            this.indexPagination = 1;
             this.listStudent = data;
+            this.studentService.getListStudent(this.studentClassId).subscribe((data: IStudentListDTO[]) => {
+              this.listStudentNoPagination = data;
+              this.totalPagination = (Math.ceil(this.listStudentNoPagination.length / 5));
+            });
           }
         },
         (error: HttpErrorResponse) => {

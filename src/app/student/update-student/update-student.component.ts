@@ -31,17 +31,23 @@ export class UpdateStudentComponent implements OnInit {
   validationMessages = {
     'name': [
       {type: 'required', message: 'Tên chỉ không được để trống.'},
-      {type: 'pattern', message: 'Tên không đúng định dạng.'}
+      {type: 'pattern', message: 'Tên không đúng định dạng.'},
+      {type: 'minlength', message: 'Tên tối thiểu 5 ký tự.'},
+      {type: 'maxlength', message: 'Tên tối đa 30 ký tự.'}
     ],
     'gender': [
       {type: 'required', message: 'không được để trống.'},
     ],
     'hometown': [
       {type: 'required', message: 'Quê quán không được để trống.'},
+      {type: 'pattern', message: 'Quê quán không đúng định dạng.'},
+      {type: 'minlength', message: 'Quê quán thiểu 2 ký tự.'},
+      {type: 'maxlength', message: 'Quê quán đa 30 ký tự.'}
     ],
     'email': [
       {type: 'required', message: 'Email không được để trống.'},
       {type: 'email', message: 'Email không đúng định dạng.'}
+
     ],
     'religion': [
       {type: 'required', message: 'không được để trống.'},
@@ -74,11 +80,14 @@ export class UpdateStudentComponent implements OnInit {
     this.formStudent = this.fb.group({
       id: [''],
       name: ['', Validators.compose([
-        Validators.required])
+        Validators.required,
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/),
+        Validators.minLength(5),
+        Validators.maxLength(30)])
       ],
-      imageUrl: ['', Validators.compose([
-        Validators.required])
-      ],
+      // imageUrl: ['', Validators.compose([
+      //   Validators.required])
+      // ],
 
       birthday: ['', Validators.compose([
         Validators.required])
@@ -87,7 +96,10 @@ export class UpdateStudentComponent implements OnInit {
         Validators.required])
       ],
       hometown: ['', Validators.compose([
-        Validators.required])
+        Validators.required,
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/),
+        Validators.minLength(2),
+        Validators.maxLength(30)])
       ],
       email: ['', Validators.compose([
         Validators.required,
@@ -99,7 +111,6 @@ export class UpdateStudentComponent implements OnInit {
       ethnicity: ['', Validators.compose([
         Validators.required])
       ],
-
     });
   }
 
@@ -111,7 +122,8 @@ export class UpdateStudentComponent implements OnInit {
             "Đã cập nhập thành công",
             "Thông báo",
             {timeOut: 3000, extendedTimeOut: 1500})
-        )
+        );
+
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);
