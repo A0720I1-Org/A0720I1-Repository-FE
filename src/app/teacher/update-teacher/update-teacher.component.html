@@ -1,157 +1,166 @@
 <!-- Start table information-->
-<div class="row">
-  <div class="col-md-3">
-    <div class="card-user border-shadow">
-      <div class="card-body">
-        <div class="author">
-          <div class="mx-auto">
-            <img class="col-md-12" src="assets/img/faces/card-image.jpg" alt="card image">
-          </div>
-          <hr>
-          <div class="text-center">
-            <p class="description font-weight-bold">
-              {{teacher.name}}
-            </p>
-            <p class="description">
-              Chức vụ: {{teacher.position}}
-            </p>
-            <p class="description">
-              Lớp: {{studentClass}}
-            </p>
+<div class="container mt-3 mb-3">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card-user border-shadow">
+        <div class="card-body">
+          <div class="author">
+            <div class="mx-auto">
+              <img class="col-md-12" [src]="getImageUrl()" alt="card image">
+            </div>
+            <hr>
+            <div class="text-center">
+              <p class="description font-weight-bold">
+                {{teacher.name}}
+              </p>
+              <p class="description">
+                Chức vụ: {{teacher.position}}
+              </p>
+              <p class="description">
+                Lớp: {{studentClass}}
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!--End table information-->
+    <!--End table information-->
 
-  <!--Start table edit teacher-->
-  <div class="col-md-9">
-    <div class="card-user border-shadow">
-      <div class="card-header card-background-color">
-        <h4 class="card-title card-header-text-bold text-light">Thông tin giáo viên</h4>
-      </div>
-      <div class="card-body card-body-text-bold">
-        <form [formGroup]="formTeacher" (ngSubmit)="updateTeacher()">
-          <div class="row">
-            <div class="col-md-12 pr-1">
-              <div class="form-group">
-                <label for="name">Họ và tên</label>
-                <input type="text" class="form-control" id="name" placeholder="Họ và tên"
-                       formControlName="name">
-                <ng-container *ngFor="let validation of validationMessages.name">
-                  <p class="text-danger"
-                     *ngIf="formTeacher.get('name').hasError(validation.type) && (formTeacher.get('name').dirty || formTeacher.get('name').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
+    <!--Start table edit teacher-->
+    <div class="col-md-9">
+      <div class="card-user border-shadow">
+        <div class="card-header card-background-color">
+          <p class="card-title card-header-text-bold text-light pt-3">Thông tin giáo viên</p>
+        </div>
+        <div class="card-body card-body-text-bold">
+          <form [formGroup]="formTeacher" (ngSubmit)="updateTeacher()">
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label for="name" class="required">Họ và tên</label>
+                  <input type="text" class="form-control" id="name" placeholder="Họ và tên"
+                         formControlName="name">
+                  <ng-container *ngFor="let validation of validationMessages.name">
+                    <small class="text-danger"
+                           *ngIf="formTeacher.get('name').hasError(validation.type) && (formTeacher.get('name').dirty || formTeacher.get('name').touched)">
+                      {{validation.message}}
+                    </small>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label for="imageUrl">Hình ảnh</label>
+                  <input type="file" class="form-control" id="imageUrl" placeholder="Image" accept=".jpg,.jpeg,.png"
+                         (change)="selectImage($event)">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label for="gender">Giới tính</label>
-                <select class="form-control" id="gender" formControlName="gender">
-                  <option [value]="'Nam'">Nam</option>
-                  <option [value]="'Nữ'">Nữ</option>
-                  <option [value]="'Khác'">Khác</option>
-                </select>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label for="gender" class="required">Giới tính</label>
+                  <select class="form-control" id="gender" formControlName="gender">
+                    <option [value]="'Nam'">Nam</option>
+                    <option [value]="'Nữ'">Nữ</option>
+                    <option [value]="'Khác'">Khác</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label for="birthday" class="required">Ngày sinh</label>
+                  <input type="date" class="form-control" placeholder="Ngày sinh" id="birthday"
+                         formControlName="birthday">
+                </div>
               </div>
             </div>
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label for="birthday">Ngày Sinh</label>
-                <input type="date" class="form-control" placeholder="Ngày sinh" id="birthday"
-                       formControlName="birthday">
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label class="required">Địa chỉ</label>
+                  <input type="text" class="form-control" placeholder="Địa chỉ" formControlName="address">
+                  <ng-container *ngFor="let validation of validationMessages.address">
+                    <small class="text-danger"
+                       *ngIf="formTeacher.get('address').hasError(validation.type) && (formTeacher.get('address').dirty || formTeacher.get('address').touched)">
+                      {{validation.message}}
+                    </small>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label class="required">Quê quán</label>
+                  <input type="text" class="form-control" placeholder="Quê quán" formControlName="hometown">
+                  <ng-container *ngFor="let validation of validationMessages.hometown">
+                    <small class="text-danger"
+                       *ngIf="formTeacher.get('hometown').hasError(validation.type) && (formTeacher.get('hometown').dirty || formTeacher.get('hometown').touched)">
+                      {{validation.message}}
+                    </small>
+                  </ng-container>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label>Địa Chỉ</label>
-                <input type="text" class="form-control" placeholder="Địa chỉ" formControlName="address">
-                <ng-container *ngFor="let validation of validationMessages.address">
-                  <p class="text-danger"
-                     *ngIf="formTeacher.get('address').hasError(validation.type) && (formTeacher.get('address').dirty || formTeacher.get('address').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label class="required">Số điện thoại</label>
+                  <input type="text" class="form-control" placeholder="Số điện thoại" formControlName="phone">
+                  <ng-container *ngFor="let validation of validationMessages.phone">
+                    <small class="text-danger"
+                       *ngIf="formTeacher.get('phone').hasError(validation.type) && (formTeacher.get('phone').dirty || formTeacher.get('phone').touched)">
+                      {{validation.message}}
+                    </small>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label for="email" class="required">Email</label>
+                  <input type="text" class="form-control" placeholder="Email" id="email" formControlName="email">
+                  <ng-container *ngFor="let validation of validationMessages.email">
+                    <small class="text-danger"
+                       *ngIf="formTeacher.get('email').hasError(validation.type) && (formTeacher.get('email').dirty || formTeacher.get('email').touched)">
+                      {{validation.message}}
+                    </small>
+                  </ng-container>
+                </div>
               </div>
             </div>
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label>Quê Quán</label>
-                <input type="text" class="form-control" placeholder="Quê quán" formControlName="hometown">
-                <ng-container *ngFor="let validation of validationMessages.hometown">
-                  <p class="text-danger"
-                     *ngIf="formTeacher.get('hometown').hasError(validation.type) && (formTeacher.get('hometown').dirty || formTeacher.get('hometown').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label for="level" class="required">Trình Độ</label>
+                  <select class="form-control" id="level" formControlName="level">
+                    <option [value]="'Cao Đẳng'">Cao đẳng</option>
+                    <option [value]="'Đại Học'">Đại học</option>
+                    <option [value]="'Thạc Sĩ'">Thạc sĩ</option>
+                    <option [value]="'Tiến Sĩ'">Tiến sĩ</option>
+                    <option [value]="'Khác'">Khác</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label class="required">Chức vụ</label>
+                  <input type="text" class="form-control" placeholder="Chức vụ" formControlName="position">
+                  <ng-container *ngFor="let validation of validationMessages.position">
+                    <small class="text-danger"
+                       *ngIf="formTeacher.get('position').hasError(validation.type) && (formTeacher.get('position').dirty || formTeacher.get('position').touched)">
+                      {{validation.message}}
+                    </small>
+                  </ng-container>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label>Số Điện Thoại</label>
-                <input type="text" class="form-control" placeholder="Số điện thoại" formControlName="phone">
-                <ng-container *ngFor="let validation of validationMessages.phone">
-                  <p class="text-danger"
-                     *ngIf="formTeacher.get('phone').hasError(validation.type) && (formTeacher.get('phone').dirty || formTeacher.get('phone').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
+            <div class="row">
+              <div class="update mt-3 mb-3 ml-auto mr-auto">
+                <button type="submit" class="btn btn-warning mr-3">Xác nhận</button>
+                <button type="submit" class="btn btn-primary" routerLink="/teacher">Quay lại</button>
               </div>
             </div>
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" class="form-control" placeholder="Email"  id="email" formControlName="email">
-                <ng-container *ngFor="let validation of validationMessages.email">
-                  <p class="text-danger"
-                     *ngIf="formTeacher.get('email').hasError(validation.type) && (formTeacher.get('email').dirty || formTeacher.get('email').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label for="level" fo>Trình Độ</label>
-                <select class="form-control" id="level" formControlName="level">
-                  <option [value]="'Cao Đẳng'">Cao Đẳng</option>
-                  <option [value]="'Đại Học'">Đại Học</option>
-                  <option [value]="'Thạc Sĩ'">Thạc Sĩ</option>
-                  <option [value]="'Tiến Sĩ'">Tiến Sĩ</option>
-                  <option [value]="'Khác'">Khác</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label>Chức Vụ</label>
-                <input type="text" class="form-control" placeholder="Chức vụ" formControlName="position">
-                <ng-container *ngFor="let validation of validationMessages.position">
-                  <p class="text-danger"
-                     *ngIf="formTeacher.get('position').hasError(validation.type) && (formTeacher.get('position').dirty || formTeacher.get('position').touched)">
-                    {{validation.message}}
-                  </p>
-                </ng-container>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="update mt-3 mb-3 ml-auto mr-auto">
-              <button type="submit" class="btn btn-warning mr-3">Xác Nhận</button>
-              <button type="submit" class="btn btn-primary" routerLink="/teacher">Quay Lại</button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
