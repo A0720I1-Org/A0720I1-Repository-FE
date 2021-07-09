@@ -1,36 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import {SchoolYear} from "../../dto/schedule/SchoolYear";
+import {Grade} from "../../dto/schedule/Grade";
+import {StudentClass} from "../../dto/schedule/StudentClass";
+import {ScheduleShowLesson} from "../../dto/schedule/ScheduleShowLesson";
+import {TeacherSubject} from "../../dto/schedule/TeacherSubject";
 import {ScheduleService} from "../../service/schedule.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TeacherService} from "../../service/teacher.service";
 import {ToastrService} from "ngx-toastr";
 import {SchoolYearService} from "../../service/school-year.service";
 import {GradeService} from "../../service/grade.service";
-import {Grade} from "../../dto/schedule/Grade";
-import {ClassSearchData} from "../../dto/schedule/ClassSearchData";
 import {ClassStudentService} from "../../service/class-student.service";
-import {StudentClass} from "../../dto/schedule/StudentClass";
-import {ScheduleShowLesson} from "../../dto/schedule/ScheduleShowLesson";
-import {TeacherSubject} from "../../dto/schedule/TeacherSubject";
 import {TokenStorageService} from "../../service/token-storage.service";
-
+import {ScheduleClass} from "../../dto/schedule/ScheduleClass";
 
 @Component({
-  selector: 'app-show-schedule',
-  templateUrl: './show-schedule.component.html',
-  styleUrls: ['./show-schedule.component.scss']
+  selector: 'app-show-schedule-class',
+  templateUrl: './show-schedule-class.component.html',
+  styleUrls: ['./show-schedule-class.component.scss']
 })
-export class ShowScheduleComponent implements OnInit {
-  yearList: SchoolYear[] = null;
-  gradeList: Grade[] = null;
+export class ShowScheduleClassComponent implements OnInit {
   classList: StudentClass[] = null;
   classId: number = 0;
-  yearId: number = 0;
-  gradeId: number = 0;
   schedule: ScheduleShowLesson[];
   lessonNumbers = [1,2,3,4,5,6,7,8];
   lessonDates = [2,3,4,5,6];
   teacherSubjectList: TeacherSubject[];
+  scheduleClass: ScheduleClass = new ScheduleClass();
   role: string
 
   constructor(
@@ -41,53 +37,25 @@ export class ShowScheduleComponent implements OnInit {
     private schoolYearService: SchoolYearService,
     private gradeService: GradeService,
     private classStudentService: ClassStudentService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.getYearList();
-    this.getGradeList();
     this.role = this.tokenStorageService.getUser().roles[0];
+    this.getClassName()
+    this.showSchedule()
   }
 
-  getYearList() {
-    this.schoolYearService.getAllSchoolYear().subscribe(
-      (data) => {
-        this.yearList = data;
-      }
+  getClassName() {
+    this.classId = this.activatedRoute.snapshot.params['id'];
+    this.classStudentService.getClassNameByClassId(this.classId).subscribe(
+      (data) => this.scheduleClass = data
     )
-  }
-
-  getGradeList() {
-    this.gradeService.getAllGrades().subscribe(
-      (data) => {
-        this.gradeList = data;
-      }
-    )
-  }
-
-  getYearId(selectedYear) {
-    this.yearId = selectedYear.value;
-  }
-
-
-  getGradeId(selectedGrade) {
-    this.gradeId = selectedGrade.value;
-  }
-
-  getClassList() {
-    this.classStudentService.getClassesByYearAndGrade(this.yearId, this.gradeId).subscribe(
-      (data) => {
-        this.classList =  data;
-      }
-    )
-  }
-
-  selectClass(selectedClass) {
-    this.classId = selectedClass.value;
   }
 
   showSchedule() {
+    this.classId = this.activatedRoute.snapshot.params['id'];
     this.scheduleService.getScheduleByClassId(this.classId).subscribe(
       (data) => {
         this.schedule = data;
@@ -111,4 +79,5 @@ export class ShowScheduleComponent implements OnInit {
       }
     )
   }
+
 }
