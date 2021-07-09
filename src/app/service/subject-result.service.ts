@@ -40,7 +40,7 @@ export class SubjectResultService {
     return this.httpClient.get<IStudentResultDTO[]>(this.API_URL + '/api/teacher/subject-result?seReId='+ seReId + '&claStuId='+claStuId+'&subId='+subId,this.httpOptions);
   };
   getResultByStudentId(claStuId,seReId) : Observable<any> {
-    return this.httpClient.get<IStudentResultDTO[]>(this.API_URL + '/api/public/subject-result/average?seReId='+ seReId + '&claStuId='+claStuId,this.httpOptions);
+    return this.httpClient.get<IStudentResultDTO[]>(this.API_URL + '/api/teacher/subject-result/average?seReId='+ seReId + '&claStuId='+claStuId,this.httpOptions);
   }
   getListStudent(claStuId) : Observable<any> {
     return this.httpClient.get<IStudent>(this.API_URL + '/api/teacher/subject-result/student?claStuId='+claStuId,this.httpOptions);

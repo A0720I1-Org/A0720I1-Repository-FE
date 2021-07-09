@@ -72,7 +72,7 @@ export class UpdateInfoComponent implements OnInit {
       ],
       phone: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^(09|01[2|6|8|9])+([0-9]{8})\b$/)])
+        Validators.pattern(/^(0[3|5|7|8|9])+([0-9]{8})\b$/)])
       ],
       level: [''],
       position: [''],

@@ -78,7 +78,7 @@ export class ClassResultComponent implements OnInit {
       setTimeout(() => {
         this.getStudent();
         this.loading = false ;
-      },1000)
+      },500)
     }else {
       this.toastrService.warning(
         "Vui lòng nhập các lựa chọn",

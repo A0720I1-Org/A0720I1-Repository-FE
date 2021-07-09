@@ -52,7 +52,12 @@ const routes: Routes = [
     data: {
       roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
     }},
-    {path: 'average', component: ClassResultComponent},
+    {path: 'average', component: ClassResultComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
+    }
+  },
 ];
 
 @NgModule({
