@@ -13,6 +13,6 @@ export class ClassStudentService {
   constructor(private httpClient: HttpClient) { }
 
   getClassesByYearAndGrade(classSearchData: ClassSearchData): Observable<any>{
-    return this.httpClient.post<any>(this.API_URL + '/api/public/class/get-class-list-by-year-grade', classSearchData)
+    return this.httpClient.post<any>(this.API_URL + '/api/public/student/class/get-class-list-by-year-grade', classSearchData)
   }
 }

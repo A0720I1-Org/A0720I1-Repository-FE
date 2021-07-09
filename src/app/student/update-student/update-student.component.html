@@ -41,10 +41,10 @@
                 <input type="text" class="form-control" id="name" placeholder="Họ và tên"
                        formControlName="name">
                 <ng-container *ngFor="let validation of validationMessages.name">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formStudent.get('name').hasError(validation.type) && (formStudent.get('name').dirty || formStudent.get('name').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>
@@ -63,10 +63,10 @@
                   <label>Quê Quán</label>
                   <input type="text" class="form-control" placeholder="Quê quán" formControlName="hometown">
                   <ng-container *ngFor="let validation of validationMessages.hometown">
-                    <p class="text-danger"
+                    <small class="text-danger"
                        *ngIf="formStudent.get('hometown').hasError(validation.type) && (formStudent.get('hometown').dirty || formStudent.get('hometown').touched)">
                       {{validation.message}}
-                    </p>
+                    </small>
                   </ng-container>
                 </div>
             </div>
@@ -80,10 +80,10 @@
                 <label>Tôn giáo</label>
                 <input type="text" class="form-control" placeholder="Tôn giáo" formControlName="religion">
                 <ng-container *ngFor="let validation of validationMessages.religion">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formStudent.get('religion').hasError(validation.type) && (formStudent.get('religion').dirty || formStudent.get('religion').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>
@@ -95,10 +95,10 @@
                 <label for="email">Email</label>
                 <input type="text" class="form-control" placeholder="Email"  id="email" formControlName="email">
                 <ng-container *ngFor="let validation of validationMessages.email">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formStudent.get('email').hasError(validation.type) && (formStudent.get('email').dirty || formStudent.get('email').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>
@@ -108,17 +108,17 @@
                 <label>Dân Tộc</label>
                 <input type="text" class="form-control" placeholder="Dân tộc" formControlName="ethnicity">
                 <ng-container *ngFor="let validation of validationMessages.ethnicity">
-                  <p class="text-danger"
+                  <small class="text-danger"
                      *ngIf="formStudent.get('ethnicity').hasError(validation.type) && (formStudent.get('ethnicity').dirty || formStudent.get('ethnicity').touched)">
                     {{validation.message}}
-                  </p>
+                  </small>
                 </ng-container>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="update mt-3 mb-3 ml-auto mr-auto">
-              <button type="submit" class="btn btn-warning mr-3">Xác Nhận</button>
+              <button type="submit" class="btn btn-warning mr-3" [disabled]="formStudent.invalid">Xác Nhận</button>
               <button type="submit" class="btn btn-primary" routerLink="/student">Quay Lại</button>
             </div>
           </div>
