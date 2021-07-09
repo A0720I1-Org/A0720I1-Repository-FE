@@ -12,6 +12,10 @@ import {ViewTeacherComponent} from './view-teacher/view-teacher.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ToastrModule} from "ngx-toastr";
 import {StudentResultComponent} from './student-result/student-result.component';
+import { ListHomeroomClassComponent } from './list-homeroom-class/list-homeroom-class.component';
+import { ViewDetailStudentComponent } from './view-detail-student/view-detail-student.component';
+import { TeacherScheduleComponent } from './teacher-schedule/teacher-schedule.component';
+import { StudentResultDetailComponent } from './student-result-detail/student-result-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +23,13 @@ import {StudentResultComponent} from './student-result/student-result.component'
     UpdateTeacherComponent,
     CreateTeacherComponent,
     ViewTeacherComponent,
-    StudentResultComponent
+    StudentResultComponent,
+    ListHomeroomClassComponent,
+    ViewDetailStudentComponent,
+    TeacherScheduleComponent,
+    StudentResultDetailComponent
   ],
+
   exports: [
     CreateTeacherComponent,
     UpdateTeacherComponent,

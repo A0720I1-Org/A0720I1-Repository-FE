@@ -27,8 +27,10 @@ export class TokenStorageService {
 
   public getToken(): string {
     if (localStorage.getItem(TOKEN_KEY) != null) {
+      console.log(localStorage.getItem(TOKEN_KEY));
       return localStorage.getItem(TOKEN_KEY)
     } else {
+      console.log(sessionStorage.getItem(TOKEN_KEY))
       return sessionStorage.getItem(TOKEN_KEY)
     }
   }

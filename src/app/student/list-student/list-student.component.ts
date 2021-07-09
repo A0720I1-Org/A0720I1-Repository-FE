@@ -100,7 +100,7 @@ export class ListStudentComponent implements OnInit {
   }
 
   getClassList() {
-    this.classStudentService.getClassesByYearAndGrade(this.classSearchData).subscribe(
+    this.classStudentService.getClassesByYearGrade(this.classSearchData).subscribe(
       (data) => {
         this.classList = data;
         console.log("classlist "+data)

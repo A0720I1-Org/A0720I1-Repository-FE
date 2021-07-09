@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-10 mx-auto table-responsive">
+      <h2 class="text-center text-secondary"><b>Thông tin học sinh</b></h2>
+      <table class="table">
+        <tr>
+          <th class=" text-primary">Họ tên</th>
+          <td class="text-center">{{data.student.name}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Giới tính</th>
+          <td class="text-center">{{data.student.gender}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Ngày sinh</th>
+          <td class="text-center">{{data.student.birthday}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Quê quán</th>
+          <td class="text-center">{{data.student.hometown}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Dân tộc</th>
+          <td class="text-center">{{data.student.ethnicity}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Tôn giáo</th>
+          <td class="text-center">{{data.student.religion}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Email</th>
+          <td class="text-center">{{data.student.email}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Image</th>
+          <td class="text-center">{{data.student.imageUrl}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-12 d-flex flex-row justify-content-center">
+    <button (click)="onNoClick()" class="btn btn-primary mx-auto">Quay lại</button>
+  </div>
+</div>
