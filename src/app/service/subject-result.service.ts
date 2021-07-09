@@ -1,3 +1,4 @@
+import { IStudent } from './../models/IStudent';
 import { IStudentResultDTO } from './../dto/subject-result/IStudentResultDTO';
 import { IClassListDTO } from './../dto/subject-result/ClassListDTO';
 import { ISubject } from './../models/ISubject';
@@ -38,4 +39,10 @@ export class SubjectResultService {
   getSubjectResult(claStuId,seReId,subId) : Observable<any> {
     return this.httpClient.get<IStudentResultDTO[]>(this.API_URL + '/api/teacher/subject-result?seReId='+ seReId + '&claStuId='+claStuId+'&subId='+subId,this.httpOptions);
   };
+  getResultByStudentId(claStuId,seReId) : Observable<any> {
+    return this.httpClient.get<IStudentResultDTO[]>(this.API_URL + '/api/teacher/subject-result/average?seReId='+ seReId + '&claStuId='+claStuId,this.httpOptions);
+  }
+  getListStudent(claStuId) : Observable<any> {
+    return this.httpClient.get<IStudent>(this.API_URL + '/api/teacher/subject-result/student?claStuId='+claStuId,this.httpOptions);
+  }
 }
