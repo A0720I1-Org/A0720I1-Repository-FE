@@ -60,11 +60,7 @@ export class ListTeacherComponent implements OnInit {
       });
     this.teacherService.getListTeacher().subscribe((data: ITeacherListDTO[]) => {
       this.listTeacherNoPagination = data;
-      if ((this.listTeacherNoPagination.length % 5) != 0) {
-        this.totalPagination = (Math.round(this.listTeacherNoPagination.length / 5)) + 1;
-      } else {
-        this.totalPagination = this.listTeacherNoPagination.length / 5;
-      }
+      this.totalPagination = (Math.ceil(this.listTeacherNoPagination.length / 5));
     });
   }
 
@@ -123,7 +119,7 @@ export class ListTeacherComponent implements OnInit {
   }
 
   lastPage() {
-    this.indexPagination = Math.round(this.listTeacherNoPagination.length / 5) + 1;
+    this.indexPagination = Math.ceil(this.listTeacherNoPagination.length / 5);
     this.teacherService.getPageAllTeacher((this.indexPagination * 5) - 5).subscribe(
       (data: ITeacherListDTO[]) => {
         this.listTeacher = data;

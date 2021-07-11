@@ -6,7 +6,7 @@
       <div class="card-body">
         <div class="author">
           <div class="mx-auto">
-            <img class="col-md-12" [src]="formUpdate.value.imageUrl || filePath " alt="card image">
+            <img class="col-md-12" [src]="getImageUrl()" alt="card image">
           </div>
           <hr>
           <div class="text-center">
@@ -26,7 +26,7 @@
       <div class="card-header card-background-color d-flex justify-content-between">
         <p class="card-title card-header-text-bold text-light mt-2">Thông tin giáo viên</p>
         <div>
-          <a class="btn btn-primary text-light" [routerLink]="['/change-password/']" >Đổi mật khẩu</a>
+          <a class="btn btn-success text-light" [routerLink]="['/change-password/']" >Đổi mật khẩu</a>
         </div>
       </div>
       <div class="card-body card-body-text-bold">

@@ -1,6 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
-import { element } from 'protractor';
 import { IStudentResultDTO } from './../../dto/subject-result/IStudentResultDTO';
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -126,14 +125,14 @@ export class StudentResultComponent implements OnInit {
     }
   }
   handleViewDetail(id : number) {
-    let studentResultList : IStudentResultDTO[];
+    let studentResultListByStudentId : IStudentResultDTO[];
     this.subjectResultService.getSubjectResult(this.classId,this.semesterId,this.subjectId).subscribe(
       (data) => {
-        studentResultList = data.filter(e => e.studentId === id);
+        studentResultListByStudentId  = data.filter(e => e.studentId === id);
         const dialogRef = this.dialog.open(StudentResultDetailComponent, {
           width : '500px' ,
           data: {
-            students : studentResultList,
+            students : studentResultListByStudentId ,
             semesterId : this.semesterId ,
             subjectId : this.subjectId ,
           }

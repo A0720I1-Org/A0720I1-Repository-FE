@@ -1,9 +1,10 @@
+<script src="list-teacher.component.ts"></script>
 <div class="container mt-3 mb-3">
   <div class="row">
     <div class="col-md-12">
       <div class="border-shadow">
         <div class="card-header card-background-color">
-          <p class="card-title card-header-text-bold text-light mt-2">Danh sách Giáo Viên</p>
+          <p class="card-title card-header-text-bold text-light mt-2">Danh sách giáo viên</p>
         </div>
         <div class="card-body">
 
@@ -25,11 +26,11 @@
           <div class="table-responsive">
             <table class="table">
               <thead class=" text-primary">
-              <th>STT</th>
+              <th>Stt</th>
               <th>Tên</th>
-              <th>Địa Chỉ</th>
-              <th>Số Điện Thoại</th>
-              <th>Ngày Sinh</th>
+              <th>Địa chỉ</th>
+              <th>Số điện thoại</th>
+              <th>Ngày sinh</th>
               <th class="text-center">Xem</th>
               <th *ngIf="['ROLE_ADMIN', 'ROLE_TEACHER'].indexOf(role) !== -1" class="text-center">Sửa</th>
               </thead>
@@ -40,7 +41,7 @@
                 <td>{{teacher.name}}</td>
                 <td>{{teacher.address}}</td>
                 <td>{{teacher.phone}}</td>
-                <td>{{teacher.birthday}}</td>
+                <td>{{teacher.birthday | date: 'dd/MM/yyyy'}}</td>
                 <td class="text-center">
                   <button type="button" class="btn btn-info btn-sm" (click)="viewDetailTeacher(teacher.id)">Xem</button>
                 </td>
