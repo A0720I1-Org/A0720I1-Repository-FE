@@ -3,6 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {TokenStorageService} from "./token-storage.service";
+import {ClassCreate} from "../dto/student-class/ClassCreate";
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,13 @@ export class ClassStudentService {
 
   getClassNameByClassId(id: number): Observable<any>{
     return this.httpClient.get<any>(this.API_URL + '/api/public/schedule/get-class-name-by-id/' + id)
+  }
+
+  createClass(newClass: ClassCreate): Observable<any> {
+    return this.httpClient.post<ClassCreate>(this.API_URL + '/api/admin/student-class/create-class', newClass, this.httpOptions)
+  }
+
+  getStudentListByClassId(classId: number): Observable<any> {
+    return this.httpClient.get(this.API_URL + '/api/public/student-class/get-student-list-by-class-id/' + classId, this.httpOptions)
   }
 }
