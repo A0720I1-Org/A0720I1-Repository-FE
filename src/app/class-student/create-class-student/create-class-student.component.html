@@ -1,1 +1,52 @@
-<p>create-class-student works!</p>
+
+  <div class="ml-auto mr-auto col-md-5 border-shadow">
+    <h1 class="text-center text-info card-header-text-bold pt-3 pb-3">TẠO LỚP MỚI</h1>
+    <div class="card-user border-shadow">
+      <div class="card-header card-background-color">
+        <p class="card-title text-light card-header-text-bold font-weight-bold">Thông tin lớp</p>
+      </div>
+      <div class="card-body card-body-text-bold">
+        <form [formGroup]="classForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-12 pr-1">
+              <div class="form-group">
+                <label for="school-year" class="required">Năm học</label>
+                <select class="form-control" id="school-year" formControlName="schoolYear">
+                  <option disabled selected>--Chọn--</option>
+                  <ng-container *ngIf="yearList != null">
+                    <ng-container *ngFor="let schoolYear of yearList">
+                      <option value="{{schoolYear.id}}">{{schoolYear.beginYear}} - {{schoolYear.endYear}}</option>
+                    </ng-container>
+                  </ng-container>
+                </select>
+                <ng-container *ngFor="let validation of validationMessage.schoolYear">
+                  <small class="form-text text-danger"
+                         *ngIf="classForm.get('schoolYear').hasError(validation.type)&& classForm.get('schoolYear').touched">
+                    {{validation.message}}
+                  </small>
+                </ng-container>
+              </div>
+            </div>
+            <div class="col-md-12 pr-1">
+              <div class="form-group">
+                <label for="class-name" class="required">Tên Lớp</label>
+                <input id="class-name" type="text" class="form-control" formControlName="className">
+                <ng-container *ngFor="let validation of validationMessage.className">
+                  <small class="form-text text-danger"
+                         *ngIf="classForm.get('className').hasError(validation.type)&& classForm.get('className').touched">
+                    {{validation.message}}
+                  </small>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="update mt-3 mb-3 ml-auto mr-auto">
+              <button type="submit" class="btn btn-success mr-3" [disabled]="classForm.invalid">Tạo mới</button>
+              <a class="btn btn-primary" (click)="closeDialog()">Quay lại</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

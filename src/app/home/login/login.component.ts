@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {ShareService} from "../../service/share.service";
 import {AuthService} from "../../service/auth.service";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-login',
@@ -21,13 +22,13 @@ export class LoginComponent implements OnInit {
       {type: 'required', message: 'Tên đăng nhập không được để trống!'},
       {type: 'minlength', message: 'Tên đăng nhập tối thiểu 4 ký tự'},
       {type: 'maxlength', message: 'Tên đăng nhập tối đa 32 ký tự'},
-      {type: 'pattern', message: 'Tên đăng nhập không chứa dấu ký tự đặc biệt hoặc khoảng trắng'},
+      {type: 'pattern', message: 'Tên đăng nhập không chứa ký tự đặc biệt và khoảng trắng'},
 
     ],
     'password': [
       {type: 'required', message: 'Mật khẩu không được để trống!'},
-      {type: 'minlength', message: 'Mật khẩu tối thiểu 4 ký tự'},
-      {type: 'maxlength', message: 'Mật khẩu tối đa 32 ký tự'}
+      {type: 'minlength', message: 'Mật khẩu dài tối thiểu 4 ký tự'},
+      {type: 'maxlength', message: 'Mật khẩu dài tối đa 32 ký tự'}
     ]
   };
 
@@ -39,7 +40,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private shareService: ShareService,
     private authService: AuthService,
-    private zone: NgZone
+    private zone: NgZone,
+    private dialog: MatDialog
   ) {
     this.shareService.getClickEvent().subscribe(() => {
       this.ngOnInit()
@@ -69,33 +71,36 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
   onSubmit() {
     this.authService.login(this.loginForm.value).subscribe(
       data => {
         if (this.loginForm.value.remember){
-          this.tokenStorageService.saveTokenLocal(data.accessToken);
+          this.tokenStorageService.saveTokenLocal(data.token);
           this.tokenStorageService.saveUserLocal(data)
         } else {
-          this.tokenStorageService.saveTokenSession(data.accessToken);
-          this.tokenStorageService.saveUserLocal(data)
+          this.tokenStorageService.saveTokenSession(data.token);
+          this.tokenStorageService.saveUserSession(data)
         }
         this.authService.isLoggedIn = true;
         this.username = this.tokenStorageService.getUser().username;
         this.roles = this.tokenStorageService.getUser().roles;
         this.loginForm.reset();
-        this.router.navigate(["/"]);
         this.shareService.sendClickEvent();
+        this.dialog.closeAll()
       },
       err => {
-        this.errorMessage = err.error.message;
-        console.log(this.errorMessage)
         this.authService.isLoggedIn = false;
         this.toastrService.error(
-            this.errorMessage,
+            "Thông tin đăng nhập không chính xác",
             "Đăng nhập thất bại",
             {timeOut: 3000, extendedTimeOut: 1500}
           )
       }
     );
+  }
+
+  closeDialog() {
+    this.dialog.closeAll()
   }
 }

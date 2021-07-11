@@ -1,11 +1,12 @@
-
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {CreateTeacherComponent} from './create-teacher/create-teacher.component';
 import {UpdateTeacherComponent} from './update-teacher/update-teacher.component';
 import {ListTeacherComponent} from './list-teacher/list-teacher.component';
 import {AuthGuard} from '../security/auth-guard';
 import {StudentResultComponent} from "./student-result/student-result.component";
+import {ListHomeroomClassComponent} from "./list-homeroom-class/list-homeroom-class.component";
+import {TeacherScheduleComponent} from "./teacher-schedule/teacher-schedule.component";
 
 
 const routes: Routes = [
@@ -14,7 +15,7 @@ const routes: Routes = [
     path: 'create', component: CreateTeacherComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: ['ADMIN']
+      roles: ['ROLE_ADMIN']
     }
   },
 
@@ -22,12 +23,33 @@ const routes: Routes = [
     path: 'update', component: UpdateTeacherComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: ['ADMIN']
+      roles: ['ROLE_ADMIN']
     }
   },
-  {path: 'update/:id', component: UpdateTeacherComponent},
-  {path: '', component: ListTeacherComponent},
-  {path: 'student-result', component: StudentResultComponent}
+  {
+    path: 'update/:id', component: UpdateTeacherComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN']
+    }
+  },
+
+  {path: 'student-result', component: StudentResultComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER']
+    }},
+
+  {path: 'homeroom-class', component: ListHomeroomClassComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER']
+    }},
+  {path: 'teacher-schedule', component: TeacherScheduleComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
+    }}
 ];
 
 @NgModule({
