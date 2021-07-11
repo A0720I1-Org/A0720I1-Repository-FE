@@ -86,7 +86,6 @@ export class LoginComponent implements OnInit {
         this.username = this.tokenStorageService.getUser().username;
         this.roles = this.tokenStorageService.getUser().roles;
         this.loginForm.reset();
-        this.router.navigate(["/"]);
         this.shareService.sendClickEvent();
         this.dialog.closeAll()
       },
