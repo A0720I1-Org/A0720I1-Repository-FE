@@ -1,0 +1,235 @@
+<div class="container mt-3 mb-3">
+  <div class="d-flex flex-row justify-content-around">
+    <div class="col-md-4 row">
+      <label for="select-year" class="col-sm-6 pt-2 text-center card-body-text-bold">Năm học: </label>
+      <select class="form-control col-sm-6" id="select-year"
+              (change)="getYearId($event.target)" (click)="getClassList()">
+        <option disabled selected>-- Lựa chọn --</option>
+        <ng-container *ngIf="yearList != null">
+          <ng-container *ngFor="let year of yearList; let i = index">
+            <option value="{{year.id}}">{{year.beginYear}} - {{year.endYear}}</option>
+          </ng-container>
+        </ng-container>
+      </select>
+    </div>
+
+    <!--chọn lớp-------------->
+
+    <div class="col-md-4 row">
+      <label for="select-class" class="col-sm-5 pt-2 text-center card-body-text-bold">Lớp: </label>
+      <select class="form-control col-sm-7" id="select-class" [(ngModel)]="studentClass"
+              (ngModelChange)="showStudentList()">
+        <option selected>-- Lựa chọn --</option>
+        <ng-container *ngIf="classList != null">
+          <ng-container *ngFor="let studentClass of classList">
+            <option [ngValue]="studentClass">Lớp {{studentClass.name}}</option>
+          </ng-container>
+        </ng-container>
+      </select>
+    </div>
+    <div class="col-md-4 row">
+      <button class="btn btn-success ml-3" (click)="createClass()">Tạo lớp</button>
+    </div>
+  </div>
+  <div class="row mt-3 mb-3 main-content">
+    <div class="col-md-12">
+      <div class="border-shadow">
+        <div class="card-header card-background-color">
+          <p class="card-title card-header-text-bold text-light mt-2">Thông tin lớp</p>
+        </div>
+        <div class="card-body student-list">
+          <div class="d-flex flex-row justify-content-between" *ngIf="studentClass != null">
+            <div class="col-md-5 pt-2">
+              <p>Hiện tại có
+                <ng-container *ngIf="studentList == null">0</ng-container>
+                <ng-container *ngIf="studentList != null">{{studentList.length}}</ng-container>
+                học sinh trong lớp {{studentClass.name}}</p>
+            </div>
+            <div class="col-md-6 row">
+              <label for="select-teacher" class="col-md-5  text-center card-body-text-bold required">Giáo viên chủ
+                nhiệm: </label>
+              <select class="form-control col-sm-7" id="select-teacher" (change)="selectTeacher($event.target)">
+                <option [selected]="studentClass.teacher == null">-- Lựa chọn --</option>
+                <ng-container *ngIf="teacherList != null">
+                  <ng-container *ngFor="let teacher of teacherList">
+                    <option *ngIf="studentClass.teacher != null" [selected]="teacher.teacherId==studentClass.teacher.id"
+                            value="{{teacher.teacherId}}"> {{teacher.teacherName}} </option>
+                    <option *ngIf="studentClass.teacher == null"
+                            value="{{teacher.teacherId}}"> {{teacher.teacherName}} </option>
+                  </ng-container>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+          <table class="table table-bordered mt-3 mb-3 col-12" style="font-size: 120%" *ngIf="studentClass != null">
+            <thead class=" text-primary col-12">
+            <tr class="text-center">
+              <th>STT</th>
+              <th>Tên</th>
+              <th>Ngày sinh</th>
+              <th>Giới tính</th>
+              <th>Quê quán</th>
+            </tr>
+            </thead>
+            <tbody class="col-12">
+            <ng-container *ngFor="let student of studentList; let i=index">
+              <tr class="text-center">
+                <td>{{i + 1}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.birthday | date: "dd/MM/yyyy"}}</td>
+                <td>{{student.gender}}</td>
+                <td>{{student.hometown}}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngFor="let student of newStudentList; let i=index">
+              <tr class="text-center text-danger">
+                <td>{{i + studentList.length + 1}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.birthday | date: "dd/MM/yyyy"}}</td>
+                <td>{{student.gender}}</td>
+                <td>{{student.hometown}}</td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-3 mb-3 d-flex flex-row justify-content-center mx-auto btn-bottom-center">
+    <button class="btn btn-success" [disabled]="studentClass==null" (click)="open(content)">Thêm học sinh</button>
+    <button class="btn btn-primary" [disabled]="disableButton()">Xác nhận tạo lớp</button>
+  </div>
+
+
+  <ng-template #content let-modal>
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+        <div class="modal-header">
+          <h1 class="modal-title font-weight-bold" id="modal-basic-title">Thêm mới học sinh</h1>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="card-body card-body-text-bold">
+              <div class="row">
+                <div class="col-md-12 pr-1">
+                  <div class="form-group">
+                    <label for="name" class="required">Họ và tên</label>
+                    <input id="name" type="text" class="form-control" formControlName="name">
+                    <ng-container *ngFor="let validation of validationMessage.name">
+                      <small class="form-text text-danger"
+                             *ngIf="studentForm.get('name').hasError(validation.type)&& studentForm.get('name').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                    <label for="gender" class="required">Giới tính</label>
+                    <select class="form-control" id="gender" formControlName="gender">
+                      <option selected disabled value="-Chọn-">-Chọn-</option>
+                      <option>Nam</option>
+                      <option>Nữ</option>
+                      <option>Khác</option>
+                    </select>
+                    <ng-container *ngFor="let validation of validationMessage.gender">
+                      <small class="form-text text-danger"
+                             *ngIf="studentForm.get('gender').hasError(validation.type)&& studentForm.get('gender').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                    <label for="birthday" class="required">Ngày sinh</label>
+                    <input id="birthday" type="date" class="form-control" formControlName="birthday">
+                    <ng-container *ngFor="let validation of validationMessage.birthday">
+                      <small class="form-text text-danger"
+                             *ngIf="studentForm.get('birthday').hasError(validation.type)&& studentForm.get('birthday').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                    <label for="ethnicity" class="required">Dân tộc</label>
+                    <input id="ethnicity" type="text" class="form-control" formControlName="ethnicity">
+                    <ng-container *ngFor="let validation of validationMessage.ethnicity">
+                      <small class="form-text text-danger"
+                             *ngIf="studentForm.get('ethnicity').hasError(validation.type)&& studentForm.get('ethnicity').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                    <label for="religion" class="required">Tôn giáo</label>
+                    <input id="religion" type="text" class="form-control" formControlName="religion">
+                    <ng-container *ngFor="let validation of validationMessage.religion">
+                      <small class="form-text text-danger"
+                             *ngIf="studentForm.get('email').hasError(validation.type)&& studentForm.get('email').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                    <label for="hometown" class="required">Quê quán</label>
+                    <input id="hometown" type="text" class="form-control" formControlName="hometown">
+                    <ng-container *ngFor="let validation of validationMessage.hometown">
+                      <small class="form-text text-danger"
+                             *ngIf="studentForm.get('hometown').hasError(validation.type)&& studentForm.get('hometown').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="col-md-6 pr-1">
+                  <div class="form-group">
+                    <label for="email" class="required">Email</label>
+                    <input id="email" type="text" class="form-control" formControlName="email">
+                    <ng-container *ngFor="let validation of validationMessage.email">
+                      <small class="form-text text-danger"
+                             *ngIf="studentForm.get('email').hasError(validation.type)&& studentForm.get('email').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </div>
+                </div>
+<!--                <div class="col-md-6 pr-1">-->
+<!--                  <div class="form-group">-->
+<!--                    <label for="imageUrl">Hình ảnh</label>-->
+<!--                    <input type="file" class="form-control" id="imageUrl" accept=".jpg,.jpeg,.png"-->
+<!--                           (change)="selectImage($event)" formControlName="imageUrl">-->
+<!--                    <ng-container *ngFor="let validation of validationMessage.imageUrl">-->
+<!--                      <small class="form-text text-danger"-->
+<!--                             *ngIf="studentForm.get('imageUrl').hasError(validation.type)&& studentForm.get('imageUrl').touched">-->
+<!--                        {{validation.message}}-->
+<!--                      </small>-->
+<!--                    </ng-container>-->
+<!--                  </div>-->
+<!--                </div>-->
+              </div>
+            </div>
+
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button data-dismiss="modal" class="btn btn-success">Tạo mới</button>
+          <button type="button" class="btn btn-info" (click)="modal.close('Save click')">Đóng</button>
+        </div>
+    </form>
+  </ng-template>
+</div>
