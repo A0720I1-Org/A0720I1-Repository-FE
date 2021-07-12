@@ -13,6 +13,6 @@ export class SchoolYearService {
   constructor(private httpClient: HttpClient) { }
 
   getAllSchoolYear(): Observable<any>{
-    return this.httpClient.get<any>(this.API_URL + '/api/public/school-year/get-school-year-list')
+    return this.httpClient.get<any>(this.API_URL + '/api/public/student/school-year/get-school-year-list')
   }
 }
