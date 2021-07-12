@@ -1,0 +1,114 @@
+<div class="container mt-5 mb-5">
+  <div class="row">
+        <!--chọn học kì-------------->
+
+        <div class="col-md-3 row">
+          <label for="exampleFormControlSelect1" class="col-sm-6 pt-2 text-center card-body-text-bold required">Học kì: </label>
+          <select class="form-control col-sm-6" id="exampleFormControlSelect1" [(ngModel)]="semesterId">
+              <option disabled selected>-- Lựa chọn --</option>
+              <option *ngFor="let semester of semesters" [value]="semester.value">{{'Học kì '+ semester.value}}</option>
+          </select>
+      </div>
+          <!--Chọn Lớp--------------->
+          <div class="col-md-3 ml-2 row">
+              <label for="exampleFormControlSelect2" class="col-sm-4 pt-2 text-center card-body-text-bold required">Lớp : </label>
+              <select class="form-control col-sm-8" id="exampleFormControlSelect2" [(ngModel)]="classId">
+                  <option selected disabled>-- Lựa chọn --</option>
+                  <option *ngFor="let class of classStudent" [value]="class.id">{{class.name}}</option>
+              </select>
+          </div>
+
+
+           <!-- Chọn môn -->
+           <div class="col-md-3 ml-2 row">
+            <label for="exampleFormControlSelect3" class="col-sm-6 pt-2 text-center card-body-text-bold required">Môn học: </label>
+            <select class="form-control col-sm-6" id="exampleFormControlSelect3" [(ngModel)]="subjectId">
+                 <option disabled selected>-- Lựa chọn --</option>
+                <option *ngFor="let subject of subjects" [value]="subject.id">{{subject.name}}</option>
+            </select>
+            </div>
+          <!-- Chọn hệ số -->
+          <div class="col-md-3 ml-3 row">
+            <label for="exampleFormControlSelect4" class="col-sm-6 pt-2 text-center card-body-text-bold required">Hệ số: </label>
+            <select class="form-control col-sm-6" id="exampleFormControlSelect4" [(ngModel)]="multiplierId">
+                <option disabled selected>-- Lựa chọn --</option>
+                <option *ngFor="let mul of multipliers" [value]="mul.value">{{'Hệ số '+ mul.value}}</option>
+            </select>
+        </div>
+      </div>
+      <br>
+  <div class="row">
+      <div class class="col-md-12">
+        <div class="border-shadow">
+          <div class="card-header card-background-color d-flex justify-content-between">
+            <p class="card-title card-header-text-bold text-light col-md-2 mt-3">Danh sách điểm</p>
+            <div class="mt-2">
+              <button class="btn btn-success" type="button" (click)="getResult(subjectId,classId,semesterId,multiplierId)" [hidden]="!isEnableEdit">Hiển thị</button>
+           </div>
+        </div>
+        <form [formGroup]="resultForm" (ngSubmit)="onSubmit()">
+          <div class="card-body"  *ngIf="isSelected ; else noData">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                <th>STT</th>
+                <th>Họ và Tên</th>
+                <th>Ngày sinh</th>
+                <th>Điểm cột 1</th>
+                <th>Điểm cột 2</th>
+                <th>Điểm cột 3</th>
+                <th>Điểm trung bình</th>
+                </thead>
+                <tbody formArrayName="studentResults">
+                <tr *ngFor="let str of studentResults.controls; let i = index" [formGroupName]="i">
+                  <td>Student : {{i + 1}}</td>
+                  <td>  {{studentResults.value[i].name}}</td>
+                  <td> {{studentResults.value[i].birthday | date: 'dd/MM/yyyy'}}</td>
+                  <td>
+                    <input type="text" size="2" formControlName="markCol1">
+                    <ng-container *ngFor="let validation of validationMessage.mark">
+                      <small class="form-text text-danger"
+                             *ngIf="str.get('markCol1').hasError(validation.type)&& str.get('markCol1').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </td>
+                  <td><input type="text" size="2" formControlName="markCol2">
+                    <ng-container *ngFor="let validation of validationMessage.mark">
+                      <small class="form-text text-danger"
+                             *ngIf="str.get('markCol2').hasError(validation.type)&& str.get('markCol2').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <input type="text" size="2" formControlName="markCol3">
+                    <ng-container *ngFor="let validation of validationMessage.mark">
+                      <small class="form-text text-danger"
+                             *ngIf="str.get('markCol3').hasError(validation.type)&& str.get('markCol3').touched">
+                        {{validation.message}}
+                      </small>
+                    </ng-container>
+                  </td>
+                  <td><button type="button" class="btn btn-primary" (click)="handleViewDetail(studentResults.value[i].studentId)">Xem</button></td>
+                </tr>
+                </tbody>
+              </table>
+              <br><br>
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-warning mr-3">Xác Nhận</button>
+                  <a type="button" class="btn btn-primary" routerLink="/teacher">Quay Lại</a>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+   </div>
+</div>
+</div>
+<ng-template #noData>
+  <p class="mt-3 ml-3 text-center">Không có dữ liệu</p>
+</ng-template>
+
+
+

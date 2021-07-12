@@ -15,7 +15,9 @@ import {StudentResultComponent} from './student-result/student-result.component'
 import { ListHomeroomClassComponent } from './list-homeroom-class/list-homeroom-class.component';
 import { ViewDetailStudentComponent } from './view-detail-student/view-detail-student.component';
 import { TeacherScheduleComponent } from './teacher-schedule/teacher-schedule.component';
-
+import { StudentResultDetailComponent } from './student-result-detail/student-result-detail.component';
+import { ClassResultComponent } from './class-result/class-result.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     ListTeacherComponent,
@@ -25,7 +27,9 @@ import { TeacherScheduleComponent } from './teacher-schedule/teacher-schedule.co
     StudentResultComponent,
     ListHomeroomClassComponent,
     ViewDetailStudentComponent,
-    TeacherScheduleComponent
+    TeacherScheduleComponent,
+    StudentResultDetailComponent,
+    ClassResultComponent
   ],
 
   exports: [
@@ -42,7 +46,8 @@ import { TeacherScheduleComponent } from './teacher-schedule/teacher-schedule.co
     MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatProgressSpinnerModule
   ]
 })
 export class TeacherModule {

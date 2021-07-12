@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <h1 class="text-primary text-center">Điểm trung bình của học sinh</h1>
+  <div class="row">
+    <div class="col-10 mx-auto table-responsive">
+      <table class="table">
+        <tr>
+          <th class="text-primary">Họ và tên</th>
+          <td class="text-center">{{data.students[0].name}}</td>
+        </tr>
+        <tr>
+          <th class="text-primary">Học kì</th>
+          <td class="text-center">{{data.semesterId}}</td>
+        </tr>
+        <tr>
+          <th class="text-primary">Môn học</th>
+          <td class="text-center" *ngIf="subject">{{subject.name}}</td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Điểm hệ số 1</th>
+          <td class="text-center">
+          <li *ngFor="let mark of markMultiplier1" class="ml-3">
+                {{mark}}
+          </li>
+          </td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Điểm hệ số 2</th>
+          <td class="text-center">
+          <li *ngFor="let mark of markMultiplier2" class="ml-3">
+                {{mark}}
+          </li>
+          </td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Điểm hệ số 3</th>
+          <td class="text-center">
+          <li *ngFor="let mark of markMultiplier3" class="ml-3">
+                {{mark}}
+          </li>
+          </td>
+        </tr>
+        <tr>
+          <th class=" text-primary">Điểm trung bình</th>
+          <td class="text-center">{{averageMark | number}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5"></div>
+    <div class="col-md-4">
+      <button (click)="onCancel()" class="btn btn-primary">Đóng</button>
+    </div>
+  </div>
+
+
+</div>

@@ -31,21 +31,27 @@ export class UpdateTeacherComponent implements OnInit {
     imageUrl: string;
   };
   studentClass: string = '';
-  imageUrl: string;
+  imageUrl: string = '';
   inputImage: any = null;
   private filePath: string;
   validationMessages = {
     'name': [
-      {type: 'required', message: 'Tên chỉ không được để trống.'},
-      {type: 'pattern', message: 'Tên không đúng định dạng.'}
+      {type: 'required', message: 'Tên không được để trống.'},
+      {type: 'pattern', message: 'Tên không đúng định dạng.'},
+      {type: 'minlength', message: 'Tên tối thiểu 5 ký tự.'},
+      {type: 'maxlength', message: 'Tên tối đa 30 ký tự.'}
     ],
     'address': [
       {type: 'required', message: 'Địa chỉ không được để trống.'},
-      {type: 'pattern', message: 'Địa chỉ không đúng định dạng.'}
+      {type: 'pattern', message: 'Địa chỉ không đúng định dạng.'},
+      {type: 'minlength', message: 'Địa chỉ tối thiểu 5 ký tự.'},
+      {type: 'maxlength', message: 'Địa chỉ tối đa 30 ký tự.'}
     ],
     'hometown': [
       {type: 'required', message: 'Quê quán không được để trống.'},
-      {type: 'pattern', message: 'Quê quán không đúng định dạng.'}
+      {type: 'pattern', message: 'Quê quán không đúng định dạng.'},
+      {type: 'minlength', message: 'Quê quán tối thiểu 5 ký tự.'},
+      {type: 'maxlength', message: 'Quê quán tối đa 30 ký tự.'}
     ],
     'phone': [
       {type: 'required', message: 'Phone không được để trống.'},
@@ -58,7 +64,9 @@ export class UpdateTeacherComponent implements OnInit {
     ],
     'position': [
       {type: 'required', message: 'Chức vụ không được để trống.'},
-      {type: 'pattern', message: 'Chức vụ không đúng định dạng.'}
+      {type: 'pattern', message: 'Chức vụ không đúng định dạng.'},
+      {type: 'minlength', message: 'Chức vụ tối thiểu 5 ký tự.'},
+      {type: 'maxlength', message: 'Chức vụ tối đa 30 ký tự.'}
     ]
   };
 
@@ -83,12 +91,6 @@ export class UpdateTeacherComponent implements OnInit {
       } else {
         this.studentClass = data.studentClass;
       }
-      this.imageUrl = data.imageUrl;
-      if (data.imageUrl === '') {
-        this.imageUrl = 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df'
-      } else {
-        this.imageUrl = data.imageUrl;
-      }
       this.formTeacher.patchValue(data);
     });
   }
@@ -98,32 +100,38 @@ export class UpdateTeacherComponent implements OnInit {
       id: [''],
       name: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/),
+        Validators.minLength(5),
+        Validators.maxLength(30)])
       ],
       address: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/),
+        Validators.minLength(5),
+        Validators.maxLength(30)])
       ],
       email: ['', Validators.compose([
         Validators.required,
-        // Validators.pattern(/\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/)
-        Validators.email
-      ])
+        Validators.email])
       ],
       phone: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^(09|01[2|6|8|9])+([0-9]{8})\b$/)])
+        Validators.pattern(/^(0[3|5|7|8|9])+([0-9]{8})\b$/)])
       ],
       level: ['', Validators.compose([
         Validators.required])
       ],
       position: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/),
+        Validators.minLength(5),
+        Validators.maxLength(30)])
       ],
       hometown: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/)])
+        Validators.pattern(/^[^`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:]*$/),
+        Validators.minLength(5),
+        Validators.maxLength(30)])
       ],
       gender: ['', Validators.compose([
         Validators.required])
@@ -143,6 +151,16 @@ export class UpdateTeacherComponent implements OnInit {
       this.filePath = reader.result as string;
     };
     reader.readAsDataURL(this.inputImage);
+  }
+
+  getImageUrl() {
+    if (this.filePath != null) {
+      return this.filePath;
+    }
+    if (this.formTeacher.value.imageUrl != null) {
+      return this.formTeacher.value.imageUrl;
+    }
+    return 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df';
   }
 
   updateTeacher() {
@@ -183,15 +201,4 @@ export class UpdateTeacherComponent implements OnInit {
         });
     }
   }
-
-  getImageUrl(){
-    if(this.filePath != null){
-      return this.filePath;
-    }
-    if(this.formTeacher.value.imageUrl != ""){
-      return this.formTeacher.value.imageUrl;
-    }
-    return 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df';
-  }
-
 }

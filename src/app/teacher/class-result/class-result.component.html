@@ -1,0 +1,71 @@
+<div class="mt-3 mb-3 container">
+    <div class="row">
+          <!--chọn học kì-------------->
+        <div class="col-md-2"></div>
+          <div class="col-md-3 row">
+            <label for="exampleFormControlSelect1" class="col-sm-6 pt-2 text-center card-body-text-bold required">Học kì: </label>
+            <select class="form-control col-sm-6" id="exampleFormControlSelect1" (change)="getSemester($event.target)" [(ngModel)]="semesterId" >
+                <option disabled selected>-- Lựa chọn --</option>
+                <option *ngFor="let semester of semesters" [value]="semester.value">{{'Học kì '+ semester.value}}</option>
+            </select>
+        </div>
+            <!--Chọn Lớp--------------->
+            <div class="col-md-3 ml-2 row">
+                <label for="exampleFormControlSelect2" class="col-sm-4 pt-2 text-center card-body-text-bold required">Lớp : </label>
+                <select class="form-control col-sm-8" id="exampleFormControlSelect2" [(ngModel)]="classId" (change)="getClassId($event.target)" (focusout)="getStudent()">
+                    <option selected disabled>-- Lựa chọn --</option>
+                    <option *ngFor="let class of classStudent" [value]="class.id">{{class.name}}</option>
+                </select>
+            </div>
+            <div class="col-md-2 ml-3 row">
+              <button class="btn btn-success ml-3" (click)="showResult()">Hiển thị</button>
+            </div>
+        </div>
+        <div class="spinner d-flex justify-content-center mt-5" *ngIf="loading">
+          <mat-progress-spinner
+          color="accent"
+          mode="indeterminate"
+          ></mat-progress-spinner>
+        </div>
+        <br>
+      <div class="col-md-12" *ngIf="!loading">
+        <div class="border-shadow">
+          <div class="card-header card-background-color">
+            <p class="card-title card-header-text-bold text-light">Bảng điểm của học sinh</p>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered" style="font-size: 120%" *ngIf="isSelected; else noData">
+              <thead class=" text-primary">
+              <tr class="text-center">
+                <th>Họ & tên</th>
+                <th>Ngày sinh</th>
+                <ng-container *ngFor="let subject of subjects">
+                  <th>{{subject.name}}</th>
+                </ng-container>
+              </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let student of students">
+                  <tr class="text-center">
+                    <td class="name-student">{{student.name}}</td>
+                    <td>{{student.birthday | date : 'dd/MM/yyyy'}}</td>
+                    <ng-container *ngFor="let subject of subjects">
+                      <ng-container *ngFor="let average of studentAverageMarkDTO">
+                        <ng-container *ngIf="average.subjectId === subject.id && average.studentId === student.id">
+                          <td>{{average.averageMark | number}}</td>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <ng-template #noData>
+      <p class="mt-3 ml-3 text-center">Không có dữ liệu</p>
+    </ng-template>
+

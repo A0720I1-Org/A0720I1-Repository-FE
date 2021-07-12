@@ -10,6 +10,9 @@ import {Grade} from "../../dto/schedule/Grade";
 import {ClassSearchData} from "../../dto/schedule/ClassSearchData";
 import {ClassStudentService} from "../../service/class-student.service";
 import {StudentClass} from "../../dto/schedule/StudentClass";
+import {ScheduleShowLesson} from "../../dto/schedule/ScheduleShowLesson";
+import {TeacherSubject} from "../../dto/schedule/TeacherSubject";
+import {TokenStorageService} from "../../service/token-storage.service";
 
 
 @Component({
@@ -21,7 +24,14 @@ export class ShowScheduleComponent implements OnInit {
   yearList: SchoolYear[] = null;
   gradeList: Grade[] = null;
   classList: StudentClass[] = null;
-  classSearchData = new ClassSearchData();
+  classId: number = 0;
+  yearId: number = 0;
+  gradeId: number = 0;
+  schedule: ScheduleShowLesson[];
+  lessonNumbers = [1,2,3,4,5,6,7,8];
+  lessonDates = [2,3,4,5,6];
+  teacherSubjectList: TeacherSubject[];
+  role: string
 
   constructor(
     private scheduleService: ScheduleService,
@@ -30,12 +40,14 @@ export class ShowScheduleComponent implements OnInit {
     private toastrService: ToastrService,
     private schoolYearService: SchoolYearService,
     private gradeService: GradeService,
-    private classStudentService: ClassStudentService
+    private classStudentService: ClassStudentService,
+    private tokenStorageService: TokenStorageService
   ) { }
 
   ngOnInit(): void {
     this.getYearList();
     this.getGradeList();
+    this.role = this.tokenStorageService.getUser().roles[0];
   }
 
   getYearList() {
@@ -55,18 +67,47 @@ export class ShowScheduleComponent implements OnInit {
   }
 
   getYearId(selectedYear) {
-    this.classSearchData.yearId = selectedYear.value;
+    this.yearId = selectedYear.value;
   }
 
 
   getGradeId(selectedGrade) {
-    this.classSearchData.gradeId = selectedGrade.value;
+    this.gradeId = selectedGrade.value;
   }
 
   getClassList() {
-    this.classStudentService.getClassesByYearAndGrade(this.classSearchData).subscribe(
+    this.classStudentService.getClassesByYearAndGrade(this.yearId, this.gradeId).subscribe(
       (data) => {
         this.classList =  data;
+      }
+    )
+  }
+
+  selectClass(selectedClass) {
+    this.classId = selectedClass.value;
+  }
+
+  showSchedule() {
+    this.scheduleService.getScheduleByClassId(this.classId).subscribe(
+      (data) => {
+        this.schedule = data;
+      },
+      error => {
+        this.toastrService.error(
+          "Có lỗi xảy ra",
+          "Lỗi",
+          {timeOut: 3000, extendedTimeOut: 1500})
+      }
+    )
+    this.scheduleService.getTeacherSubjectByClassId(this.classId).subscribe(
+      (data) => {
+        this.teacherSubjectList = data
+      },
+      error => {
+        this.toastrService.error(
+          "Có lỗi xảy ra",
+          "Lỗi",
+          {timeOut: 3000, extendedTimeOut: 1500})
       }
     )
   }
