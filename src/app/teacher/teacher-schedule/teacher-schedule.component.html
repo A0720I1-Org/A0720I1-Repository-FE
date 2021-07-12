@@ -27,7 +27,7 @@
               <td class="col-1">{{lessonNumber}}</td>
               <td class="col-2" *ngFor = "let lessonDate of lessonDates">
                 <ng-container *ngFor = "let lesson of teacherSchedule">
-                  <ng-container *ngIf = "lesson.lessonDate == lessonDate && lesson.lessonNumber == lessonNumber">{{lesson.subjectName}}</ng-container>
+                  <ng-container *ngIf = "lesson.lessonDate == lessonDate && lesson.lessonNumber == lessonNumber">{{lesson.subjectName}} ({{lesson.nameClass}})</ng-container>
                 </ng-container>
               </td>
             </tr>

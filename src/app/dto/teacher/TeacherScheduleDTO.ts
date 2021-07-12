@@ -3,4 +3,5 @@ export interface TeacherScheduleDTO {
   lessonNumber: number;
   subjectName: string;
   teacherName: string;
+  nameClass: string;
 }
