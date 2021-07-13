@@ -1,3 +1,4 @@
+import { SubjectResultComponent } from './subject-result/subject-result.component';
 
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
@@ -36,18 +37,17 @@ const routes: Routes = [
     }
   },
 
-  {path: 'student-result', component: StudentResultComponent,
+    {path: 'student-result', component: StudentResultComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ['ROLE_ADMIN', 'ROLE_TEACHER']
     }},
-
-  {path: 'homeroom-class', component: ListHomeroomClassComponent,
+    {path: 'homeroom-class', component: ListHomeroomClassComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ['ROLE_ADMIN', 'ROLE_TEACHER']
     }},
-  {path: 'teacher-schedule', component: TeacherScheduleComponent,
+    {path: 'teacher-schedule', component: TeacherScheduleComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
@@ -56,8 +56,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: {
       roles: ['ROLE_ADMIN', 'ROLE_TEACHER'] //Quy dinh role nao duoc truy cap vao component nay
-    }
-  },
+      },
+    },
+    {path: 'mark', component: SubjectResultComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['ROLE_TEACHER','ROLE_STUDENT','ROLE_ADMIN'] //Quy dinh role nao duoc truy cap vao component nay
+      },
+    },
 ];
 
 @NgModule({

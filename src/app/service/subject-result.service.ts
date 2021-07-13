@@ -45,4 +45,7 @@ export class SubjectResultService {
   getListStudent(claStuId) : Observable<any> {
     return this.httpClient.get<IStudent>(this.API_URL + '/api/teacher/subject-result/student?claStuId='+claStuId,this.httpOptions);
   }
+  getResultAllSubject(studentId,semester) : Observable<any> {
+    return this.httpClient.get<IStudent>(this.API_URL + '/api/student/subject-result/result?studentId='+studentId+ '&semester='+semester,this.httpOptions);
+  }
 }

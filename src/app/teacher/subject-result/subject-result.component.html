@@ -1,0 +1,82 @@
+<div class="mt-3 mb-3 container">
+  <div class="row">
+        <!--chọn học kì-------------->
+      <div class="col-md-2"></div>
+        <div class="col-md-3 row">
+          <label for="exampleFormControlSelect1" class="col-sm-6 pt-2 text-center card-body-text-bold required">Học kì: </label>
+          <select class="form-control col-sm-6" id="exampleFormControlSelect1" (change)="getSemester($event.target)" [(ngModel)]="semester" >
+              <option disabled selected>-- Lựa chọn --</option>
+              <option *ngFor="let semester of semesters" [value]="semester">{{'Học kì '+ semester}}</option>
+          </select>
+      </div>
+            <button class="btn btn-success ml-3" (click)="showResult()">Hiển thị</button>
+     </div>
+     <div class="row" *ngIf="student">
+       <h3 class="ml-5 text-dark">Họ và tên : {{student.name}}</h3>
+     </div>
+     <div class="spinner d-flex justify-content-center mt-5" *ngIf="loading">
+      <mat-progress-spinner
+      color="accent"
+      mode="indeterminate"
+      ></mat-progress-spinner>
+    </div>
+  <div class="col-md-12" *ngIf="!loading">
+    <div class="border-shadow">
+      <div class="card-header card-background-color">
+        <p class="card-title card-header-text-bold text-light">Bảng điểm của học sinh</p>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered" style="font-size: 120%" *ngIf="isSelected && marks.length>0; else noData">
+          <thead class=" text-primary">
+          <tr class="text-center">
+            <th>Môn</th>
+            <th>Điểm hệ số 1</th>
+            <th>Điểm hệ số 2</th>
+            <th>Điểm hệ số 3</th>
+            <th>Điểm trung bình</th>
+          </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let subject of subjects">
+              <tr>
+                <td>{{subject.name}}</td>
+                <ng-container *ngFor="let mark of marks">
+                  <ng-container *ngIf="mark.subjectId === subject.id && mark.multiplier === 1">
+                    <td>{{mark.markCol1 | number : '0.1-1'}}&nbsp;&nbsp;&nbsp;
+                      {{mark.markCol2  | number : '0.1-1'}}&nbsp;&nbsp;&nbsp;
+                      {{mark.markCol3  | number : '0.1-1'}}
+                    </td>
+                  </ng-container>
+                  <ng-container *ngIf="mark.subjectId === subject.id && mark.multiplier === 2">
+                    <td>{{mark.markCol1 | number : '0.1-1'}}&nbsp;&nbsp;&nbsp;
+                      {{mark.markCol2  | number : '0.1-1'}}&nbsp;&nbsp;&nbsp;
+                      {{mark.markCol3  | number : '0.1-1'}}
+                    </td>
+                  </ng-container>
+                  <ng-container *ngIf="mark.subjectId === subject.id && mark.multiplier === 3">
+                    <td>{{mark.markCol1 | number : '0.1-1'}}&nbsp;&nbsp;&nbsp;
+                      {{mark.markCol2  | number : '0.1-1'}}&nbsp;&nbsp;&nbsp;
+                      {{mark.markCol3  | number : '0.1-1'}}
+                    </td>
+                  </ng-container>
+                </ng-container>
+                <td>{{calculateAverage(subject.id) | number : '0.1-1'}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-md-5"></div>
+        <div class="ml-4 col-md-3">
+          <button (click)="onCancel()" class="btn btn-primary">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<br>
+<ng-template #noData>
+  <p class="mt-3 text-center text-dark">Không có dữ liệu</p>
+</ng-template>
+
+</div>
