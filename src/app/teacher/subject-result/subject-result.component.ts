@@ -19,7 +19,7 @@ export class SubjectResultComponent implements OnInit {
   subjects : ISubject[];
   studentId : number ;
   semesters =[1,2];
-  semester:number ;
+  semester:number  ;
   loading = false;
   isSelected = false ;
   student : IStudentViewDTO ;

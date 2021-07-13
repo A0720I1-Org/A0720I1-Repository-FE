@@ -99,6 +99,6 @@ export class ClassResultComponent implements OnInit {
     if(count !== 0) {
       return summary/count;
     }
-    return 0;
+    return null;
   }
 }

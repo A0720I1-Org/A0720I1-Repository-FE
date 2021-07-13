@@ -11,8 +11,8 @@
       </div>
             <button class="btn btn-success ml-3" (click)="showResult()">Hiển thị</button>
      </div>
-     <div class="row" *ngIf="student">
-       <h3 class="ml-5 text-dark">Họ và tên : {{student.name}}</h3>
+     <div class="row mt-5 d-flex justify-content-start" *ngIf="student">
+       <h2 class="ml-5 text-dark">Họ và tên : {{student.name}}</h2>
      </div>
      <div class="spinner d-flex justify-content-center mt-5" *ngIf="loading">
       <mat-progress-spinner

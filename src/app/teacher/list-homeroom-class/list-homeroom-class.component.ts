@@ -150,7 +150,7 @@ export class ListHomeroomClassComponent implements OnInit {
   viewMarkStudent(id:number) {
     const dialogRef = this.dialog.open(SubjectResultComponent, {
       width: '1000px',
-      height : '500px',
+      height : '700px',
       data: {studentId: id}
     });
     dialogRef.afterClosed().subscribe(() => {
