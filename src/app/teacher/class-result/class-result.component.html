@@ -42,22 +42,25 @@
                 <ng-container *ngFor="let subject of subjects">
                   <th>{{subject.name}}</th>
                 </ng-container>
+                <th>Trung bình</th>
               </tr>
               </thead>
               <tbody>
                 <ng-container *ngFor="let student of students">
+
                   <tr class="text-center">
                     <td class="name-student">{{student.name}}</td>
                     <td>{{student.birthday | date : 'dd/MM/yyyy'}}</td>
-                    <ng-container *ngFor="let subject of subjects">
-                      <ng-container *ngFor="let average of studentAverageMarkDTO">
+                    <ng-container *ngFor="let average of studentAverageMarkDTO">
+                     <ng-container *ngFor="let subject of subjects">
                         <ng-container *ngIf="average.subjectId === subject.id && average.studentId === student.id">
-                          <td>{{average.averageMark | number}}</td>
+                          <td>{{average.averageMark | number : '0.1-1'}}</td>
                         </ng-container>
                       </ng-container>
-                    </ng-container>
-                  </tr>
-                </ng-container>
+                  </ng-container>
+                  <td>{{calculateAverage(student.id) | number : '0.1-1'}}</td>
+              </tr>
+          </ng-container>
               </tbody>
             </table>
           </div>

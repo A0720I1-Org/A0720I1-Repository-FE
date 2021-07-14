@@ -18,6 +18,7 @@ import { TeacherScheduleComponent } from './teacher-schedule/teacher-schedule.co
 import { StudentResultDetailComponent } from './student-result-detail/student-result-detail.component';
 import { ClassResultComponent } from './class-result/class-result.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { SubjectResultComponent } from './subject-result/subject-result.component';
 @NgModule({
   declarations: [
     ListTeacherComponent,
@@ -29,7 +30,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ViewDetailStudentComponent,
     TeacherScheduleComponent,
     StudentResultDetailComponent,
-    ClassResultComponent
+    ClassResultComponent,
+    SubjectResultComponent
   ],
 
   exports: [

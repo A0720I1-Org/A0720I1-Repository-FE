@@ -20,7 +20,7 @@ export class ClassResultComponent implements OnInit {
   semesters  = [{value : 1},
     {value : 2}];
   classStudent : IClassListDTO[];
-  studentAverageMarkDTO: StudentAverageMarkDTO;
+  studentAverageMarkDTO: StudentAverageMarkDTO[];
   isLoading : boolean ;
   isSelected : boolean = false;
   loading : boolean = false;
@@ -78,7 +78,7 @@ export class ClassResultComponent implements OnInit {
       setTimeout(() => {
         this.getStudent();
         this.loading = false ;
-      },500)
+      },1000)
     }else {
       this.toastrService.warning(
         "Vui lòng nhập các lựa chọn",
@@ -86,5 +86,19 @@ export class ClassResultComponent implements OnInit {
         {timeOut: 3000, extendedTimeOut: 1500}
       )
     }
+  }
+  calculateAverage(id : number) {
+    let summary : number = 0 ;
+    let count = 0;
+    for(let result of this.studentAverageMarkDTO) {
+      if(result.studentId === id && result.averageMark != null) {
+        count++ ;
+        summary += result.averageMark;
+      }
+    }
+    if(count !== 0) {
+      return summary/count;
+    }
+    return null;
   }
 }
