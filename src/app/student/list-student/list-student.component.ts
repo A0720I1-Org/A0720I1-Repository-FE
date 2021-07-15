@@ -27,12 +27,13 @@ import {TokenStorageService} from "../../service/token-storage.service";
   styleUrls: ['./list-student.component.scss']
 })
 export class ListStudentComponent implements OnInit {
-  yearList: ISchoolYear[] =  null;
+  yearList: ISchoolYear[] = null;
   gradeList: IGrade[] = null;
   classList: IStudentClass[] = null;
   classSearchData = new ClassSearchData();
 
   listStudent: IStudentListDTO[];
+  allListStudent: IStudentListDTO[];
   student: IStudentViewDTO;
   selectedStudent: IStudentDeleteDTO = {
     id: 0,
@@ -46,6 +47,7 @@ export class ListStudentComponent implements OnInit {
     ethnicity: ''
   };
 
+
   indexPagination: number = 1;
   totalPagination: number = 0;
   listStudentNoPagination: IStudentListDTO[];
@@ -53,7 +55,8 @@ export class ListStudentComponent implements OnInit {
   hometownSearch: string;
   studentClassId: number = 0;
   role: string;
-  selected : boolean = false ;
+  selected: boolean = false;
+
   constructor(
     private studentService: StudentService,
     public dialog: MatDialog,
@@ -72,6 +75,7 @@ export class ListStudentComponent implements OnInit {
     this.getYearList();
     this.getGradeList();
     this.role = this.tokenStorageService.getUser().roles[0];
+    this.showLists();
   }
 
   getYearList() {
@@ -91,7 +95,7 @@ export class ListStudentComponent implements OnInit {
   }
 
   getYearId(selectedYear) {
-    this.classSearchData.yearId =  selectedYear.value;
+    this.classSearchData.yearId = selectedYear.value;
   }
 
 
@@ -103,36 +107,31 @@ export class ListStudentComponent implements OnInit {
     this.classStudentService.getClassesByYearGrade(this.classSearchData).subscribe(
       (data) => {
         this.classList = data;
-        console.log("classlist "+data)
       }
     )
   }
 
   getClassId(selectClassId) {
     this.studentClassId = selectClassId.value;
+    console.log(this.studentClassId)
   }
 
 
   showLists() {
-    if (this.classSearchData.yearId && this.classSearchData.gradeId){
-      this.selected = true ;
-      this.indexPagination = 1;
-      this.studentService.getAllStudentByClassId(this.studentClassId, 0).subscribe((data: IStudentListDTO[]) => {
-          this.listStudent = data;
-          this.studentService.getListStudent(this.studentClassId).subscribe((data: IStudentListDTO[]) => {
-            this.listStudentNoPagination = data;
-            this.totalPagination = (Math.ceil(this.listStudentNoPagination.length / 5));
-          });
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.message)
+    this.indexPagination = 1;
+    console.log(this.studentClassId)
+    this.studentService.getAllStudentByClassId(this.studentClassId, 0).subscribe(
+      (data) => {
+        this.listStudent = data;
+        this.studentService.getListStudent(this.studentClassId).subscribe((data: IStudentListDTO[]) => {
+          this.listStudentNoPagination = data;
+          this.totalPagination = (Math.ceil(this.listStudentNoPagination.length / 5));
         });
-    }else {
-        this.toastrService.warning(
-          "Vui lòng nhập các lựa chọn",
-          "Thông báo",
-          {timeOut: 3000, extendedTimeOut: 1500});
-    }
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.message)
+      });
+    //
   }
 
 

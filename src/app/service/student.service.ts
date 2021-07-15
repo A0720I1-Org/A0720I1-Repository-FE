@@ -58,4 +58,7 @@ export class StudentService {
   searchStudentByNameAndHometown(index: number, name: string, hometown: string): Observable<any> {
     return this.httpClient.get<any>(this.API_URL + '/api/student/student/search-student?index=' + index + '&name=' + name + '&hometown=' + hometown,this.httpOptions)
   }
+  allStudentInSchool():Observable<any>{
+    return this.httpClient.get<any>(this.API_URL +"/api/student/student/all-student",this.httpOptions)
+  }
 }
