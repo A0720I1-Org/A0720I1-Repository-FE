@@ -1,17 +1,19 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {SchoolYear} from "../../dto/schedule/SchoolYear";
 import {SchoolYearService} from "../../service/school-year.service";
 import {ClassStudentService} from "../../service/class-student.service";
-import {StudentClass} from "../../dto/schedule/StudentClass";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateClassStudentComponent} from "../create-class-student/create-class-student.component";
-import {ScheduleTeacher} from "../../dto/schedule/ScheduleTeacher";
 import {ClassTeacher} from "../../dto/student-class/ClassTeacher";
 import {ScheduleService} from "../../service/schedule.service";
 import {ClassWithTeacherInfo} from "../../dto/student-class/ClassWithTeacherInfo";
 import {ClassStudent} from "../../dto/student-class/ClassStudent";
-import {AbstractControl, FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {formatDate} from "@angular/common";
+import {AngularFireStorage} from "@angular/fire/storage";
+import {finalize} from "rxjs/operators";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-create-student',
@@ -30,7 +32,9 @@ export class CreateStudentComponent implements OnInit {
   newStudent: ClassStudent;
   newStudentList: ClassStudent[] = [];
   closeResult: string;
-  teacherId: number;
+  teacherId: number = 0;
+  filePath: string;
+  inputImage: any = null;
   validationMessage = {
     'name': [
       {type: 'required', message: 'Họ và tên không được để trống!'},
@@ -69,13 +73,17 @@ export class CreateStudentComponent implements OnInit {
     private dialog: MatDialog,
     private scheduleService: ScheduleService,
     private formBuilder: FormBuilder,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    @Inject(AngularFireStorage) private storage: AngularFireStorage,
+    private toastrService: ToastrService
+  ) {
+  }
 
   ngOnInit(): void {
     this.getYearList();
     this.getTeacherList();
     this.initForm()
+    this.newStudentList = []
   }
 
   getYearList() {
@@ -94,7 +102,7 @@ export class CreateStudentComponent implements OnInit {
   getClassList() {
     this.classStudentService.getClassesByYearAndGrade(this.yearId, 1).subscribe(
       (data) => {
-        this.classList =  data;
+        this.classList = data;
       }
     )
   }
@@ -154,24 +162,44 @@ export class CreateStudentComponent implements OnInit {
   }
 
   onSubmit() {
-    this.newStudentList.push(this.studentForm.value);
+    console.log(this.inputImage)
+    if (this.inputImage != null) {
+      const imageName = formatDate(new Date(), 'dd-MM-yyyyhhmmssa', 'en-US') + this.inputImage.name;
+      const fileRef = this.storage.ref(imageName);
+      this.storage.upload(imageName, this.inputImage).snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.newStudent = this.studentForm.value;
+            this.newStudent.imageUrl = url;
+            this.newStudentList.push(this.newStudent);
+          })
+        }))
+    }
+    this.newStudentList.push(this.studentForm.value)
     this.studentForm.reset();
     this.modalService.dismissAll(); //dismiss the modal
   }
 
-  selectImage($event: Event) {
-
+  selectImage(event: any) {
+    this.inputImage = event.target.files[0];
+    this.studentForm.get('imageUrl').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.filePath = reader.result as string;
+    };
+    reader.readAsDataURL(this.inputImage);
   }
 
+
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'})
   }
 
   disableButton() {
     if (this.studentClass == null) {
       return true;
     } else {
-      if (this.studentClass.teacher == null){
+      if (this.studentClass.teacher == null && this.teacherId == 0) {
         return true;
       }
     }
@@ -180,6 +208,37 @@ export class CreateStudentComponent implements OnInit {
 
   selectTeacher(teacher) {
     this.teacherId = teacher.value
+    console.log(this.teacherId)
+  }
+
+  getImageUrl() {
+    if (this.filePath != null) {
+      return this.filePath;
+    }
+    if (this.studentForm.value.imageUrl != "") {
+      return this.studentForm.value.imageUrl;
+    }
+    return 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df';
+  }
+
+  createStudent() {
+    console.log(this.teacherId)
+    this.classStudentService.createStudent(this.newStudentList, this.teacherId, this.studentClass.id).subscribe(
+      (data)=>{
+        this.toastrService.success(
+          "Cập nhật thông tin thành công",
+          "Thông báo",
+          {timeOut: 3000, extendedTimeOut: 1500})
+        this.newStudentList=[];
+        this.showStudentList();
+      },
+      error => {
+        this.toastrService.error(
+          "Có lỗi xảy ra",
+          "Thông báo",
+          {timeOut: 3000, extendedTimeOut: 1500})
+      }
+    )
   }
 }
 

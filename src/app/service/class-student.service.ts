@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {TokenStorageService} from "./token-storage.service";
 import {ClassCreate} from "../dto/student-class/ClassCreate";
+import {ClassStudent} from "../dto/student-class/ClassStudent";
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,9 @@ export class ClassStudentService {
 
   getStudentListByClassId(classId: number): Observable<any> {
     return this.httpClient.get(this.API_URL + '/api/public/student-class/get-student-list-by-class-id/' + classId, this.httpOptions)
+  }
+
+  createStudent(studentList: ClassStudent[], teacherId: number, classId: number): Observable<any> {
+    return this.httpClient.post(this.API_URL + '/api/admin/student/create-student?classId='+classId + '&teacherId=' + teacherId, studentList, this.httpOptions)
   }
 }

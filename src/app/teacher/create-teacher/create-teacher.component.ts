@@ -160,6 +160,7 @@ export class CreateTeacherComponent implements OnInit {
             "Thêm mới thành công giáo viên",
             "Thông báo",
             {timeOut: 3000, extendedTimeOut: 1500})
+          this.ngOnInit()
         },
         err => {
           this.errorMessage = err.error.errors;
