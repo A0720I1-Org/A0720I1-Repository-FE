@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {ClassSearchData} from "../dto/student/ClassSearchData";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TokenStorageService} from "./token-storage.service";
 import {ClassCreate} from "../dto/student-class/ClassCreate";
 import {ClassStudent} from "../dto/student-class/ClassStudent";
@@ -11,7 +12,7 @@ import {ClassStudent} from "../dto/student-class/ClassStudent";
 })
 export class ClassStudentService {
   private API_URL = environment.apiBaseUrl;
-  httpOptions : any
+  httpOptions : any;
 
   constructor(private httpClient: HttpClient, private tokenStorage: TokenStorageService) {
     this.httpOptions = {
@@ -41,6 +42,11 @@ export class ClassStudentService {
   }
 
   createStudent(studentList: ClassStudent[], teacherId: number, classId: number): Observable<any> {
-    return this.httpClient.post(this.API_URL + '/api/admin/student/create-student?classId='+classId + '&teacherId=' + teacherId, studentList, this.httpOptions)
+    return this.httpClient.post(this.API_URL + '/api/admin/student/create-student?classId=' + classId + '&teacherId=' + teacherId, studentList, this.httpOptions)
+  }
+
+  getClassesByYearGrade(classSearchData: ClassSearchData): Observable<any> {
+    return this.httpClient.post<any>(this.API_URL + '/api/public/student/class/get-class-list-by-year-grade', classSearchData)
+
   }
 }

@@ -30,14 +30,14 @@
     <div class="col-md-9">
       <div class="card-user border-shadow">
         <div class="card-header card-background-color">
-          <h4 class="card-title card-header-text-bold text-light">Thông tin giáo viên</h4>
+          <p class="card-title card-header-text-bold text-light pt-3">Thông tin giáo viên</p>
         </div>
         <div class="card-body card-body-text-bold">
           <form [formGroup]="formTeacher" (ngSubmit)="updateTeacher()">
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="name">Họ và tên</label>
+                  <label for="name" class="required">Họ và tên</label>
                   <input type="text" class="form-control" id="name" placeholder="Họ và tên"
                          formControlName="name">
                   <ng-container *ngFor="let validation of validationMessages.name">
@@ -59,7 +59,7 @@
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="gender">Giới tính</label>
+                  <label for="gender" class="required">Giới tính</label>
                   <select class="form-control" id="gender" formControlName="gender">
                     <option [value]="'Nam'">Nam</option>
                     <option [value]="'Nữ'">Nữ</option>
@@ -69,7 +69,7 @@
               </div>
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="birthday">Ngày Sinh</label>
+                  <label for="birthday" class="required">Ngày sinh</label>
                   <input type="date" class="form-control" placeholder="Ngày sinh" id="birthday"
                          formControlName="birthday">
                 </div>
@@ -78,7 +78,7 @@
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label>Địa Chỉ</label>
+                  <label class="required">Địa chỉ</label>
                   <input type="text" class="form-control" placeholder="Địa chỉ" formControlName="address">
                   <ng-container *ngFor="let validation of validationMessages.address">
                     <small class="text-danger"
@@ -90,7 +90,7 @@
               </div>
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label>Quê Quán</label>
+                  <label class="required">Quê quán</label>
                   <input type="text" class="form-control" placeholder="Quê quán" formControlName="hometown">
                   <ng-container *ngFor="let validation of validationMessages.hometown">
                     <small class="text-danger"
@@ -104,7 +104,7 @@
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label>Số Điện Thoại</label>
+                  <label class="required">Số điện thoại</label>
                   <input type="text" class="form-control" placeholder="Số điện thoại" formControlName="phone">
                   <ng-container *ngFor="let validation of validationMessages.phone">
                     <small class="text-danger"
@@ -116,7 +116,7 @@
               </div>
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="email">Email</label>
+                  <label for="email" class="required">Email</label>
                   <input type="text" class="form-control" placeholder="Email" id="email" formControlName="email">
                   <ng-container *ngFor="let validation of validationMessages.email">
                     <small class="text-danger"
@@ -130,19 +130,19 @@
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="level" fo>Trình Độ</label>
+                  <label for="level" class="required">Trình Độ</label>
                   <select class="form-control" id="level" formControlName="level">
-                    <option [value]="'Cao Đẳng'">Cao Đẳng</option>
-                    <option [value]="'Đại Học'">Đại Học</option>
-                    <option [value]="'Thạc Sĩ'">Thạc Sĩ</option>
-                    <option [value]="'Tiến Sĩ'">Tiến Sĩ</option>
+                    <option [value]="'Cao Đẳng'">Cao đẳng</option>
+                    <option [value]="'Đại Học'">Đại học</option>
+                    <option [value]="'Thạc Sĩ'">Thạc sĩ</option>
+                    <option [value]="'Tiến Sĩ'">Tiến sĩ</option>
                     <option [value]="'Khác'">Khác</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label>Chức Vụ</label>
+                  <label class="required">Chức vụ</label>
                   <input type="text" class="form-control" placeholder="Chức vụ" formControlName="position">
                   <ng-container *ngFor="let validation of validationMessages.position">
                     <small class="text-danger"
@@ -155,8 +155,8 @@
             </div>
             <div class="row">
               <div class="update mt-3 mb-3 ml-auto mr-auto">
-                <button type="submit" class="btn btn-warning mr-3">Xác Nhận</button>
-                <button type="submit" class="btn btn-primary" routerLink="/teacher">Quay Lại</button>
+                <button type="submit" class="btn btn-warning mr-3">Xác nhận</button>
+                <button type="submit" class="btn btn-primary" routerLink="/teacher">Quay lại</button>
               </div>
             </div>
           </form>

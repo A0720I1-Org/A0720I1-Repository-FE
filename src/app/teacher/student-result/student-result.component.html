@@ -42,8 +42,8 @@
         <div class="border-shadow">
           <div class="card-header card-background-color d-flex justify-content-between">
             <p class="card-title card-header-text-bold text-light col-md-2 mt-3">Danh sách điểm</p>
-            <div>
-              <button class="btn btn-primary" type="button" (click)="getResult(subjectId,classId,semesterId,multiplierId)" [hidden]="!isEnableEdit">Hiển thị</button>
+            <div class="mt-2">
+              <button class="btn btn-success" type="button" (click)="getResult(subjectId,classId,semesterId,multiplierId)" [hidden]="!isEnableEdit">Hiển thị</button>
            </div>
         </div>
         <form [formGroup]="resultForm" (ngSubmit)="onSubmit()">
@@ -61,7 +61,7 @@
                 </thead>
                 <tbody formArrayName="studentResults">
                 <tr *ngFor="let str of studentResults.controls; let i = index" [formGroupName]="i">
-                  <td>Student : {{i + 1}}</td>
+                  <td>{{i + 1}}</td>
                   <td>  {{studentResults.value[i].name}}</td>
                   <td> {{studentResults.value[i].birthday | date: 'dd/MM/yyyy'}}</td>
                   <td>

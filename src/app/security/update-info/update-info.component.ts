@@ -1,9 +1,9 @@
+import { TeacherUpdateDTO } from 'src/app/dto/teacher/TeacherUpdateDTO';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from './../../service/account.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TeacherUpdateDTO } from 'src/app/dto/teacher/TeacherUpdateDTO';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TokenStorageService } from 'src/app/service/token-storage.service';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -17,11 +17,11 @@ import { finalize } from 'rxjs/operators';
 })
 export class UpdateInfoComponent implements OnInit {
   formUpdate: FormGroup;
-  teacher: TeacherUpdateDTO;
+  teacher : TeacherUpdateDTO ;
   studentClass : string ;
   username : string ;
   inputImage: any = null;
-  filePath : string = "https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df";
+  filePath : string =  null;
   validationMessages = {
     'address': [
       {type: 'required', message: 'Địa chỉ không được để trống.'},
@@ -53,6 +53,7 @@ export class UpdateInfoComponent implements OnInit {
   ngOnInit(): void {
     this.initFormUpdate();
     this.accountService.getInfoAccount().subscribe(data => {
+      console.log(data);
       this.teacher = data;
       // @ts-ignore
 
@@ -71,7 +72,7 @@ export class UpdateInfoComponent implements OnInit {
       ],
       phone: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^(09|01[2|6|8|9])+([0-9]{8})\b$/)])
+        Validators.pattern(/^(0[3|5|7|8|9])+([0-9]{8})\b$/)])
       ],
       level: [''],
       position: [''],
@@ -139,5 +140,14 @@ export class UpdateInfoComponent implements OnInit {
           )
         });
     }
+  }
+  getImageUrl(){
+    if(this.filePath != null){
+      return this.filePath;
+    }
+    if(this.formUpdate.value.imageUrl != null){
+      return this.formUpdate.value.imageUrl;
+    }
+    return 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df';
   }
 }

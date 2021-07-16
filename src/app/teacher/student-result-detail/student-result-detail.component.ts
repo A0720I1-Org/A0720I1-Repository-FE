@@ -41,8 +41,8 @@ export class StudentResultDetailComponent implements OnInit {
     });
     this.calculateAverage();
     this.subjectResultService.getSubject().subscribe(
-      (next) => {
-        this.subject = next.find(e => e.id == this.data.subjectId);
+      (data) => {
+        this.subject = data.find(e => e.id == this.data.subjectId);
         console.log(this.subject);
       }
     )

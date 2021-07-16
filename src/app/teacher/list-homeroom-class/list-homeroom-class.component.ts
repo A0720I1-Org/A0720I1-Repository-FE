@@ -1,3 +1,4 @@
+import { SubjectResultComponent } from './../subject-result/subject-result.component';
 import {Component, OnInit} from '@angular/core';
 import {TeacherService} from "../../service/teacher.service";
 import {HomeroomClassDTO} from "../../dto/teacher/HomeroomClassDTO";
@@ -145,5 +146,15 @@ export class ListHomeroomClassComponent implements OnInit {
       (data: HomeroomClassDTO[]) => {
         this.listStudentClass = data;
       });
+  }
+  viewMarkStudent(id:number) {
+    const dialogRef = this.dialog.open(SubjectResultComponent, {
+      width: '1000px',
+      height : '700px',
+      data: {studentId: id}
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.ngOnInit();
+    });
   }
 }

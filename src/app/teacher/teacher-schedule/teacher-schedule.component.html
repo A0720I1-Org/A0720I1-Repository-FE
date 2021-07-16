@@ -23,11 +23,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="text-center" *ngFor= "let lessonNumber of lessonNumbers">
+            <tr class="text-center align-baseline" *ngFor= "let lessonNumber of lessonNumbers">
               <td class="col-1">{{lessonNumber}}</td>
               <td class="col-2" *ngFor = "let lessonDate of lessonDates">
                 <ng-container *ngFor = "let lesson of teacherSchedule">
-                  <ng-container *ngIf = "lesson.lessonDate == lessonDate && lesson.lessonNumber == lessonNumber">{{lesson.subjectName}}</ng-container>
+                  <ng-container *ngIf = "lesson.lessonDate == lessonDate && lesson.lessonNumber == lessonNumber">
+                    <label>{{lesson.subjectName}}</label><br>
+                    <label class="text-danger">{{lesson.nameClass}}</label></ng-container>
                 </ng-container>
               </td>
             </tr>

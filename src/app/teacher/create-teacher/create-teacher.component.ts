@@ -57,6 +57,7 @@ export class CreateTeacherComponent implements OnInit {
   teacher: TeacherCreateDTO;
   uploading: boolean;
   errorMessage = new TeacherCreateError();
+  filePath: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -115,6 +116,12 @@ export class CreateTeacherComponent implements OnInit {
 
   selectImage(event: any) {
     this.inputImage = event.target.files[0];
+    this.teacherForm.get('imageUrl').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.filePath = reader.result as string;
+    };
+    reader.readAsDataURL(this.inputImage);
   }
 
   onSubmit() {
@@ -172,6 +179,16 @@ export class CreateTeacherComponent implements OnInit {
         }
       )
     }
+  }
+
+  getImageUrl() {
+    if(this.filePath != null){
+      return this.filePath;
+    }
+    if(this.teacherForm.value.imageUrl != ""){
+      return this.teacherForm.value.imageUrl;
+    }
+    return 'https://firebasestorage.googleapis.com/v0/b/a0720i1.appspot.com/o/card-image%2Fcard-image.jpg?alt=media&token=d5f7d82f-93bd-425f-ad97-3824621d84df';
   }
 }
 

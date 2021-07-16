@@ -19,7 +19,7 @@
           <th class=" text-primary">Điểm hệ số 1</th>
           <td class="text-center">
           <li *ngFor="let mark of markMultiplier1" class="ml-3">
-                {{mark}}
+                {{mark | number : '0.1-1'}}
           </li>
           </td>
         </tr>
@@ -27,7 +27,7 @@
           <th class=" text-primary">Điểm hệ số 2</th>
           <td class="text-center">
           <li *ngFor="let mark of markMultiplier2" class="ml-3">
-                {{mark}}
+                {{mark | number : '0.1-1'}}
           </li>
           </td>
         </tr>
@@ -35,13 +35,13 @@
           <th class=" text-primary">Điểm hệ số 3</th>
           <td class="text-center">
           <li *ngFor="let mark of markMultiplier3" class="ml-3">
-                {{mark}}
+                {{mark | number : '0.1-1'}}
           </li>
           </td>
         </tr>
         <tr>
           <th class=" text-primary">Điểm trung bình</th>
-          <td class="text-center">{{averageMark}}</td>
+          <td class="text-center">{{averageMark | number : '0.1-1'}}</td>
         </tr>
       </table>
     </div>

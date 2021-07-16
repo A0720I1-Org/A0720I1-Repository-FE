@@ -13,6 +13,6 @@ export class GradeService {
   }
 
   getAllGrades(): Observable<any>{
-    return this.httpClient.get<any>(this.API_URL + '/api/public/grade/get-grade-list')
+    return this.httpClient.get<any>(this.API_URL + '/api/public/student/grade/get-grade-list')
   }
 }

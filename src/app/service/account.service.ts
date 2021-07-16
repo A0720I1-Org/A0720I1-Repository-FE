@@ -30,7 +30,7 @@ export class AccountService {
   getInfoAccount(): Observable<any> {
     this.username = this.tokenStorageService.getUser().account.username;
     console.log(this.username);
-    return this.httpClient.get<ITeacherViewDTO>(this.API_URL + '/api/teacher/info/' + this.username,this.httpOptions);
+    return this.httpClient.get<any>(this.API_URL + '/api/teacher/info/' + this.username,this.httpOptions);
   }
   updateInfoAccount(teacherUpdateDTO: TeacherUpdateDTO) : Observable<any> {
     this.username = this.tokenStorageService.getUser().account.username;
@@ -38,7 +38,7 @@ export class AccountService {
   }
   changePassword(passwordDTO : IPasswordDTO): Observable<any> {
     this.username = this.tokenStorageService.getUser().account.username;
-    return this.httpClient.put<IPasswordDTO>(this.API_URL + '/api/teacher/change-password/'+ this.username, passwordDTO,this.httpOptions);
+    return this.httpClient.put<IPasswordDTO>(this.API_URL + '/api/student/change-password/'+ this.username, passwordDTO,this.httpOptions);
   }
   forgotPassword(code : number): Observable<any> {
     this.username = this.tokenStorageService.getUser().account.username;
